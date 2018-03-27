@@ -5,6 +5,7 @@ public class Student {
 	String firstName = "";
 	String lastName = "";
 	List<Submission> submission;
+	List<Course> courses;
 	
 	Student(int id){
 		this.ID = id;
