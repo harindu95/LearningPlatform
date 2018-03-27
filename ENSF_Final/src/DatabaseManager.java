@@ -15,11 +15,13 @@ public class DatabaseManager {
 	public PreparedStatement statement;
 	public String databaseName = "ESNF_Final";
 	public String connectionInfo = "jdbc:mysql://localhost:3306/ENSF_Final", login = "ensf", password = null;
+	private Assignments assignments;
 
-	public DatabaseManager(Courses courses, Students students, Professors profs) {
+	public DatabaseManager(Courses courses, Students students, Professors profs, Assignments a) {
 		this.courses = courses;
 		this.students = students;
 		this.professors = profs;
+		this.assignments = a;
 		courses.setDBManager(this);
 		professors.setDBManager(this);
 		students.setDBManager(this);
@@ -43,7 +45,9 @@ public class DatabaseManager {
 		readCourses();
 		readUsers();
 		readCourseRegistrations();
-		readAssigmnets();
+		readAssignments();
+		readGrades();
+		readSubmissions();
 	}
 
 	void readCourses() {
@@ -65,16 +69,18 @@ public class DatabaseManager {
 
 	}
 	
-	void readAssigmnets() {
+	void readAssignments() {
 		String sql = "SELECT * FROM Assignments";
 		ResultSet r;
 		try {
 			statement = jdbc_connection.prepareStatement(sql);
 			r = statement.executeQuery();
 			while (r.next()) {
-				Assignment a = new Assignment();
+				Assignment a = assignments.getAssignment(r.getInt("id"));
 				a.active = r.getBoolean("active");
-				a.file_id = r.getInt("file_id");
+				a.title = r.getString("title");
+				a.path = r.getString("path");
+				a.due_date = r.getString("due_date");
 				Course c = courses.getCourse(r.getInt("course_id"));
 				c.assignments.add(a);
 			}
@@ -83,6 +89,48 @@ public class DatabaseManager {
 			e.printStackTrace();
 		}
 
+	}
+	
+	void readGrades() {
+		String sql = "SELECT * FROM Grades";
+		ResultSet r;
+		try {
+			statement = jdbc_connection.prepareStatement(sql);
+			r = statement.executeQuery();
+			while (r.next()) {
+				Assignment a = assignments.getAssignment(r.getInt("assign_id"));
+				Student s = students.getStudent(r.getInt("student_id"));
+				Grade grade = new Grade();
+				grade.assignment = a;
+				grade.grade = r.getInt("assigment_grade");
+				s.grades.add(grade);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	void readSubmissions(){
+		String sql = "SELECT * FROM Submissions";
+		ResultSet r;
+		try {
+			statement = jdbc_connection.prepareStatement(sql);
+			r = statement.executeQuery();
+			while (r.next()) {
+				Submission s = new Submission();
+				s.assignment = assignments.getAssignment(r.getInt("assign_id"));
+				s.title = r.getString("title");
+				s.path = r.getString("path");
+				s.timeStamp = r.getString("timestamp");
+				s.submission_grade = r.getInt("submission_grade");
+				Student student = students.getStudent(r.getInt("student_id"));
+				student.submissions.add(s);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	void readUsers() {
@@ -132,4 +180,13 @@ public class DatabaseManager {
 		}
 	}
 
+	public void close() {
+		try {
+			jdbc_connection.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+	}
 }

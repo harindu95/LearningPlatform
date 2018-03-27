@@ -2,6 +2,9 @@ import java.util.List;
 
 public class Submission {
 	Assignment assignment;
-	List<Integer> files;
-	float grade;
+	String title ="";
+	String comments = "";
+	String timeStamp = "";
+	int submission_grade;
+	String path = "";
 }
