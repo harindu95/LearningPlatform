@@ -1,13 +1,13 @@
+import java.util.ArrayList;
 import java.util.List;
 
-public class Student {
-	int ID = 0;
-	String firstName = "";
-	String lastName = "";
-	List<Submission> submission;
+public class Student extends User{
+	List<Submission> submissions;
 	List<Course> courses;
 	
 	Student(int id){
-		this.ID = id;
+		super(id);
+		courses = new ArrayList<>();
+		submissions = new ArrayList<>();
 	}
 }

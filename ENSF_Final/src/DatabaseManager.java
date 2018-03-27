@@ -20,6 +20,9 @@ public class DatabaseManager {
 		this.courses = courses;
 		this.students = students;
 		this.professors = profs;
+		courses.setDBManager(this);
+		professors.setDBManager(this);
+		students.setDBManager(this);
 
 		try {
 			// If this throws an error, make sure you have added the mySQL connector JAR to
@@ -36,6 +39,13 @@ public class DatabaseManager {
 
 	}
 
+	void readData() {
+		readCourses();
+		readUsers();
+		readCourseRegistrations();
+		readAssigmnets();
+	}
+
 	void readCourses() {
 		String sql = "SELECT * FROM Courses";
 		ResultSet course;
@@ -43,9 +53,9 @@ public class DatabaseManager {
 			statement = jdbc_connection.prepareStatement(sql);
 			course = statement.executeQuery();
 			while (course.next()) {
-				Course c = courses.getCourse(course.getInt("ID"));
-				c.isActive = course.getBoolean("Active");
-				c.professor = professors.getProfessor(course.getInt("ProfessorID"));
+				Course c = courses.getCourse(course.getInt("id"));
+				c.isActive = course.getBoolean("active");
+				c.professor = professors.getProfessor(course.getInt("prof_id"));
 				c.professor.courses.add(c);
 			}
 
@@ -55,16 +65,44 @@ public class DatabaseManager {
 
 	}
 	
-	void readStudents() {
-		String sql = "SELECT * FROM Students";
-		ResultSet student;
+	void readAssigmnets() {
+		String sql = "SELECT * FROM Assignments";
+		ResultSet r;
 		try {
 			statement = jdbc_connection.prepareStatement(sql);
-			student = statement.executeQuery();
-			while (student.next()) {
-				Student s = students.getStudent(student.getInt("ID"));
-				s.firstName = student.getString("FirstName");
-				s.lastName = student.getString("LastName");
+			r = statement.executeQuery();
+			while (r.next()) {
+				Assignment a = new Assignment();
+				a.active = r.getBoolean("active");
+				a.file_id = r.getInt("file_id");
+				Course c = courses.getCourse(r.getInt("course_id"));
+				c.assignments.add(a);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	void readUsers() {
+		String sql = "SELECT * FROM Users";
+		ResultSet user;
+		try {
+			statement = jdbc_connection.prepareStatement(sql);
+			user = statement.executeQuery();
+			while (user.next()) {
+				User u = new User(user.getInt("id"));
+				u.firstName = user.getString("firstname");
+				u.lastName = user.getString("lastname");
+				u.password = user.getString("password");
+				u.email = user.getString("email");
+				char type = user.getString("type").charAt(0);
+				if(type == 'P') {
+					professors.addProfessor(u);
+				}else if(type == 'S') {
+					students.addStudent(u);
+				}
 				
 			}
 
@@ -74,44 +112,24 @@ public class DatabaseManager {
 
 	}
 
-	
-	void readProfessors() {
-		String sql = "SELECT * FROM Professors";
-		ResultSet profs;
-		try {
-			statement = jdbc_connection.prepareStatement(sql);
-			profs = statement.executeQuery();
-			while (profs.next()) {
-				Professor p = professors.getProfessor(profs.getInt("ID"));
-				p.firstName = profs.getString("FirstName");
-				p.lastName = profs.getString("LastName");
-				
-			}
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-	}
-	
 	void readCourseRegistrations() {
-		String sql = "SELECT * FROM CourseRegistrations";
+		String sql = "SELECT * FROM StudentEnrollment";
 		ResultSet regs;
 		try {
 			statement = jdbc_connection.prepareStatement(sql);
 			regs = statement.executeQuery();
 			while (regs.next()) {
-				Course c  = courses.getCourse(regs.getInt("CourseID"));
-				Student s = students.getStudent(regs.getInt("StudentID"));
+				Course c = courses.getCourse(regs.getInt("course_id"));
+				Student s = students.getStudent(regs.getInt("student_id"));
 				c.students.add(s);
 				s.courses.add(c);
-				
+
 			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
-	
-	
+
 }

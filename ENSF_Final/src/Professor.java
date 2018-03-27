@@ -1,20 +1,11 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class Professor {
-	int ID = 0;
-	String firstName = "";
-	String lastName = "";
+public class Professor extends User {
 	List<Course> courses;
 	
-	Professor(int id, String name){
-		this.ID = id;
-		this.lastName = name;
-		courses = new ArrayList<>();
-	}
-	
 	Professor(int id){
-		this.ID = id;
+		super(id);
 		courses = new ArrayList<>();
 	}
 }

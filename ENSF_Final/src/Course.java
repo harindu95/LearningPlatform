@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class Course {
@@ -10,5 +11,7 @@ public class Course {
 	
 	Course(int id){
 		this.ID = id;
+		students = new ArrayList<>();
+		assignments = new ArrayList<>();
 	}
 }
