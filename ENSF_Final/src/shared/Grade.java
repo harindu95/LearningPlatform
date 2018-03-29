@@ -1,6 +1,6 @@
 package shared;
 
 public class Grade {
-	Assignment assignment;
-	int grade;
+	public Assignment assignment;
+	public int grade;
 }

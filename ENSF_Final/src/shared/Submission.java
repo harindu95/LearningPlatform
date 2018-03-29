@@ -2,10 +2,10 @@ package shared;
 import java.util.List;
 
 public class Submission {
-	Assignment assignment;
-	String title ="";
-	String comments = "";
-	String timeStamp = "";
-	int submission_grade;
-	String path = "";
+	public Assignment assignment;
+	public String title ="";
+	public String comments = "";
+	public String timeStamp = "";
+	public int submission_grade;
+	public String path = "";
 }

@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 public class Student extends User{
-	List<Submission> submissions;
+	public List<Submission> submissions;
 	public List<Course> courses;
-	List<Grade> grades;
+	public List<Grade> grades;
 	
 	public Student(int id){
 		super(id);
