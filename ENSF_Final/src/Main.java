@@ -1,3 +1,9 @@
+import backend.Assignments;
+import backend.Courses;
+import backend.DatabaseManager;
+import backend.Professors;
+import backend.Students;
+import shared.Student;
 
 public class Main {
 	public static void main(String[] args) {

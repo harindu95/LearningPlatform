@@ -1,6 +1,10 @@
+package backend;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import shared.Professor;
+import shared.User;
 
 public class Professors {
 	Map<Integer, Professor> professors;

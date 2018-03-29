@@ -1,11 +1,15 @@
+package backend;
 import java.util.HashMap;
 import java.util.Map;
 
+import shared.Student;
+import shared.User;
+
 public class Students {
-	Map<Integer, Student> students;
+	public Map<Integer, Student> students;
 	DatabaseManager db;
 
-	Students() {
+	public Students() {
 		students = new HashMap<>();
 	}
 

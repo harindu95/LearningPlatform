@@ -1,3 +1,4 @@
+package shared;
 
 public class Assignment {
 	int id = 0;
@@ -7,7 +8,7 @@ public class Assignment {
 	String path = "";
 	String due_date  = "";
 	
-	Assignment(int id){
+	public Assignment(int id){
 		this.id = id;
 	}
 }

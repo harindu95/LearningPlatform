@@ -1,3 +1,4 @@
+package shared;
 import java.util.List;
 
 public class Submission {

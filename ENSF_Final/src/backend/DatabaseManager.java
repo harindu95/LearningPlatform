@@ -1,9 +1,17 @@
+package backend;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
+import shared.Assignment;
+import shared.Course;
+import shared.Grade;
+import shared.Student;
+import shared.Submission;
+import shared.User;
 
 public class DatabaseManager {
 
@@ -41,7 +49,7 @@ public class DatabaseManager {
 
 	}
 
-	void readData() {
+	public void readData() {
 		readCourses();
 		readUsers();
 		readCourseRegistrations();

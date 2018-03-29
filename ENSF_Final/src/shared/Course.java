@@ -1,3 +1,4 @@
+package shared;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +10,7 @@ public class Course {
 	List<Assignment> assignments;
 	List<Student> students;
 	
-	Course(int id){
+	public Course(int id){
 		this.ID = id;
 		students = new ArrayList<>();
 		assignments = new ArrayList<>();
