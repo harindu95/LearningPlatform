@@ -2,7 +2,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-public class ClientConnection extends Thread implements Constants{
+public class ClientConnection extends Thread
+{
 
 	Client client;
 	PrintWriter SocketOut;

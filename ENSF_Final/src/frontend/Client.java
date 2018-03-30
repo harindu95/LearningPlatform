@@ -4,12 +4,12 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class Client implements Constants{
+public class Client
+{
 	private PrintWriter socketOut;
 	private Socket aSocket;
 	private BufferedReader stdIn;
 	private BufferedReader socketIn;
-	
 	
 	public Client(String serverName, int portNumber) 
 	{
@@ -21,7 +21,6 @@ public class Client implements Constants{
 			aSocket = new Socket(serverName, portNumber);
 			socketIn = new BufferedReader(new InputStreamReader(aSocket.getInputStream()));
 			socketOut = new PrintWriter((aSocket.getOutputStream()), true);
-			socketOut.println(mainPlayer.getName());
 			
 		} catch (IOException e) {
 			System.err.println(e.getStackTrace());
