@@ -14,6 +14,8 @@ import java.nio.CharBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
+import shared.FileObj;
+
 public class FileManager {
 	private String path = "files";
 
@@ -30,29 +32,13 @@ public class FileManager {
 		}
 	}
 
-	public int[] readFile(String filename) throws IOException {
-		BufferedReader br = null;
-		try {
-			File file = new File(path, filename);
-			br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
-			int c = br.read();
-			int length = 0;
-			while (c != -1) {
-				length++;
-				c = br.read();
-			}
-			int[] array = new int[length];
-			br.close();
-			br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
-			for (int i = 0; i < array.length; i++) {
-				array[i] = br.read();
-			}
+	void storeFile(FileObj fileObj) throws IOException {
+		storeFile(fileObj.file.getName(),fileObj.data);
+	}
 
-			return array;
-
-		} finally {
-			br.close();
-		}
+	
+	public FileObj readFile(String filename) throws IOException {
+		return new FileObj(path,filename);
 	}
 
 }

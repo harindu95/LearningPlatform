@@ -73,6 +73,7 @@ public class Worker implements Runnable {
 			}
 
 		}
+		out.flush();
 	}
 
 }
