@@ -1,28 +1,39 @@
 package frontend;
 
 import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import javax.swing.JTextField;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JPasswordField;
+import javax.swing.UIManager;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class Login {
 
 	private JFrame frame;
-	private JTextField textField;
-	private JPasswordField textField_1;
-	private JLabel label;
-	private JLabel label_1;
+	private JTextField username;
+	private JPasswordField password;
+	private JLabel loginBtn;
+	private JLabel cancelBtn;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -47,71 +58,83 @@ public class Login {
 	 */
 	private void initialize() {
 		frame = new JFrame();
+		frame.setUndecorated(true);
+		frame.setResizable(false);
 		frame.setBounds(100, 100, 623, 404);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		
-		textField = new JTextField();
-		textField.setBackground(new Color(190, 168, 170));
-		textField.setBorder(null);
-		
-		textField.setBounds(236, 142, 153, 19);
-		frame.getContentPane().add(textField);
-		textField.setColumns(20);
-		
-		textField_1 = new JPasswordField();
-		textField_1.setColumns(20);
-		textField_1.setBorder(null);
-		textField_1.setBackground(new Color(190, 168, 170));
-		textField_1.setBounds(236, 189, 153, 19);
-		frame.getContentPane().add(textField_1);
-		
-		label = new JLabel("");
-		label.addMouseListener(new MouseAdapter() {
+		frame.setLocationRelativeTo(null);
+
+		Font font = new Font(Font.SANS_SERIF,Font.TRUETYPE_FONT,12);
+		username = new JTextField();
+		username.setFont(font);
+		username.setSelectionColor(new Color(190, 168, 160));
+	
+		username.setText("username");
+		username.selectAll();
+		username.setBackground(new Color(190, 168, 170));
+		username.setBorder(null);
+
+		username.setBounds(236, 142, 153, 19);
+		frame.getContentPane().add(username);
+		username.setColumns(20);
+
+		password = new JPasswordField();
+		password.setColumns(20);
+		password.setFont(font);
+		password.setBorder(null);
+		password.setBackground(new Color(190, 168, 170));
+		password.setBounds(236, 189, 153, 19);
+		frame.getContentPane().add(password);
+
+		loginBtn = new JLabel("");
+		loginBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				label.setIcon(new ImageIcon("resources/images/loginbtn2.png"));
+				loginBtn.setIcon(new ImageIcon("resources/images/loginbtn2.png"));
 			}
-			
+
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				label.setIcon(new ImageIcon("resources/images/loginbtn1.png"));
+				loginBtn.setIcon(new ImageIcon("resources/images/loginbtn1.png"));
 			}
+
 			@Override
 			public void mouseExited(MouseEvent e) {
-				label.setIcon(new ImageIcon("resources/images/loginbtn3.png"));
+				loginBtn.setIcon(new ImageIcon("resources/images/loginbtn3.png"));
 			}
+
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				label.setIcon(new ImageIcon("resources/images/loginbtn1.png"));
+				loginBtn.setIcon(new ImageIcon("resources/images/loginbtn1.png"));
 			}
-			
+
 		});
-		label.setIcon(new ImageIcon("resources/images/loginbtn3.png"));
-		label.setBounds(236, 229, 147, 33);
-		frame.getContentPane().add(label);
-		
-		label_1 = new JLabel("");
-		label_1.addMouseListener(new MouseAdapter() {
+		loginBtn.setIcon(new ImageIcon("resources/images/loginbtn3.png"));
+		loginBtn.setBounds(236, 229, 147, 33);
+		frame.getContentPane().add(loginBtn);
+
+		cancelBtn = new JLabel("");
+		cancelBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				label_1.setIcon(new ImageIcon("resources/images/logincancel2.png"));
+				cancelBtn.setIcon(new ImageIcon("resources/images/logincancel2.png"));
 			}
-			
+
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				label_1.setIcon(new ImageIcon("resources/images/logincancel1.png"));
-				textField.setText("");
-				textField_1.setText("");
+				cancelBtn.setIcon(new ImageIcon("resources/images/logincancel1.png"));
+				username.setText("");
+				password.setText("");
 			}
 		});
-		label_1.setIcon(new ImageIcon("resources/images/logincancel1.png"));
-		label_1.setBounds(236, 263, 147, 33);
-		frame.getContentPane().add(label_1);
-		
-		JLabel lblNewLabel = new JLabel();
-		lblNewLabel.setIcon(new ImageIcon("resources/images/login_page.png"));
-		lblNewLabel.setBounds(0, -12, 619, 386);
-		frame.getContentPane().add(lblNewLabel);
+		cancelBtn.setIcon(new ImageIcon("resources/images/logincancel1.png"));
+		cancelBtn.setBounds(236, 263, 147, 33);
+		frame.getContentPane().add(cancelBtn);
+
+		JLabel background = new JLabel();
+		background.setIcon(new ImageIcon("resources/images/login_page.png"));
+		background.setBounds(0, -12, 619, 386);
+		frame.getContentPane().add(background);
 	}
 }
