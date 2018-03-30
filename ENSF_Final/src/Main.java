@@ -12,10 +12,14 @@ public class Main {
 		Students students = new Students();
 		Assignments assignmemts = new Assignments();
 		DatabaseManager db = new DatabaseManager(courses, students, profs, assignmemts);
-		db.readData();
+//		db.createDB();
+		db.createTables();
+		db.fillTables();
+//		db.readData();
 		for(Student s : students.students.values()) {
-			System.out.println(s.firstName + " " + s.courses.size());
+			System.out.println(s.getFirstName() + " " + s.getCourses().size());
 		}
+//		db.removeTables();
 		db.close();
 	}
 }

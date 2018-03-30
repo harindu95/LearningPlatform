@@ -28,9 +28,9 @@ public class Students {
 
 	public void addStudent(User u) {
 		Student s = getStudent(u.id);
-		s.email = u.email;
-		s.firstName = u.firstName;
-		s.lastName = u.lastName;
-		s.password = u.password;
+		s.setEmail(u.getEmail());
+		s.setFirstName(u.getFirstName());
+		s.setLastName(u.getLastName());
+		s.setPassword(u.getPassword());
 	}
 }

@@ -29,10 +29,10 @@ public class Professors {
 	
 	public void addProfessor(User u) {
 		Professor p = getProfessor(u.id);
-		p.email = u.email;
-		p.firstName = u.firstName;
-		p.lastName = u.lastName;
-		p.password = u.password;
+		p.setEmail(u.getEmail());
+		p.setFirstName(u.getFirstName());
+		p.setLastName(u.getLastName());
+		p.setPassword(u.getPassword());
 	}
 
 }

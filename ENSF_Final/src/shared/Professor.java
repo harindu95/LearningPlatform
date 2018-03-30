@@ -3,10 +3,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Professor extends User {
-	List<Course> courses;
+	private List<Course> courses;
 	
 	public Professor(int id){
 		super(id);
-		courses = new ArrayList<>();
+		setCourses(new ArrayList<>());
+	}
+
+	public List<Course> getCourses() {
+		return courses;
+	}
+
+	public void setCourses(List<Course> courses) {
+		this.courses = courses;
 	}
 }
