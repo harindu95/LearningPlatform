@@ -1,10 +1,11 @@
 package shared;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Student extends User{
+public class Student extends User implements Serializable{
 	private List<Submission> submissions;
 	private List<Course> courses;
 	private List<Grade> grades;

@@ -1,6 +1,8 @@
 package shared;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable{
 	public int id = 0;
 	private String password ="";
 	private String email ="";

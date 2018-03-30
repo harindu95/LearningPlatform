@@ -1,7 +1,8 @@
 package shared;
+import java.io.Serializable;
 import java.util.List;
 
-public class Submission {
+public class Submission implements Serializable {
 	private Assignment assignment;
 	private String title ="";
 	String comments = "";

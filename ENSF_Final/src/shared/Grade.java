@@ -1,6 +1,8 @@
 package shared;
 
-public class Grade {
+import java.io.Serializable;
+
+public class Grade implements Serializable{
 	private Assignment assignment;
 	private int grade;
 	/**

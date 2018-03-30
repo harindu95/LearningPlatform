@@ -1,6 +1,8 @@
 package shared;
 
-public class Assignment {
+import java.io.Serializable;
+
+public class Assignment implements Serializable{
 	int id = 0;
 	private boolean active = true;
 	private String title = "";

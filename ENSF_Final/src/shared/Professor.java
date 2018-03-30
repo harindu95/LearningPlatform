@@ -1,8 +1,9 @@
 package shared;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Professor extends User {
+public class Professor extends User implements Serializable {
 	private List<Course> courses;
 	
 	public Professor(int id){
