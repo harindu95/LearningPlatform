@@ -1,3 +1,4 @@
+package frontend;
 import java.awt.EventQueue;
 import java.awt.Image;
 
@@ -61,10 +62,10 @@ public class GUI {
 		panel.add(txtDashboard);
 		txtDashboard.setColumns(10);
 		
-		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setBounds(0, 0, 1280, 733);
-		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\User\\Desktop\\asdas.png"));
-		panel.add(lblNewLabel);
+		JLabel background = new JLabel("");
+		background.setBounds(0, 0, 1280, 733);
+		background.setIcon(new ImageIcon("resources/images/windowBase.png"));
+		panel.add(background);
 		
 	
 	}
