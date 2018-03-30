@@ -2,44 +2,58 @@ package frontend;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
+import shared.Request;
 
 public class ClientConnection extends Thread
 {
 
 	Client client;
-	PrintWriter SocketOut;
-	BufferedReader SocketIn;
+	ObjectInputStream in;
+	ObjectOutputStream out;
 	
-	public ClientConnection(PrintWriter socketOut, BufferedReader socketIn, Client client)
+	public ClientConnection(Client client) throws IOException
 	{
+		in = new ObjectInputStream(client.aSocket.getInputStream());
+		out = new ObjectOutputStream(client.aSocket.getOutputStream());
 		this.client = client;
-		this.SocketOut = socketOut;
-		this.SocketIn = socketIn;
 	}
 	
 	public void run()
-	{
-		this.responseToServer();
-	}
+	{}
 	
-	/**
-	 * Waiting for the server response then respond back to the server
-	 */
-	public void responseToServer()
+	public void listenForUserRequest(GUI gui)
 	{
 		try{
 			boolean running = true;
 			while(running)
 			{
-				String s = SocketIn.readLine();
-
+				Request request = gui.choices();
+				out.writeObject(request);
 			}
 		}
-		catch(IOException e)
+		catch(Exception e)
 		{
 			e.printStackTrace();
 		}
+	}
+	
+	//Used for chat room
+	public void listenForServerResponse()
+	{
+		try{
+			boolean running = true;
+			while(running)
+			{
+				
 
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 }
