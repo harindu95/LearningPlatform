@@ -3,6 +3,10 @@ package shared;
 import java.io.Serializable;
 
 public class User implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3363049760082650788L;
 	public int id = 0;
 	private String password ="";
 	private String email ="";

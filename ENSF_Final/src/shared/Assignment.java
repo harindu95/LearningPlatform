@@ -3,6 +3,10 @@ package shared;
 import java.io.Serializable;
 
 public class Assignment implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4334556365362330749L;
 	int id = 0;
 	private boolean active = true;
 	private String title = "";

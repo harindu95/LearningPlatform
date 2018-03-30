@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Professor extends User implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3262837326765539465L;
 	private List<Course> courses;
 	
 	public Professor(int id){

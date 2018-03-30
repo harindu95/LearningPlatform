@@ -6,6 +6,10 @@ import java.util.List;
 import java.util.Map;
 
 public class Student extends User implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4174262105288358852L;
 	private List<Submission> submissions;
 	private List<Course> courses;
 	private List<Grade> grades;

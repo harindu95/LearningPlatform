@@ -3,6 +3,8 @@ package shared;
 import java.io.Serializable;
 
 public class Grade implements Serializable{
+
+	private static final long serialVersionUID = -1171934780244060694L;
 	private Assignment assignment;
 	private int grade;
 	/**

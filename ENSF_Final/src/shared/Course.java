@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Course implements Serializable{
+	
+	private static final long serialVersionUID = -3665685309899493952L;
 	private int id = 0;
 	private String name = "";
 	private Professor professor;

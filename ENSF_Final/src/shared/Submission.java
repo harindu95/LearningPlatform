@@ -3,6 +3,10 @@ import java.io.Serializable;
 import java.util.List;
 
 public class Submission implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7157070406274164174L;
 	private Assignment assignment;
 	private String title ="";
 	String comments = "";
