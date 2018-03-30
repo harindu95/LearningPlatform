@@ -17,13 +17,17 @@ public class Worker implements Runnable {
 	private Assignments assignmnets;
 	private Professors profs;
 	private Courses courses;
+	private FileManager fileMgr;
+	private EmailManager emailMgr;
 
-	Worker(Socket s) {
+	Worker(Socket s, Students students, Professors profs, Courses courses, Assignments assignmnets, FileManager fileMgr, EmailManager emailMgr) {
 		socket = s;
-		students = new Students();
-		courses = new Courses();
-		assignmnets = new Assignments();
-		profs = new Professors();
+		this.students = students;
+		this.profs = profs;
+		this.assignmnets = assignmnets;
+		this.courses = courses;
+		this.fileMgr = fileMgr;
+		this.emailMgr = emailMgr;
 	}
 
 	@Override
