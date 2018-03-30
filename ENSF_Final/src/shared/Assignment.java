@@ -7,14 +7,14 @@ public class Assignment implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 4334556365362330749L;
-	int id = 0;
+	private int id = 0;
 	private boolean active = true;
 	private String title = "";
 	private String path = "";
 	private String due_date  = "";
 	
 	public Assignment(int id){
-		this.id = id;
+		this.setId(id);
 	}
 
 	/**
@@ -71,6 +71,20 @@ public class Assignment implements Serializable{
 	 */
 	public void setDue_date(String due_date) {
 		this.due_date = due_date;
+	}
+
+	/**
+	 * @return the id
+	 */
+	public int getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(int id) {
+		this.id = id;
 	}
 }
 
