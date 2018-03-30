@@ -5,5 +5,7 @@
 	<classpathentry kind="lib" path="external/mysql-connector-java-5.1.46.jar"/>
 	<classpathentry kind="lib" path="external/javaee.jar"/>
 	<classpathentry kind="lib" path="external/javax.mail.jar"/>
+	<classpathentry kind="lib" path="external/junit-4.12.jar"/>
+	<classpathentry kind="lib" path="external/hamcrest-all-1.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -64,7 +64,7 @@ public class Worker implements Runnable {
 				out.writeObject(students.students.get(req.id));
 				break;
 			case Professor:
-				out.writeObject(profs.professors.get(req.id));
+				out.writeObject(profs.getProfessors().get(req.id));
 				break;
 			case Assignment:
 				out.writeObject(assignmnets.assignments.get(req.id));
