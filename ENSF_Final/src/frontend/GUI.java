@@ -25,6 +25,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.border.EtchedBorder;
 
 import shared.Course;
+import shared.Request;
 
 import java.awt.CardLayout;
 
@@ -185,6 +186,11 @@ public class GUI {
 		background.setBounds(0, 0, 1280, 728);
 		background.setIcon(new ImageIcon(GUI.class.getResource("/images/main3.png")));
 		panel.add(background);
+	}
+
+	public Request choices() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
 		
