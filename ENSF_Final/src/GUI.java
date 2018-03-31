@@ -62,17 +62,17 @@ public class GUI {
 		panel.setLayout(null);
 		
 		JLabel dashboardIcon = new JLabel();
-		dashboardIcon.setIcon(new ImageIcon(getClass().getResource("\\dashboard_hover.png")));
+		dashboardIcon.setIcon(new ImageIcon(getClass().getResource("images/dashboard_hover.png")));
 		dashboardIcon.setBounds(10, 377, 50, 50);
 		panel.add(dashboardIcon);
 		
 		JLabel gradeIcon = new JLabel();
-		gradeIcon.setIcon(new ImageIcon(getClass().getResource("\\grade.png")));
+		gradeIcon.setIcon(new ImageIcon(getClass().getResource("images/grade.png")));
 		gradeIcon.setBounds(10, 463, 50, 50);
 		panel.add(gradeIcon);
 		
 		JLabel otherIcon = new JLabel();
-		otherIcon.setIcon(new ImageIcon(getClass().getResource("\\other.png")));
+		otherIcon.setIcon(new ImageIcon(getClass().getResource("images/other.png")));
 		otherIcon.setBounds(10, 556, 50, 50);
 		panel.add(otherIcon);
 		
@@ -80,7 +80,7 @@ public class GUI {
 		greenButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
-				greenButton.setIcon(new ImageIcon(getClass().getResource("\\green_hover.jpg")));
+				greenButton.setIcon(new ImageIcon(getClass().getResource("images/green_hover.jpg")));
 			}
 			@Override
 			public void mouseExited(MouseEvent arg0) {
@@ -98,12 +98,12 @@ public class GUI {
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
 				lblGrades.setForeground(redColor);
-				gradeIcon.setIcon(new ImageIcon(getClass().getResource("\\grade_hover.png")));
+				gradeIcon.setIcon(new ImageIcon(getClass().getResource("images/grade_hover.png")));
 			}
 			@Override
 			public void mouseExited(MouseEvent arg0) {
 				lblGrades.setForeground(Color.WHITE);
-				gradeIcon.setIcon(new ImageIcon(getClass().getResource("\\grade.png")));
+				gradeIcon.setIcon(new ImageIcon(getClass().getResource("images/grade.png")));
 			}
 		});
 		panel.add(lblGrades);
@@ -114,12 +114,12 @@ public class GUI {
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
 				lblDashboard.setForeground(redColor);
-				dashboardIcon.setIcon(new ImageIcon(getClass().getResource("\\dashboard_hover.png")));
+				dashboardIcon.setIcon(new ImageIcon(getClass().getResource("images/dashboard_hover.png")));
 			}
 			@Override
 			public void mouseExited(MouseEvent arg0) {
 				lblDashboard.setForeground(Color.WHITE);
-				dashboardIcon.setIcon(new ImageIcon(getClass().getResource("\\dashboard.png")));
+				dashboardIcon.setIcon(new ImageIcon(getClass().getResource("images/dashboard.png")));
 
 				
 			}
@@ -135,13 +135,13 @@ public class GUI {
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
 				other.setForeground(redColor);
-				otherIcon.setIcon(new ImageIcon(getClass().getResource("\\other_hover.png")));
+				otherIcon.setIcon(new ImageIcon(getClass().getResource("images/other_hover.png")));
 				
 			}
 			@Override
 			public void mouseExited(MouseEvent arg0) {
 				other.setForeground(Color.WHITE);
-				otherIcon.setIcon(new ImageIcon(getClass().getResource("\\other.png")));
+				otherIcon.setIcon(new ImageIcon(getClass().getResource("images/other.png")));
 			}
 		});
 		other.setBounds(70, 545, 128, 74);
@@ -151,7 +151,7 @@ public class GUI {
 		purpleButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
-				purpleButton.setIcon(new ImageIcon(getClass().getResource("\\purple_hover.jpg")));
+				purpleButton.setIcon(new ImageIcon(getClass().getResource("images/purple_hover.jpg")));
 			}
 			@Override
 			public void mouseExited(MouseEvent arg0) {
@@ -166,7 +166,7 @@ public class GUI {
 		blueButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
-				blueButton.setIcon(new ImageIcon(getClass().getResource("\\blue_hover.jpg")));
+				blueButton.setIcon(new ImageIcon(getClass().getResource("images/blue_hover.jpg")));
 			}
 			@Override
 			public void mouseExited(MouseEvent arg0) {
@@ -180,7 +180,7 @@ public class GUI {
 		
 		JLabel main = new JLabel("");
 		main.setBounds(0, 0, 1280, 733);
-		main.setIcon(new ImageIcon(getClass().getResource("\\main.png")));
+		main.setIcon(new ImageIcon(getClass().getResource("images/main.png")));
 		panel.add(main);
 		
 		JLabel lblNewLabel = new JLabel("New label");

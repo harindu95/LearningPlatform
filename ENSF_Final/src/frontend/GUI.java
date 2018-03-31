@@ -1,37 +1,33 @@
 package frontend;
+
 import java.awt.EventQueue;
-import java.awt.Font;
 import java.awt.Image;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
-import java.awt.Color;
+import java.awt.CardLayout;
 
 import javax.swing.JSplitPane;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.JTextField;
-import javax.swing.UIManager;
+import shared.Course;
+import shared.Request;
+
+import java.awt.Font;
+import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.SwingConstants;
-import javax.swing.JTabbedPane;
-import javax.swing.border.EtchedBorder;
-
-import shared.Course;
-import shared.Request;
-
-import java.awt.CardLayout;
-
 public class GUI {
 
 	private JFrame frame;
+	private JTextField txtDashboard;
 	private JPanel tabs;
 	private CardLayout cardsLayout;
 
@@ -39,11 +35,6 @@ public class GUI {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -67,125 +58,219 @@ public class GUI {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		Color redColor = new Color(237, 82, 98);
 		frame = new JFrame();
 		frame.setUndecorated(true);
-		
-		frame.setSize(1280,728);
+		frame.setBounds(100, 100, 1280 + 16, 728 + 38);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
+
 		frame.setResizable(false);
 		frame.setBounds(100, 100, 1280, 728);
 		frame.setLocationRelativeTo(null);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
-		
+
 		JPanel panel = new JPanel();
 		panel.setBounds(0, 0, 1280, 728);
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
-		
+
+		tabs = new JPanel();
+		tabs.setBounds(228, 70, 1020, 607);
+		panel.add(tabs);
+		cardsLayout = new CardLayout(0, 0);
+		tabs.setLayout(cardsLayout);
+		tabs.add(new WelcomePage(), "Welcome");
+		CoursesPage courses = new CoursesPage();
+		List<Course> list = new ArrayList<>();
+		list.add(new Course(2, "MATH271"));
+		courses.setCourses(list);
+		tabs.add(courses, "Courses");
+
+		JLabel dashboardIcon = new JLabel();
+		dashboardIcon.setIcon(new ImageIcon(GUI.class.getResource("/images/dashboard.png")));
+		dashboardIcon.setBounds(10, 377, 50, 50);
+		panel.add(dashboardIcon);
+
+		JLabel gradeIcon = new JLabel();
+		gradeIcon.setIcon(new ImageIcon(GUI.class.getResource("/images/grade.png")));
+		gradeIcon.setBounds(10, 463, 50, 50);
+		panel.add(gradeIcon);
+
+		JLabel otherIcon = new JLabel();
+		otherIcon.setIcon(new ImageIcon(getClass().getResource("/images/other.png")));
+		otherIcon.setBounds(10, 556, 50, 50);
+		panel.add(otherIcon);
+
+		JLabel greenButton = new JLabel();
+		greenButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				greenButton.setIcon(new ImageIcon(getClass().getResource("/images/green_hover.jpg")));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent arg0) {
+				greenButton.setIcon(new ImageIcon(getClass().getResource("")));
+			}
+		});
+		greenButton.setBounds(594, 335, 292, 271);
+		panel.add(greenButton);
+
+		JLabel lblGrades = new JLabel("Grades");
+		lblGrades.setForeground(Color.WHITE);
+		lblGrades.setFont(new Font("Calibri", Font.PLAIN, 22));
+		lblGrades.setBounds(70, 456, 128, 74);
+		lblGrades.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				lblGrades.setForeground(redColor);
+				gradeIcon.setIcon(new ImageIcon(getClass().getResource("/images/grade_hover.png")));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent arg0) {
+				lblGrades.setForeground(Color.WHITE);
+				gradeIcon.setIcon(new ImageIcon(getClass().getResource("/images/grade.png")));
+			}
+		});
+		panel.add(lblGrades);
+
+		JLabel lblDashboard = new JLabel("Dashboard");
+		lblDashboard.setForeground(redColor);
+		lblDashboard.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				lblDashboard.setForeground(redColor);
+				dashboardIcon.setIcon(new ImageIcon(getClass().getResource("/images/dashboard_hover.png")));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent arg0) {
+				lblDashboard.setForeground(Color.WHITE);
+				dashboardIcon.setIcon(new ImageIcon(getClass().getResource("/images/dashboard.png")));
+
+			}
+		});
+		lblDashboard.setFont(new Font("Calibri", Font.PLAIN, 22));
+		lblDashboard.setBounds(70, 368, 128, 74);
+		panel.add(lblDashboard);
+
+		JLabel other = new JLabel("Other");
+		other.setForeground(Color.WHITE);
+		other.setFont(new Font("Calibri", Font.PLAIN, 22));
+		other.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				other.setForeground(redColor);
+				otherIcon.setIcon(new ImageIcon(getClass().getResource("/images/other_hover.png")));
+
+			}
+
+			@Override
+			public void mouseExited(MouseEvent arg0) {
+				other.setForeground(Color.WHITE);
+				otherIcon.setIcon(new ImageIcon(getClass().getResource("/images/other.png")));
+			}
+		});
+		other.setBounds(70, 545, 128, 74);
+		panel.add(other);
+
+		JLabel purpleButton = new JLabel();
+		purpleButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				purpleButton.setIcon(new ImageIcon(getClass().getResource("/images/purple_hover.jpg")));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent arg0) {
+				purpleButton.setIcon(new ImageIcon(getClass().getResource("")));
+			}
+		});
+		purpleButton.setBounds(267, 335, 292, 271);
+
+		panel.add(purpleButton);
+
+		JLabel blueButton = new JLabel();
+		blueButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				blueButton.setIcon(new ImageIcon(getClass().getResource("/images/blue_hover.jpg")));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent arg0) {
+				blueButton.setIcon(new ImageIcon(getClass().getResource("")));
+			}
+		});
+		blueButton.setBounds(922, 335, 292, 271);
+		panel.add(blueButton);
+
+		JLabel lblNewLabel = new JLabel("New label");
+		lblNewLabel.setBounds(10, 560, 46, 14);
+		panel.add(lblNewLabel);
+
 		JLabel closeBtn = new JLabel("New label");
 		closeBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				closeBtn.setIcon(new ImageIcon(GUI.class.getResource("/images/closebtn3.png")));
 			}
+
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				closeBtn.setIcon(new ImageIcon(GUI.class.getResource("/images/closebtn2.png")));
 				frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
-				
+
 			}
+
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				closeBtn.setIcon(new ImageIcon(GUI.class.getResource("/images/closebtn2.png")));
 			}
-			
+
 			@Override
 			public void mouseExited(MouseEvent e) {
 				closeBtn.setIcon(new ImageIcon(GUI.class.getResource("/images/closebtn1.png")));
 			}
 		});
 		closeBtn.setIcon(new ImageIcon(GUI.class.getResource("/images/closebtn1.png")));
-		closeBtn.setBounds(1257, 6, 20,20);
+		closeBtn.setBounds(1237, 6, 20, 20);
 		panel.add(closeBtn);
-		
+
 		JLabel minBtn = new JLabel("New label");
 		minBtn.setIcon(new ImageIcon(GUI.class.getResource("/images/minbtn1.png")));
-		minBtn.setBounds(1228, 6, 20, 20);
+		minBtn.setBounds(1218, 6, 20, 20);
 		minBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				minBtn.setIcon(new ImageIcon(GUI.class.getResource("/images/minbtn3.png")));
 			}
+
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				minBtn.setIcon(new ImageIcon(GUI.class.getResource("/images/minbtn2.png")));
 				frame.setState(JFrame.ICONIFIED);
 			}
+
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				minBtn.setIcon(new ImageIcon(GUI.class.getResource("/images/minbtn2.png")));
 			}
-			
+
 			@Override
 			public void mouseExited(MouseEvent e) {
 				minBtn.setIcon(new ImageIcon(GUI.class.getResource("/images/minbtn1.png")));
 			}
 		});
-		
-		JLabel coursesLbl = new JLabel("Courses");
-		coursesLbl.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				coursesLbl.setForeground(Color.white);
-				cardsLayout.show(tabs, "Courses");
-				//TODO: select courses tab
-			}
-		});
-//		coursesLbl.setIcon(new ImageIcon(GUI.class.getResource("/images/courses1.png")));
-		coursesLbl.setBounds(0, 268, 221, 34);
-		coursesLbl.setFont(new Font("Sans",Font.TRUETYPE_FONT,18));
-		coursesLbl.setForeground(new Color(169, 169, 169));
-		coursesLbl.setHorizontalAlignment(JLabel.CENTER);
-		panel.add(coursesLbl);
-		
-		JLabel assignmentsLbl = new JLabel("Assignments");
-		assignmentsLbl.setHorizontalAlignment(SwingConstants.CENTER);
-		assignmentsLbl.setForeground(new Color(169, 169, 169));
-		assignmentsLbl.setFont(new Font("Sans",Font.TRUETYPE_FONT,18));
-		assignmentsLbl.setBounds(0, 304, 221, 34);
-		panel.add(assignmentsLbl);
-		
-		JLabel dropboxLbl = new JLabel("Assignments");
-		dropboxLbl.setHorizontalAlignment(SwingConstants.CENTER);
-		dropboxLbl.setForeground(new Color(169, 169, 169));
-		dropboxLbl.setFont(new Font("Dialog", Font.PLAIN, 18));
-		dropboxLbl.setBounds(0, 341, 221, 34);
-		panel.add(dropboxLbl);
-		
-		JLabel gradesLbl = new JLabel("Assignments");
-		gradesLbl.setHorizontalAlignment(SwingConstants.CENTER);
-		gradesLbl.setForeground(new Color(169, 169, 169));
-		gradesLbl.setFont(new Font("Dialog", Font.PLAIN, 18));
-		gradesLbl.setBounds(0, 376, 221, 34);
-		panel.add(gradesLbl);
+
 		panel.add(minBtn);
 		
-		tabs = new JPanel();
-		tabs.setBounds(227, 41, 1041, 675);
-		panel.add(tabs);
-		cardsLayout = new CardLayout(0, 0);
-		tabs.setLayout(cardsLayout);
-		tabs.add(new WelcomePage(),"Welcome");
-		CoursesPage courses = new CoursesPage();
-		List<Course> list = new ArrayList<>();
-		list.add(new Course(2,"MATH271"));
-		courses.setCourses(list);
-		tabs.add(courses, "Courses");
-		
-		JLabel background = new JLabel("");
-		background.setBounds(0, 0, 1280, 728);
-		background.setIcon(new ImageIcon(GUI.class.getResource("/images/main3.png")));
-		panel.add(background);
+				JLabel main = new JLabel("");
+				main.setBounds(0, 0, 1280, 728);
+				main.setIcon(new ImageIcon(GUI.class.getResource("/images/main.png")));
+				panel.add(main);
+
 	}
 
 	public Request choices() {
@@ -193,5 +278,3 @@ public class GUI {
 		return null;
 	}
 }
-		
-	
