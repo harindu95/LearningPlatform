@@ -19,9 +19,11 @@ public class Request {
 	public Type type = Type.GET;
 	public DataType dataType ;
 	public int id = 0;
+	
 	public String userID = "";
 	public String userPassword = "";
 	public String keyword = "";
+	public boolean isValid = false;
 	Object data = null;
 	
 }
