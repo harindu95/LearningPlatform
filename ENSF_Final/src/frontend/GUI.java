@@ -17,14 +17,22 @@ import javax.swing.UIManager;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.SwingConstants;
 import javax.swing.JTabbedPane;
 import javax.swing.border.EtchedBorder;
+
+import shared.Course;
+
 import java.awt.CardLayout;
 
 public class GUI {
 
 	private JFrame frame;
+	private JPanel tabs;
+	private CardLayout cardsLayout;
 
 	/**
 	 * Launch the application.
@@ -128,6 +136,7 @@ public class GUI {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				coursesLbl.setForeground(Color.white);
+				cardsLayout.show(tabs, "Courses");
 				//TODO: select courses tab
 			}
 		});
@@ -160,11 +169,17 @@ public class GUI {
 		panel.add(gradesLbl);
 		panel.add(minBtn);
 		
-		JPanel tabs = new JPanel();
+		tabs = new JPanel();
 		tabs.setBounds(227, 41, 1041, 675);
 		panel.add(tabs);
-		tabs.setLayout(new CardLayout(0, 0));
-		tabs.add(new WelcomePage());
+		cardsLayout = new CardLayout(0, 0);
+		tabs.setLayout(cardsLayout);
+		tabs.add(new WelcomePage(),"Welcome");
+		CoursesPage courses = new CoursesPage();
+		List<Course> list = new ArrayList<>();
+		list.add(new Course(2,"MATH271"));
+		courses.setCourses(list);
+		tabs.add(courses, "Courses");
 		
 		JLabel background = new JLabel("");
 		background.setBounds(0, 0, 1280, 728);

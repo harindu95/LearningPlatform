@@ -19,6 +19,11 @@ public class Course implements Serializable{
 		assignments = new ArrayList<>();
 	}
 
+	public Course(int i, String string) {
+		id =i;
+		name = string;
+	}
+
 	/**
 	 * @return the professor
 	 */
@@ -59,5 +64,19 @@ public class Course implements Serializable{
 	 */
 	public void setStudents(List<Student> students) {
 		this.students = students;
+	}
+
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
 	}
 }
