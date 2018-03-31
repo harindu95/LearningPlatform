@@ -55,15 +55,13 @@ public class ClientConnection extends Thread
 		}
 	}
 	
-	synchronized public boolean checkValidUser(String ID, String password) throws IOException, ClassNotFoundException
+	synchronized public Request checkValidUser(String ID, String password) throws IOException, ClassNotFoundException
 	{
 		Request req = new Request();
 		req.userID = ID;
 		req.userPassword = password;
 		out.writeObject(req);
 		Request res = (Request) in.readObject();
-		if(res.keyword.equals("Valid_User"))
-			return true;
-		return false;
+		return res;
 	}
 }

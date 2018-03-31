@@ -5,19 +5,27 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-
+import shared.Request;
+import shared.Request.DataType;
 public class Client
 {
 	Socket aSocket;
 	String ID;
 	String password;
+	Login login;
 	GUI gui;
-	public Client(String serverName, int portNumber, GUI gui) 
+	@SuppressWarnings("deprecation")
+	public Client(String serverName, int portNumber) 
 	{
 		try 
 		{
 			aSocket = new Socket(serverName, portNumber);
-			this.gui = gui;
+			this.login = new Login();
+			while(!login.loginPressed)
+			{
+				ID = login.username.getText();
+				password = login.password.getText();
+			}
 		} 
 		catch (IOException e) 
 		{
@@ -34,14 +42,23 @@ public class Client
 		{
 			ClientConnection clientConnection = new ClientConnection(this);
 			clientConnection.start();
-			if(clientConnection.checkValidUser(ID, password))
+			Request res = clientConnection.checkValidUser(ID, password);
+			if(res.isValid)
 			{
+				if(res.dataType == DataType.Professor)
+				{
+					gui = new ProfGUI();
+				}
+				else if(res.dataType == DataType.Student)
+				{
+					gui = new StudentGUI();
+				}
 				clientConnection.listenForUserRequest(gui);
 				clientConnection.listenForServerResponse();
 			}
 			else
 			{
-				gui.displayMessage("Invalid UserName or Password! Please try again.");
+				login.displayMessage("Invalid UserName or Password! Please try again.");
 			}
 		}
 		catch(Exception e)

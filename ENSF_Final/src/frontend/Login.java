@@ -6,6 +6,7 @@ import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
 import javax.swing.JTextField;
 import java.awt.Color;
@@ -138,5 +139,10 @@ public class Login {
 		background.setIcon(new ImageIcon("resources/images/login_page.png"));
 		background.setBounds(0, -12, 619, 386);
 		frame.getContentPane().add(background);
+	}
+	
+	public void displayMessage (String Message)
+	{
+		JOptionPane.showMessageDialog(null, Message, "Message", JOptionPane.OK_OPTION);
 	}
 }

@@ -23,6 +23,7 @@ public class Request {
 	public String userID = "";
 	public String userPassword = "";
 	public String keyword = "";
+	public boolean isValid = false;
 	Object data = null;
 	
 }
