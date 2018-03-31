@@ -27,9 +27,10 @@ public class Server {
 			Professors profs = new Professors();
 			Assignments assignmnets = new Assignments();
 			Courses courses = new Courses();
+			DatabaseManager db = new DatabaseManager(courses, students, profs, assignmnets);
 			while (true) {
 				Socket s = sSocket.accept();
-				executor.execute(new Worker(s,students,profs,courses,assignmnets,fileMgr,emailMgr));
+				executor.execute(new Worker(s,students,profs,courses,assignmnets,fileMgr,emailMgr,db));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

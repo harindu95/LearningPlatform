@@ -213,7 +213,28 @@ public class DatabaseManager {
 			e.printStackTrace();
 		}
 	}
-
+	
+	public User authenticate(String username, String password) {
+		String sql = "SELECT * FROM Users WHERE email=? AND password=?";
+		ResultSet users = null;
+		try {
+			statement = jdbc_connection.prepareStatement(sql);
+			statement.setString(1, username);
+			statement.setString(2,password);
+			users = statement.executeQuery();
+			if (users.next()) {
+				if(users.getString("type").equals("P")) {
+					return professors.getProfessor(users.getInt("id"));
+				}else if(users.getString("type").equals("S")) {
+					return students.getStudent(users.getInt("id"));
+				}
+			}
+			users.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 	/**
 	 * Create a data table inside of the database to hold clients
 	 */
