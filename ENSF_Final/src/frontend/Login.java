@@ -6,50 +6,42 @@ import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
 import javax.swing.JTextField;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
+
 import javax.swing.JPasswordField;
 import javax.swing.UIManager;
+
+import shared.Professor;
+import shared.Student;
+import shared.User;
+
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 public class Login {
 
-	private JFrame frame;
-	private JTextField username;
-	private JPasswordField password;
+	JFrame frame;
+	JTextField username;
+	JPasswordField password;
 	private JLabel loginBtn;
 	private JLabel cancelBtn;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Login window = new Login();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	boolean loginPressed = false;
+	private Client client;
+	
 
 	/**
 	 * Create the application.
+	 * @param c 
 	 */
-	public Login() {
+	public Login(Client c) {
+		this.client = c;
 		initialize();
 	}
 
@@ -97,6 +89,7 @@ public class Login {
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				loginBtn.setIcon(new ImageIcon("resources/images/loginbtn1.png"));
+				loginPressed = true;
 			}
 
 			@Override
@@ -109,6 +102,21 @@ public class Login {
 				loginBtn.setIcon(new ImageIcon("resources/images/loginbtn1.png"));
 			}
 
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+					User u = client.authenticate(username.getText(), new String(password.getPassword()));
+					login(u);
+				} catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+
+			
 		});
 		loginBtn.setIcon(new ImageIcon("resources/images/loginbtn3.png"));
 		loginBtn.setBounds(236, 229, 147, 33);
@@ -116,6 +124,7 @@ public class Login {
 
 		cancelBtn = new JLabel("");
 		cancelBtn.addMouseListener(new MouseAdapter() {
+
 			@Override
 			public void mousePressed(MouseEvent e) {
 				cancelBtn.setIcon(new ImageIcon("resources/images/logincancel2.png"));
@@ -136,5 +145,23 @@ public class Login {
 		background.setIcon(new ImageIcon("resources/images/login_page.png"));
 		background.setBounds(0, -12, 619, 386);
 		frame.getContentPane().add(background);
+	}
+	
+	public void displayMessage (String Message)
+	{
+		JOptionPane.showMessageDialog(null, Message, "Message", JOptionPane.OK_OPTION);
+	}
+	
+	private void login(User u) {
+		if(u == null) {
+			displayMessage("Login failed!");
+		}else {
+			if(u instanceof Student) {
+				displayMessage("User is a student");
+			}else if(u instanceof Professor){
+				
+				displayMessage("User is a professor");
+			}
+		}
 	}
 }

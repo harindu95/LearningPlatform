@@ -1,7 +1,13 @@
 package shared;
 
-public class Request {
+import java.io.Serializable;
+
+public class Request implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5538508514328378144L;
 	public enum Type {
 		PUT,
 		GET
@@ -13,13 +19,18 @@ public class Request {
 		Professor,
 		Assignment,
 		Course,
-		CourseList
+		CourseList,
+		Login
 	};
 	
 	public Type type = Type.GET;
 	public DataType dataType ;
 	public int id = 0;
-	String keyword = "";
-	Object data = null;
+	
+	public String userID = "";
+	public String userPassword = "";
+	public String keyword = "";
+	public boolean isValid = false;
+	public Object data = null;
 	
 }

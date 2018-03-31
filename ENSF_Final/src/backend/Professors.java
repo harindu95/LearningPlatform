@@ -7,18 +7,18 @@ import shared.Professor;
 import shared.User;
 
 public class Professors {
-	Map<Integer, Professor> professors;
+	private Map<Integer, Professor> professors;
 	DatabaseManager db;
 	
 	public Professors() {
-		professors = new HashMap<>();
+		setProfessors(new HashMap<>());
 	}
 
 	public Professor getProfessor(int id) {
-		Professor p = professors.get(id);
+		Professor p = getProfessors().get(id);
 		if (p == null) {
 			p = new Professor(id);
-			professors.put(id, p);
+			getProfessors().put(id, p);
 		}
 		return p;
 	}
@@ -33,6 +33,20 @@ public class Professors {
 		p.setFirstName(u.getFirstName());
 		p.setLastName(u.getLastName());
 		p.setPassword(u.getPassword());
+	}
+
+	/**
+	 * @return the professors
+	 */
+	public Map<Integer, Professor> getProfessors() {
+		return professors;
+	}
+
+	/**
+	 * @param professors the professors to set
+	 */
+	public void setProfessors(Map<Integer, Professor> professors) {
+		this.professors = professors;
 	}
 
 }
