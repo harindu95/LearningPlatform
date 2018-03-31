@@ -79,7 +79,7 @@ public class GUI {
 		panel.add(tabs);
 		cardsLayout = new CardLayout(0, 0);
 		tabs.setLayout(cardsLayout);
-		tabs.add(new WelcomePage(), "Welcome");
+		tabs.add(new WelcomePage(), "Dashboard");
 		CoursesPage courses = new CoursesPage();
 		List<Course> list = new ArrayList<>();
 		list.add(new Course(2, "MATH271"));
@@ -150,6 +150,10 @@ public class GUI {
 				dashboardIcon.setIcon(new ImageIcon(getClass().getResource("/images/dashboard.png")));
 
 			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				cardsLayout.show(tabs, "Dashboard");
+			}
 		});
 		lblDashboard.setFont(new Font("Calibri", Font.PLAIN, 22));
 		lblDashboard.setBounds(70, 368, 128, 74);
@@ -170,6 +174,11 @@ public class GUI {
 			public void mouseExited(MouseEvent arg0) {
 				other.setForeground(Color.WHITE);
 				otherIcon.setIcon(new ImageIcon(getClass().getResource("/images/other.png")));
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				cardsLayout.show(tabs, "Courses");
 			}
 		});
 		other.setBounds(70, 545, 128, 74);
@@ -205,10 +214,6 @@ public class GUI {
 		});
 		blueButton.setBounds(922, 335, 292, 271);
 		panel.add(blueButton);
-
-		JLabel lblNewLabel = new JLabel("New label");
-		lblNewLabel.setBounds(10, 560, 46, 14);
-		panel.add(lblNewLabel);
 
 		JLabel closeBtn = new JLabel("New label");
 		closeBtn.addMouseListener(new MouseAdapter() {
