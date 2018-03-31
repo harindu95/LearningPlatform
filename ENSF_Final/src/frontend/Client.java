@@ -8,23 +8,19 @@ import java.net.Socket;
 
 public class Client
 {
-	private PrintWriter socketOut;
-	private Socket aSocket;
-	private BufferedReader stdIn;
-	private BufferedReader socketIn;
-	
-	public Client(String serverName, int portNumber) 
+	Socket aSocket;
+	String ID;
+	String password;
+	GUI gui;
+	public Client(String serverName, int portNumber, GUI gui) 
 	{
-		try {
-			stdIn = new BufferedReader(new InputStreamReader(System.in));
-			//System.out.println("Hello user, please Enter your name: ");
-			String name = stdIn.readLine();
-
+		try 
+		{
 			aSocket = new Socket(serverName, portNumber);
-			socketIn = new BufferedReader(new InputStreamReader(aSocket.getInputStream()));
-			socketOut = new PrintWriter((aSocket.getOutputStream()), true);
-			
-		} catch (IOException e) {
+			this.gui = gui;
+		} 
+		catch (IOException e) 
+		{
 			System.err.println(e.getStackTrace());
 		}
 	}
@@ -32,10 +28,21 @@ public class Client
 	/**
 	 * Communicate with the server using ClientConnection class
 	 */
-	public void communicate() {
-		try{
-			ClientConnection clientConnection = new ClientConnection(socketOut, socketIn, this);
+	public void communicate() 
+	{
+		try
+		{
+			ClientConnection clientConnection = new ClientConnection(this);
 			clientConnection.start();
+			if(clientConnection.checkValidUser(ID, password))
+			{
+				clientConnection.listenForUserRequest(gui);
+				clientConnection.listenForServerResponse();
+			}
+			else
+			{
+				gui.displayMessage("Invalid UserName or Password! Please try again.");
+			}
 		}
 		catch(Exception e)
 		{	
@@ -43,16 +50,13 @@ public class Client
 			this.close();
 		}
 	}
-	
+
     /**
      * Close all streams when done
      */
     private void close()
     {
     	try{
-	    	socketOut.close();
-	    	socketIn.close();
-	    	stdIn.close();
 	    	aSocket.close();
     	}
     	catch(IOException e)
@@ -60,9 +64,15 @@ public class Client
     		e.printStackTrace();
     	}
     }
-	
-	public static void main(String[] args) throws IOException {
-		Client aClient = new Client("localhost", 9018);
-		aClient.communicate();
-	}
+
+    public void setID(String ID)
+    {
+    	this.ID = ID;
+    }
+    
+    public void setPassword(String Password)
+    {
+    	this.password = Password;
+    }
+
 }

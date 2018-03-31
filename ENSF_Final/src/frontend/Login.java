@@ -20,11 +20,11 @@ import java.awt.event.KeyEvent;
 public class Login {
 
 	private JFrame frame;
-	private JTextField username;
-	private JPasswordField password;
+	JTextField username;
+	JPasswordField password;
 	private JLabel loginBtn;
 	private JLabel cancelBtn;
-
+	boolean loginPressed = false;
 	/**
 	 * Launch the application.
 	 */
@@ -97,6 +97,7 @@ public class Login {
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				loginBtn.setIcon(new ImageIcon("resources/images/loginbtn1.png"));
+				loginPressed = true;
 			}
 
 			@Override
@@ -116,6 +117,7 @@ public class Login {
 
 		cancelBtn = new JLabel("");
 		cancelBtn.addMouseListener(new MouseAdapter() {
+
 			@Override
 			public void mousePressed(MouseEvent e) {
 				cancelBtn.setIcon(new ImageIcon("resources/images/logincancel2.png"));
