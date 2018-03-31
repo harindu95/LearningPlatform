@@ -9,13 +9,18 @@ import java.net.Socket;
 public class Client
 {
 	Socket aSocket;
-	
-	public Client(String serverName, int portNumber) 
+	String ID;
+	String password;
+	GUI gui;
+	public Client(String serverName, int portNumber, GUI gui) 
 	{
-		try {
+		try 
+		{
 			aSocket = new Socket(serverName, portNumber);
-			
-		} catch (IOException e) {
+			this.gui = gui;
+		} 
+		catch (IOException e) 
+		{
 			System.err.println(e.getStackTrace());
 		}
 	}
@@ -23,12 +28,21 @@ public class Client
 	/**
 	 * Communicate with the server using ClientConnection class
 	 */
-	public void communicate() {
-		try{
+	public void communicate() 
+	{
+		try
+		{
 			ClientConnection clientConnection = new ClientConnection(this);
 			clientConnection.start();
-			clientConnection.listenForUserRequest();
-			clientConnection.listenForServerResponse();
+			if(clientConnection.checkValidUser(ID, password))
+			{
+				clientConnection.listenForUserRequest(gui);
+				clientConnection.listenForServerResponse();
+			}
+			else
+			{
+				gui.displayMessage("Invalid UserName or Password! Please try again.");
+			}
 		}
 		catch(Exception e)
 		{	
@@ -36,7 +50,7 @@ public class Client
 			this.close();
 		}
 	}
-	
+
     /**
      * Close all streams when done
      */
@@ -50,9 +64,15 @@ public class Client
     		e.printStackTrace();
     	}
     }
-	
-	public static void main(String[] args) throws IOException {
-		Client aClient = new Client("localhost", 9018);
-		aClient.communicate();
-	}
+
+    public void setID(String ID)
+    {
+    	this.ID = ID;
+    }
+    
+    public void setPassword(String Password)
+    {
+    	this.password = Password;
+    }
+
 }

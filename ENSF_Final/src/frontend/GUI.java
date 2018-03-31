@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import javax.swing.JSplitPane;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 
@@ -66,7 +67,15 @@ public class GUI {
 		background.setBounds(0, 0, 1280, 733);
 		background.setIcon(new ImageIcon("resources/images/windowBase.png"));
 		panel.add(background);
-		
+	}
 	
+	public void displayMessage (String Message)
+	{
+		JOptionPane.showMessageDialog(null, Message, "Message", JOptionPane.OK_OPTION);
+	}
+	
+	public String getUserInput(String Message)
+	{
+		return JOptionPane.showInputDialog(null, Message, "Input", JOptionPane.OK_CANCEL_OPTION);
 	}
 }

@@ -9,7 +9,6 @@ import shared.Request;
 
 public class ClientConnection extends Thread
 {
-
 	Client client;
 	ObjectInputStream in;
 	ObjectOutputStream out;
@@ -20,7 +19,7 @@ public class ClientConnection extends Thread
 		out = new ObjectOutputStream(client.aSocket.getOutputStream());
 		this.client = client;
 	}
-	
+
 	public void run()
 	{}
 	
@@ -39,15 +38,14 @@ public class ClientConnection extends Thread
 			e.printStackTrace();
 		}
 	}
-	
-	//Used for chat room
+
 	public void listenForServerResponse()
 	{
 		try{
 			boolean running = true;
 			while(running)
 			{
-				
+				in.readObject();
 
 			}
 		}
@@ -55,5 +53,17 @@ public class ClientConnection extends Thread
 		{
 			e.printStackTrace();
 		}
+	}
+	
+	synchronized public boolean checkValidUser(String ID, String password) throws IOException, ClassNotFoundException
+	{
+		Request req = new Request();
+		req.userID = ID;
+		req.userPassword = password;
+		out.writeObject(req);
+		Request res = (Request) in.readObject();
+		if(res.keyword.equals("Valid_User"))
+			return true;
+		return false;
 	}
 }
