@@ -240,12 +240,12 @@ public class GUI {
 			}
 		});
 		closeBtn.setIcon(new ImageIcon(GUI.class.getResource("/images/closebtn1.png")));
-		closeBtn.setBounds(1237, 6, 20, 20);
+		closeBtn.setBounds(1257, 0, 20, 20);
 		panel.add(closeBtn);
 
 		JLabel minBtn = new JLabel("New label");
 		minBtn.setIcon(new ImageIcon(GUI.class.getResource("/images/minbtn1.png")));
-		minBtn.setBounds(1218, 6, 20, 20);
+		minBtn.setBounds(1238, 0, 20, 20);
 		minBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
