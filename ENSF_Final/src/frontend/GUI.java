@@ -13,6 +13,9 @@ import javax.swing.JSplitPane;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
 import shared.Course;
 import shared.Request;
 
@@ -35,6 +38,21 @@ public class GUI {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+			try {
+				UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+			} catch (UnsupportedLookAndFeelException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InstantiationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -75,7 +93,7 @@ public class GUI {
 		panel.setLayout(null);
 
 		tabs = new JPanel();
-		tabs.setBounds(228, 70, 1020, 607);
+		tabs.setBounds(228, 70, 1019, 628);
 		panel.add(tabs);
 		cardsLayout = new CardLayout(0, 0);
 		tabs.setLayout(cardsLayout);
@@ -83,6 +101,9 @@ public class GUI {
 		CoursesPage courses = new CoursesPage();
 		List<Course> list = new ArrayList<>();
 		list.add(new Course(2, "MATH271"));
+		list.add(new Course(3, "ENCM369"));
+		list.add(new Course(5, "ENSF409"));
+		list.add(new Course(6, "MATH211"));
 		courses.setCourses(list);
 		tabs.add(courses, "Courses");
 
@@ -150,6 +171,7 @@ public class GUI {
 				dashboardIcon.setIcon(new ImageIcon(getClass().getResource("/images/dashboard.png")));
 
 			}
+
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				cardsLayout.show(tabs, "Dashboard");
@@ -175,7 +197,7 @@ public class GUI {
 				other.setForeground(Color.WHITE);
 				otherIcon.setIcon(new ImageIcon(getClass().getResource("/images/other.png")));
 			}
-			
+
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				cardsLayout.show(tabs, "Courses");
@@ -270,11 +292,11 @@ public class GUI {
 		});
 
 		panel.add(minBtn);
-		
-				JLabel main = new JLabel("");
-				main.setBounds(0, 0, 1280, 728);
-				main.setIcon(new ImageIcon(GUI.class.getResource("/images/main.png")));
-				panel.add(main);
+
+		JLabel main = new JLabel("");
+		main.setBounds(0, 0, 1280, 728);
+		main.setIcon(new ImageIcon(GUI.class.getResource("/images/main.png")));
+		panel.add(main);
 
 	}
 
