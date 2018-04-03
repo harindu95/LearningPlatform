@@ -26,6 +26,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JPasswordField;
 
 public class GUI {
 
@@ -33,6 +34,10 @@ public class GUI {
 	private JTextField txtDashboard;
 	private JPanel tabs;
 	private CardLayout cardsLayout;
+	private JTextField textFieldName;
+	private JTextField textFieldEmail;
+	private JTextField textFieldPassword;
+	private JPasswordField passwordField;
 
 	/**
 	 * Launch the application.
@@ -98,6 +103,108 @@ public class GUI {
 		panel.add(tabs);
 		cardsLayout = new CardLayout(0, 0);
 		tabs.setLayout(cardsLayout);
+<<<<<<< HEAD
+=======
+		CoursesPage courses = new CoursesPage();
+		List<Course> list = new ArrayList<>();
+		list.add(new Course(2, "MATH271"));
+		list.add(new Course(3, "ENCM369"));
+		list.add(new Course(5, "ENSF409"));
+		list.add(new Course(6, "MATH211"));
+		courses.setCourses(list);
+		
+		CoursesPage welcomePage = new CoursesPage();
+		tabs.add(welcomePage, "welcomePage");
+						welcomePage.setLayout(null);
+				
+						JLabel purpleButton = new JLabel();
+						purpleButton.setBounds(0, 0, 0, 0);
+						welcomePage.add(purpleButton);
+						purpleButton.addMouseListener(new MouseAdapter() {
+							@Override
+							public void mouseEntered(MouseEvent arg0) {
+								purpleButton.setIcon(new ImageIcon(getClass().getResource("/images/purple_hover.jpg")));
+							}
+
+							@Override
+							public void mouseExited(MouseEvent arg0) {
+								purpleButton.setIcon(new ImageIcon(getClass().getResource("")));
+							}
+						});
+				
+						JLabel blueButton = new JLabel();
+						blueButton.setBounds(0, 100, 0, 528);
+						welcomePage.add(blueButton);
+						blueButton.addMouseListener(new MouseAdapter() {
+							@Override
+							public void mouseEntered(MouseEvent arg0) {
+								blueButton.setIcon(new ImageIcon(getClass().getResource("/images/blue_hover.jpg")));
+							}
+
+							@Override
+							public void mouseExited(MouseEvent arg0) {
+								blueButton.setIcon(new ImageIcon(getClass().getResource("")));
+							}
+						});
+		
+				JLabel greenButton = new JLabel();
+				greenButton.setBounds(0, 628, 1019, 0);
+				welcomePage.add(greenButton);
+				
+				JLabel lblWelcomePageBackground = new JLabel();
+				lblWelcomePageBackground.setBounds(441, 100, 578, 528);
+				welcomePage.add(lblWelcomePageBackground);
+				greenButton.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseEntered(MouseEvent arg0) {
+						greenButton.setIcon(new ImageIcon(getClass().getResource("/images/green_hover.jpg")));
+					}
+
+					@Override
+					public void mouseExited(MouseEvent arg0) {
+						greenButton.setIcon(new ImageIcon(getClass().getResource("")));
+					}
+				});
+		tabs.add(courses, "courses");
+		
+		CoursesPage Settings = new CoursesPage();
+		Settings.setLayout(null);
+		
+		tabs.add(Settings,"settings");
+		
+		
+		JLabel lblSettingsbackground = new JLabel("");
+		lblSettingsbackground.setBorder(null);
+		lblSettingsbackground.setIcon(new ImageIcon(GUI.class.getResource("/images/settings.jpg")));
+		lblSettingsbackground.setBounds(0, 0, 1019, 628);
+		Settings.add(lblSettingsbackground);
+		
+		JLabel lblSaveAndClose = new JLabel("");
+		lblSaveAndClose.setBounds(24, 509, 149, 45);
+		Settings.add(lblSaveAndClose);
+		
+		JLabel lblClose = new JLabel("");
+		lblClose.setBounds(185, 509, 55, 16);
+		Settings.add(lblClose);
+		
+		textFieldName = new JTextField();
+		textFieldName.setBorder(null);
+		textFieldName.setBounds(236, 213, 337, 27);
+		Settings.add(textFieldName);
+		textFieldName.setColumns(10);
+		
+		textFieldEmail = new JTextField();
+		textFieldEmail.setBorder(null);
+		textFieldEmail.setColumns(10);
+		textFieldEmail.setBounds(236, 293, 337, 27);
+		Settings.add(textFieldEmail);
+		
+		passwordField = new JPasswordField();
+		passwordField.setBounds(236, 375, 337, 27);
+		Settings.add(passwordField);
+		
+
+>>>>>>> 0e94381... Send Email and search done.
 		JLabel dashboardIcon = new JLabel();
 		dashboardIcon.setIcon(new ImageIcon(GUI.class.getResource("/images/dashboard.png")));
 		dashboardIcon.setBounds(10, 377, 50, 50);
