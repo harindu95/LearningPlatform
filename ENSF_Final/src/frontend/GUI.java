@@ -106,6 +106,17 @@ public class GUI {
 		list.add(new Course(6, "MATH211"));
 		courses.setCourses(list);
 		tabs.add(courses, "Courses");
+		
+		CoursesPage Settings = new CoursesPage();
+		Settings.setLayout(null);
+		
+		tabs.add(Settings,"settings");
+		
+		
+		JLabel lblSettingsbackground = new JLabel("");
+		lblSettingsbackground.setIcon(new ImageIcon(GUI.class.getResource("/images/settings.jpg")));
+		lblSettingsbackground.setBounds(0, 0, 1019, 628);
+		Settings.add(lblSettingsbackground);
 
 		JLabel dashboardIcon = new JLabel();
 		dashboardIcon.setIcon(new ImageIcon(GUI.class.getResource("/images/dashboard.png")));
@@ -114,12 +125,12 @@ public class GUI {
 
 		JLabel gradeIcon = new JLabel();
 		gradeIcon.setIcon(new ImageIcon(GUI.class.getResource("/images/grade.png")));
-		gradeIcon.setBounds(10, 463, 50, 50);
+		gradeIcon.setBounds(10, 456, 50, 50);
 		panel.add(gradeIcon);
 
 		JLabel otherIcon = new JLabel();
 		otherIcon.setIcon(new ImageIcon(getClass().getResource("/images/other.png")));
-		otherIcon.setBounds(10, 556, 50, 50);
+		otherIcon.setBounds(10, 530, 50, 50);
 		panel.add(otherIcon);
 
 		JLabel greenButton = new JLabel();
@@ -137,24 +148,24 @@ public class GUI {
 		greenButton.setBounds(594, 335, 292, 271);
 		panel.add(greenButton);
 
-		JLabel lblGrades = new JLabel("Grades");
-		lblGrades.setForeground(Color.WHITE);
-		lblGrades.setFont(new Font("Calibri", Font.PLAIN, 22));
-		lblGrades.setBounds(70, 456, 128, 74);
-		lblGrades.addMouseListener(new MouseAdapter() {
+		JLabel lblCourses = new JLabel("Courses");
+		lblCourses.setForeground(Color.WHITE);
+		lblCourses.setFont(new Font("Calibri", Font.PLAIN, 22));
+		lblCourses.setBounds(70, 456, 128, 74);
+		lblCourses.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
-				lblGrades.setForeground(redColor);
+				lblCourses.setForeground(redColor);
 				gradeIcon.setIcon(new ImageIcon(getClass().getResource("/images/grade_hover.png")));
 			}
 
 			@Override
 			public void mouseExited(MouseEvent arg0) {
-				lblGrades.setForeground(Color.WHITE);
+				lblCourses.setForeground(Color.WHITE);
 				gradeIcon.setIcon(new ImageIcon(getClass().getResource("/images/grade.png")));
 			}
 		});
-		panel.add(lblGrades);
+		panel.add(lblCourses);
 
 		JLabel lblDashboard = new JLabel("Dashboard");
 		lblDashboard.setForeground(redColor);
@@ -181,30 +192,30 @@ public class GUI {
 		lblDashboard.setBounds(70, 368, 128, 74);
 		panel.add(lblDashboard);
 
-		JLabel other = new JLabel("Other");
-		other.setForeground(Color.WHITE);
-		other.setFont(new Font("Calibri", Font.PLAIN, 22));
-		other.addMouseListener(new MouseAdapter() {
+		JLabel lblSettings = new JLabel("Settings");
+		lblSettings.setForeground(Color.WHITE);
+		lblSettings.setFont(new Font("Calibri", Font.PLAIN, 22));
+		lblSettings.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
-				other.setForeground(redColor);
+				lblSettings.setForeground(redColor);
 				otherIcon.setIcon(new ImageIcon(getClass().getResource("/images/other_hover.png")));
 
 			}
 
 			@Override
 			public void mouseExited(MouseEvent arg0) {
-				other.setForeground(Color.WHITE);
+				lblSettings.setForeground(Color.WHITE);
 				otherIcon.setIcon(new ImageIcon(getClass().getResource("/images/other.png")));
 			}
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				cardsLayout.show(tabs, "Courses");
+				cardsLayout.show(tabs, "settings");
 			}
 		});
-		other.setBounds(70, 545, 128, 74);
-		panel.add(other);
+		lblSettings.setBounds(72, 518, 128, 74);
+		panel.add(lblSettings);
 
 		JLabel purpleButton = new JLabel();
 		purpleButton.addMouseListener(new MouseAdapter() {
@@ -261,6 +272,8 @@ public class GUI {
 				closeBtn.setIcon(new ImageIcon(GUI.class.getResource("/images/closebtn1.png")));
 			}
 		});
+		
+		
 		closeBtn.setIcon(new ImageIcon(GUI.class.getResource("/images/closebtn1.png")));
 		closeBtn.setBounds(1257, 0, 20, 20);
 		panel.add(closeBtn);
@@ -292,11 +305,29 @@ public class GUI {
 		});
 
 		panel.add(minBtn);
+		
+		JLabel lblLogOut = new JLabel("");
+		lblLogOut.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				lblLogOut.setIcon(new ImageIcon(GUI.class.getResource("/images/logout_hover.png")));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				lblLogOut.setIcon(new ImageIcon(GUI.class.getResource("/images/logout.png")));
+			}
+			
+		});
+		lblLogOut.setBounds(27, 676, 152, 38);
+		lblLogOut.setIcon(new ImageIcon(GUI.class.getResource("/images/logout.png")));
+		panel.add(lblLogOut);
 
 		JLabel main = new JLabel("");
 		main.setBounds(0, 0, 1280, 728);
 		main.setIcon(new ImageIcon(GUI.class.getResource("/images/main.png")));
 		panel.add(main);
+		
+		
 
 	}
 
