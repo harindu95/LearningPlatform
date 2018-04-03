@@ -26,6 +26,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JPasswordField;
 
 public class GUI {
 
@@ -33,6 +34,10 @@ public class GUI {
 	private JTextField txtDashboard;
 	private JPanel tabs;
 	private CardLayout cardsLayout;
+	private JTextField textFieldName;
+	private JTextField textFieldEmail;
+	private JTextField textFieldPassword;
+	private JPasswordField passwordField;
 
 	/**
 	 * Launch the application.
@@ -166,9 +171,35 @@ public class GUI {
 		
 		
 		JLabel lblSettingsbackground = new JLabel("");
+		lblSettingsbackground.setBorder(null);
 		lblSettingsbackground.setIcon(new ImageIcon(GUI.class.getResource("/images/settings.jpg")));
 		lblSettingsbackground.setBounds(0, 0, 1019, 628);
 		Settings.add(lblSettingsbackground);
+		
+		JLabel lblSaveAndClose = new JLabel("");
+		lblSaveAndClose.setBounds(24, 509, 149, 45);
+		Settings.add(lblSaveAndClose);
+		
+		JLabel lblClose = new JLabel("");
+		lblClose.setBounds(185, 509, 55, 16);
+		Settings.add(lblClose);
+		
+		textFieldName = new JTextField();
+		textFieldName.setBorder(null);
+		textFieldName.setBounds(236, 213, 337, 27);
+		Settings.add(textFieldName);
+		textFieldName.setColumns(10);
+		
+		textFieldEmail = new JTextField();
+		textFieldEmail.setBorder(null);
+		textFieldEmail.setColumns(10);
+		textFieldEmail.setBounds(236, 293, 337, 27);
+		Settings.add(textFieldEmail);
+		
+		passwordField = new JPasswordField();
+		passwordField.setBounds(236, 375, 337, 27);
+		Settings.add(passwordField);
+		
 
 		JLabel dashboardIcon = new JLabel();
 		dashboardIcon.setIcon(new ImageIcon(GUI.class.getResource("/images/dashboard_hover.png")));
