@@ -26,7 +26,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JPasswordField;
 
 public class GUI {
 
@@ -34,31 +33,26 @@ public class GUI {
 	private JTextField txtDashboard;
 	private JPanel tabs;
 	private CardLayout cardsLayout;
-	private JTextField textFieldName;
-	private JTextField textFieldEmail;
-	private JTextField textFieldPassword;
-	private JPasswordField passwordField;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		try {
-			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-			// UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
-		} catch (UnsupportedLookAndFeelException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			try {
+				UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+			} catch (UnsupportedLookAndFeelException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InstantiationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -103,8 +97,6 @@ public class GUI {
 		panel.add(tabs);
 		cardsLayout = new CardLayout(0, 0);
 		tabs.setLayout(cardsLayout);
-<<<<<<< HEAD
-=======
 		CoursesPage courses = new CoursesPage();
 		List<Course> list = new ArrayList<>();
 		list.add(new Course(2, "MATH271"));
@@ -174,85 +166,47 @@ public class GUI {
 		
 		
 		JLabel lblSettingsbackground = new JLabel("");
-		lblSettingsbackground.setBorder(null);
 		lblSettingsbackground.setIcon(new ImageIcon(GUI.class.getResource("/images/settings.jpg")));
 		lblSettingsbackground.setBounds(0, 0, 1019, 628);
 		Settings.add(lblSettingsbackground);
-		
-		JLabel lblSaveAndClose = new JLabel("");
-		lblSaveAndClose.setBounds(24, 509, 149, 45);
-		Settings.add(lblSaveAndClose);
-		
-		JLabel lblClose = new JLabel("");
-		lblClose.setBounds(185, 509, 55, 16);
-		Settings.add(lblClose);
-		
-		textFieldName = new JTextField();
-		textFieldName.setBorder(null);
-		textFieldName.setBounds(236, 213, 337, 27);
-		Settings.add(textFieldName);
-		textFieldName.setColumns(10);
-		
-		textFieldEmail = new JTextField();
-		textFieldEmail.setBorder(null);
-		textFieldEmail.setColumns(10);
-		textFieldEmail.setBounds(236, 293, 337, 27);
-		Settings.add(textFieldEmail);
-		
-		passwordField = new JPasswordField();
-		passwordField.setBounds(236, 375, 337, 27);
-		Settings.add(passwordField);
-		
 
->>>>>>> 0e94381... Send Email and search done.
 		JLabel dashboardIcon = new JLabel();
-		dashboardIcon.setIcon(new ImageIcon(GUI.class.getResource("/images/dashboard.png")));
-		dashboardIcon.setBounds(10, 377, 50, 50);
+		dashboardIcon.setIcon(new ImageIcon(GUI.class.getResource("/images/dashboard_hover.png")));
+		dashboardIcon.setBounds(16, 380, 50, 50);
 		panel.add(dashboardIcon);
 
-		JLabel gradeIcon = new JLabel();
-		gradeIcon.setIcon(new ImageIcon(GUI.class.getResource("/images/grade.png")));
-		gradeIcon.setBounds(10, 463, 50, 50);
-		panel.add(gradeIcon);
+		JLabel courseIcon = new JLabel();
+		courseIcon.setIcon(new ImageIcon(GUI.class.getResource("/images/courses.png")));
+		courseIcon.setBounds(16, 440, 50, 50);
+		panel.add(courseIcon);
 
-		JLabel otherIcon = new JLabel();
-		otherIcon.setIcon(new ImageIcon(getClass().getResource("/images/other.png")));
-		otherIcon.setBounds(10, 556, 50, 50);
-		panel.add(otherIcon);
+		JLabel settingsIcon = new JLabel();
+		settingsIcon.setIcon(new ImageIcon(GUI.class.getResource("/images/settings.png")));
+		settingsIcon.setBounds(16, 502, 40, 50);
+		panel.add(settingsIcon);
 
-		JLabel greenButton = new JLabel();
-		greenButton.addMouseListener(new MouseAdapter() {
+		JLabel lblCourses = new JLabel("Courses");
+		lblCourses.setForeground(Color.WHITE);
+		lblCourses.setFont(new Font("Calibri", Font.PLAIN, 22));
+		lblCourses.setBounds(65, 448, 128, 38);
+		lblCourses.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
-				greenButton.setIcon(new ImageIcon(getClass().getResource("/images/green_hover.jpg")));
+				lblCourses.setForeground(redColor);
+				courseIcon.setIcon(new ImageIcon(getClass().getResource("/images/course_hover.png")));
 			}
 
 			@Override
 			public void mouseExited(MouseEvent arg0) {
-				greenButton.setIcon(new ImageIcon(getClass().getResource("")));
+				lblCourses.setForeground(Color.WHITE);
+				courseIcon.setIcon(new ImageIcon(getClass().getResource("/images/courses.png")));
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				cardsLayout.show(tabs, "courses");
 			}
 		});
-		greenButton.setBounds(594, 335, 292, 271);
-		panel.add(greenButton);
-
-		JLabel lblGrades = new JLabel("Grades");
-		lblGrades.setForeground(Color.WHITE);
-		lblGrades.setFont(new Font("Calibri", Font.PLAIN, 22));
-		lblGrades.setBounds(70, 456, 128, 74);
-		lblGrades.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent arg0) {
-				lblGrades.setForeground(redColor);
-				gradeIcon.setIcon(new ImageIcon(getClass().getResource("/images/grade_hover.png")));
-			}
-
-			@Override
-			public void mouseExited(MouseEvent arg0) {
-				lblGrades.setForeground(Color.WHITE);
-				gradeIcon.setIcon(new ImageIcon(getClass().getResource("/images/grade.png")));
-			}
-		});
-		panel.add(lblGrades);
+		panel.add(lblCourses);
 
 		JLabel lblDashboard = new JLabel("Dashboard");
 		lblDashboard.setForeground(redColor);
@@ -272,68 +226,37 @@ public class GUI {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				cardsLayout.show(tabs, "Dashboard");
+				cardsLayout.show(tabs, "welcomePage");
 			}
 		});
 		lblDashboard.setFont(new Font("Calibri", Font.PLAIN, 22));
-		lblDashboard.setBounds(70, 368, 128, 74);
+		lblDashboard.setBounds(65, 388, 133, 43);
 		panel.add(lblDashboard);
 
-		JLabel other = new JLabel("Other");
-		other.setForeground(Color.WHITE);
-		other.setFont(new Font("Calibri", Font.PLAIN, 22));
-		other.addMouseListener(new MouseAdapter() {
+		JLabel lblSettings = new JLabel("Settings");
+		lblSettings.setForeground(Color.WHITE);
+		lblSettings.setFont(new Font("Calibri", Font.PLAIN, 22));
+		lblSettings.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
-				other.setForeground(redColor);
-				otherIcon.setIcon(new ImageIcon(getClass().getResource("/images/other_hover.png")));
+				lblSettings.setForeground(redColor);
+				settingsIcon.setIcon(new ImageIcon(getClass().getResource("/images/settings_hover.png")));
 
 			}
 
 			@Override
 			public void mouseExited(MouseEvent arg0) {
-				other.setForeground(Color.WHITE);
-				otherIcon.setIcon(new ImageIcon(getClass().getResource("/images/other.png")));
+				lblSettings.setForeground(Color.WHITE);
+				settingsIcon.setIcon(new ImageIcon(getClass().getResource("/images/settings.png")));
 			}
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				cardsLayout.show(tabs, "Courses");
+				cardsLayout.show(tabs, "settings");
 			}
 		});
-		other.setBounds(70, 545, 128, 74);
-		panel.add(other);
-
-		JLabel purpleButton = new JLabel();
-		purpleButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent arg0) {
-				purpleButton.setIcon(new ImageIcon(getClass().getResource("/images/purple_hover.jpg")));
-			}
-
-			@Override
-			public void mouseExited(MouseEvent arg0) {
-				purpleButton.setIcon(new ImageIcon(getClass().getResource("")));
-			}
-		});
-		purpleButton.setBounds(267, 335, 292, 271);
-
-		panel.add(purpleButton);
-
-		JLabel blueButton = new JLabel();
-		blueButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent arg0) {
-				blueButton.setIcon(new ImageIcon(getClass().getResource("/images/blue_hover.jpg")));
-			}
-
-			@Override
-			public void mouseExited(MouseEvent arg0) {
-				blueButton.setIcon(new ImageIcon(getClass().getResource("")));
-			}
-		});
-		blueButton.setBounds(922, 335, 292, 271);
-		panel.add(blueButton);
+		lblSettings.setBounds(65, 510, 128, 38);
+		panel.add(lblSettings);
 
 		JLabel closeBtn = new JLabel("New label");
 		closeBtn.addMouseListener(new MouseAdapter() {
@@ -359,6 +282,8 @@ public class GUI {
 				closeBtn.setIcon(new ImageIcon(GUI.class.getResource("/images/closebtn1.png")));
 			}
 		});
+		
+		
 		closeBtn.setIcon(new ImageIcon(GUI.class.getResource("/images/closebtn1.png")));
 		closeBtn.setBounds(1257, 0, 20, 20);
 		panel.add(closeBtn);
@@ -390,27 +315,32 @@ public class GUI {
 		});
 
 		panel.add(minBtn);
+		
+		JLabel lblLogOut = new JLabel("");
+		lblLogOut.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				lblLogOut.setIcon(new ImageIcon(GUI.class.getResource("/images/logout_hover.png")));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				lblLogOut.setIcon(new ImageIcon(GUI.class.getResource("/images/logout.png")));
+			}
+			
+		});
+		lblLogOut.setBounds(27, 676, 152, 38);
+		lblLogOut.setIcon(new ImageIcon(GUI.class.getResource("/images/logout.png")));
+		panel.add(lblLogOut);
 
 		JLabel main = new JLabel("");
 		main.setBounds(0, 0, 1280, 728);
 		main.setIcon(new ImageIcon(GUI.class.getResource("/images/main.png")));
 		panel.add(main);
-		setupTabs();
+		
+		
+
 	}
 
-	public void setupTabs() {
-		
-		tabs.add(new WelcomePage(), "Dashboard");
-		CoursesPage courses = new CoursesPage(tabs,cardsLayout);
-		List<Course> list = new ArrayList<>();
-		list.add(new Course(2, "MATH271"));
-		list.add(new Course(3, "ENCM369"));
-		list.add(new Course(5, "ENSF409"));
-		list.add(new Course(6, "MATH211"));
-		courses.setCourses(list);
-		tabs.add(courses, "Courses");
-		
-	}
 	public Request choices() {
 		// TODO Auto-generated method stub
 		return null;

@@ -72,7 +72,6 @@ public class Course implements Serializable{
 	}
 
 	/**
-<<<<<<< HEAD
 	 * @return the id
 	 */
 	public int getId() {
@@ -87,8 +86,6 @@ public class Course implements Serializable{
 	}
 
 	/**
-=======
->>>>>>> master
 	 * @return the name
 	 */
 	public String getName() {
