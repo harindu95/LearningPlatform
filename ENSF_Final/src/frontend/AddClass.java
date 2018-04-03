@@ -8,6 +8,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import shared.Course;
+
 import javax.swing.ImageIcon;
 import java.awt.Color;
 import java.awt.Image;
@@ -17,9 +20,11 @@ import java.awt.event.MouseEvent;
 public class AddClass extends JDialog {
 	private JTextField textField;
 	private boolean enabled;
+	private CoursesPage coursesPage;
 	
-	public AddClass() {
+	public AddClass(CoursesPage page) {
 		super((JFrame)null,"Add class");
+		this.coursesPage = page;
 //		this.setUndecorated(true);
 		this.setResizable(false);
 		JPanel panel = (JPanel) this.getContentPane();
@@ -29,7 +34,7 @@ public class AddClass extends JDialog {
 		JLabel label = new JLabel("");
 		label.setBounds(27, 170, 608, 141);
 		getContentPane().add(label);
-		
+		JDialog dialog = this;
 		JLabel lblCancel = new JLabel("Cancel");
 		lblCancel.addMouseListener(new MouseAdapter() {
 			@Override
@@ -54,6 +59,16 @@ public class AddClass extends JDialog {
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				lblAddCourse.setIcon(new ImageIcon(AddClass.class.getResource("/images/Add_crs_btn1.png")));
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				Course c = new Course(10);
+				c.setName(textField.getText());
+				c.description = "testing ...";
+				coursesPage.courseList.add(c);
+				coursesPage.setCourses(coursesPage.courseList);
+				dialog.setVisible(false);
 			}
 		});
 		lblAddCourse.setIcon(new ImageIcon(AddClass.class.getResource("/images/Add_crs_btn1.png")));
@@ -85,6 +100,7 @@ public class AddClass extends JDialog {
 				int r  = chooser.showOpenDialog(label_1);;
 				if(r == JFileChooser.APPROVE_OPTION) {
 					label.setIcon(new ImageIcon(chooser.getSelectedFile().getAbsolutePath()));
+					
 				}
 			}
 			@Override
@@ -111,8 +127,8 @@ public class AddClass extends JDialog {
 	}
 
 	public static void main(String[] args) {
-		AddClass k = new AddClass();
-		k.setVisible(true);
+//		AddClass k = new AddClass();
+//		k.setVisible(true);
 //		JDialog d = new JDialog((JFrame)null, "hello");
 //		d.setVisible(true);
 	}

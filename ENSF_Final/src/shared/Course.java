@@ -8,6 +8,7 @@ public class Course implements Serializable{
 	private static final long serialVersionUID = -3665685309899493952L;
 	private int id = 0;
 	private String name = "";
+	public String description = "";
 	private Professor professor;
 	private boolean isActive =false;
 	public List<Assignment> assignments;
