@@ -42,7 +42,7 @@ public class CoursesPage extends Tab {
 	private JPanel tabs;
 	private CoursePage coursePage;
 
-	CoursesPage(JPanel tabs, CardLayout cardsLayout) {
+	CoursesPage(Client c,JPanel tabs, CardLayout cardsLayout) {
 		addClass = new AddClassDialog(this);
 		this.tabs = tabs;
 		this.cardsLayout = cardsLayout;
