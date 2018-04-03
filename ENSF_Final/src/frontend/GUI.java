@@ -97,7 +97,6 @@ public class GUI {
 		panel.add(tabs);
 		cardsLayout = new CardLayout(0, 0);
 		tabs.setLayout(cardsLayout);
-		tabs.add(new WelcomePage(), "Dashboard");
 		CoursesPage courses = new CoursesPage();
 		List<Course> list = new ArrayList<>();
 		list.add(new Course(2, "MATH271"));
@@ -105,7 +104,60 @@ public class GUI {
 		list.add(new Course(5, "ENSF409"));
 		list.add(new Course(6, "MATH211"));
 		courses.setCourses(list);
-		tabs.add(courses, "Courses");
+		
+		CoursesPage welcomePage = new CoursesPage();
+		tabs.add(welcomePage, "welcomePage");
+						welcomePage.setLayout(null);
+				
+						JLabel purpleButton = new JLabel();
+						purpleButton.setBounds(0, 0, 0, 0);
+						welcomePage.add(purpleButton);
+						purpleButton.addMouseListener(new MouseAdapter() {
+							@Override
+							public void mouseEntered(MouseEvent arg0) {
+								purpleButton.setIcon(new ImageIcon(getClass().getResource("/images/purple_hover.jpg")));
+							}
+
+							@Override
+							public void mouseExited(MouseEvent arg0) {
+								purpleButton.setIcon(new ImageIcon(getClass().getResource("")));
+							}
+						});
+				
+						JLabel blueButton = new JLabel();
+						blueButton.setBounds(0, 100, 0, 528);
+						welcomePage.add(blueButton);
+						blueButton.addMouseListener(new MouseAdapter() {
+							@Override
+							public void mouseEntered(MouseEvent arg0) {
+								blueButton.setIcon(new ImageIcon(getClass().getResource("/images/blue_hover.jpg")));
+							}
+
+							@Override
+							public void mouseExited(MouseEvent arg0) {
+								blueButton.setIcon(new ImageIcon(getClass().getResource("")));
+							}
+						});
+		
+				JLabel greenButton = new JLabel();
+				greenButton.setBounds(0, 628, 1019, 0);
+				welcomePage.add(greenButton);
+				
+				JLabel lblWelcomePageBackground = new JLabel();
+				lblWelcomePageBackground.setBounds(441, 100, 578, 528);
+				welcomePage.add(lblWelcomePageBackground);
+				greenButton.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseEntered(MouseEvent arg0) {
+						greenButton.setIcon(new ImageIcon(getClass().getResource("/images/green_hover.jpg")));
+					}
+
+					@Override
+					public void mouseExited(MouseEvent arg0) {
+						greenButton.setIcon(new ImageIcon(getClass().getResource("")));
+					}
+				});
+		tabs.add(courses, "courses");
 		
 		CoursesPage Settings = new CoursesPage();
 		Settings.setLayout(null);
@@ -119,50 +171,39 @@ public class GUI {
 		Settings.add(lblSettingsbackground);
 
 		JLabel dashboardIcon = new JLabel();
-		dashboardIcon.setIcon(new ImageIcon(GUI.class.getResource("/images/dashboard.png")));
-		dashboardIcon.setBounds(10, 377, 50, 50);
+		dashboardIcon.setIcon(new ImageIcon(GUI.class.getResource("/images/dashboard_hover.png")));
+		dashboardIcon.setBounds(16, 380, 50, 50);
 		panel.add(dashboardIcon);
 
-		JLabel gradeIcon = new JLabel();
-		gradeIcon.setIcon(new ImageIcon(GUI.class.getResource("/images/grade.png")));
-		gradeIcon.setBounds(10, 456, 50, 50);
-		panel.add(gradeIcon);
+		JLabel courseIcon = new JLabel();
+		courseIcon.setIcon(new ImageIcon(GUI.class.getResource("/images/courses.png")));
+		courseIcon.setBounds(16, 440, 50, 50);
+		panel.add(courseIcon);
 
-		JLabel otherIcon = new JLabel();
-		otherIcon.setIcon(new ImageIcon(getClass().getResource("/images/other.png")));
-		otherIcon.setBounds(10, 530, 50, 50);
-		panel.add(otherIcon);
-
-		JLabel greenButton = new JLabel();
-		greenButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent arg0) {
-				greenButton.setIcon(new ImageIcon(getClass().getResource("/images/green_hover.jpg")));
-			}
-
-			@Override
-			public void mouseExited(MouseEvent arg0) {
-				greenButton.setIcon(new ImageIcon(getClass().getResource("")));
-			}
-		});
-		greenButton.setBounds(594, 335, 292, 271);
-		panel.add(greenButton);
+		JLabel settingsIcon = new JLabel();
+		settingsIcon.setIcon(new ImageIcon(GUI.class.getResource("/images/settings.png")));
+		settingsIcon.setBounds(16, 502, 40, 50);
+		panel.add(settingsIcon);
 
 		JLabel lblCourses = new JLabel("Courses");
 		lblCourses.setForeground(Color.WHITE);
 		lblCourses.setFont(new Font("Calibri", Font.PLAIN, 22));
-		lblCourses.setBounds(70, 456, 128, 74);
+		lblCourses.setBounds(65, 448, 128, 38);
 		lblCourses.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
 				lblCourses.setForeground(redColor);
-				gradeIcon.setIcon(new ImageIcon(getClass().getResource("/images/grade_hover.png")));
+				courseIcon.setIcon(new ImageIcon(getClass().getResource("/images/course_hover.png")));
 			}
 
 			@Override
 			public void mouseExited(MouseEvent arg0) {
 				lblCourses.setForeground(Color.WHITE);
-				gradeIcon.setIcon(new ImageIcon(getClass().getResource("/images/grade.png")));
+				courseIcon.setIcon(new ImageIcon(getClass().getResource("/images/courses.png")));
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				cardsLayout.show(tabs, "courses");
 			}
 		});
 		panel.add(lblCourses);
@@ -185,11 +226,11 @@ public class GUI {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				cardsLayout.show(tabs, "Dashboard");
+				cardsLayout.show(tabs, "welcomePage");
 			}
 		});
 		lblDashboard.setFont(new Font("Calibri", Font.PLAIN, 22));
-		lblDashboard.setBounds(70, 368, 128, 74);
+		lblDashboard.setBounds(65, 388, 133, 43);
 		panel.add(lblDashboard);
 
 		JLabel lblSettings = new JLabel("Settings");
@@ -199,14 +240,14 @@ public class GUI {
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
 				lblSettings.setForeground(redColor);
-				otherIcon.setIcon(new ImageIcon(getClass().getResource("/images/other_hover.png")));
+				settingsIcon.setIcon(new ImageIcon(getClass().getResource("/images/settings_hover.png")));
 
 			}
 
 			@Override
 			public void mouseExited(MouseEvent arg0) {
 				lblSettings.setForeground(Color.WHITE);
-				otherIcon.setIcon(new ImageIcon(getClass().getResource("/images/other.png")));
+				settingsIcon.setIcon(new ImageIcon(getClass().getResource("/images/settings.png")));
 			}
 
 			@Override
@@ -214,39 +255,8 @@ public class GUI {
 				cardsLayout.show(tabs, "settings");
 			}
 		});
-		lblSettings.setBounds(72, 518, 128, 74);
+		lblSettings.setBounds(65, 510, 128, 38);
 		panel.add(lblSettings);
-
-		JLabel purpleButton = new JLabel();
-		purpleButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent arg0) {
-				purpleButton.setIcon(new ImageIcon(getClass().getResource("/images/purple_hover.jpg")));
-			}
-
-			@Override
-			public void mouseExited(MouseEvent arg0) {
-				purpleButton.setIcon(new ImageIcon(getClass().getResource("")));
-			}
-		});
-		purpleButton.setBounds(267, 335, 292, 271);
-
-		panel.add(purpleButton);
-
-		JLabel blueButton = new JLabel();
-		blueButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent arg0) {
-				blueButton.setIcon(new ImageIcon(getClass().getResource("/images/blue_hover.jpg")));
-			}
-
-			@Override
-			public void mouseExited(MouseEvent arg0) {
-				blueButton.setIcon(new ImageIcon(getClass().getResource("")));
-			}
-		});
-		blueButton.setBounds(922, 335, 292, 271);
-		panel.add(blueButton);
 
 		JLabel closeBtn = new JLabel("New label");
 		closeBtn.addMouseListener(new MouseAdapter() {
