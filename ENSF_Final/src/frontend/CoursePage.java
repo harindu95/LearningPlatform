@@ -1,6 +1,7 @@
 package frontend;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -9,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -23,6 +25,7 @@ import javax.swing.border.EmptyBorder;
 
 import shared.Assignment;
 import shared.Course;
+import shared.Student;
 
 public class CoursePage extends JPanel {
 
@@ -30,8 +33,15 @@ public class CoursePage extends JPanel {
 	private JTextField topLabel;
 	private JPanel assignments = null;
 	private JDialog changeAssignment;
+	private CardLayout cardLayout;
+	private JPanel tabs;
+	private StudentsPage students;
 
-	public CoursePage() {
+	public CoursePage(JPanel tabs, CardLayout cards) {
+		this.tabs = tabs;
+		this.cardLayout = cards;
+		students = new StudentsPage(new ArrayList<Student>());
+		tabs.add(students, "students");
 		BorderLayout borderLayout = new BorderLayout();
 		this.setLayout(borderLayout);
 		this.setBackground(new Color(255, 255, 255));
@@ -81,6 +91,14 @@ public class CoursePage extends JPanel {
 			}
 		});
 		
+		addStudent.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				cards.show(tabs, "students");
+			}
+		});
 		
 	}
 

@@ -46,7 +46,7 @@ public class CoursesPage extends Tab {
 		addClass = new AddClassDialog(this);
 		this.tabs = tabs;
 		this.cardsLayout = cardsLayout;
-		this.coursePage = new CoursePage();
+		this.coursePage = new CoursePage(tabs,cardsLayout);
 		tabs.add(coursePage, "course");
 		Color redColor = new Color(123, 58, 220);
 		BorderLayout borderLayout = new BorderLayout();
