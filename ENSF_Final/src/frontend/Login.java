@@ -36,7 +36,6 @@ public class Login {
 	private JLabel cancelBtn;
 	boolean loginPressed = false;
 	private Client client;
-	private JLabel waiting;
 	private JLabel spinner;
 
 	/**
@@ -69,19 +68,6 @@ public class Login {
 		username.setText("username");
 		username.selectAll();
 
-		spinner = new Spinner("");
-		spinner.setBounds(275, 146, 48, 48);
-		ImageIcon imageIcon = new ImageIcon(Login.class.getResource("/images/red-spinner2.gif")); // load the image to a
-																									// imageIcon
-		spinner.setIcon(imageIcon);
-		spinner.setDoubleBuffered(true);
-		imageIcon.setImageObserver(spinner);
-		frame.getContentPane().add(spinner);
-
-		waiting = new JLabel("");
-		waiting.setIcon(new ImageIcon(Login.class.getResource("/images/loginData.png")));
-		waiting.setBounds(212, 73, 196, 222);
-		frame.getContentPane().add(waiting);
 		username.setBackground(new Color(190, 168, 170));
 		username.setBorder(null);
 
@@ -110,16 +96,7 @@ public class Login {
 				loginPressed = true;
 			}
 
-			@Override
-			public void mouseExited(MouseEvent e) {
-				loginBtn.setIcon(new ImageIcon("resources/images/loginbtn3.png"));
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				loginBtn.setIcon(new ImageIcon("resources/images/loginbtn1.png"));
-			}
-
+		
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				try {
@@ -168,51 +145,41 @@ public class Login {
 		JOptionPane.showMessageDialog(null, Message, "Message", JOptionPane.OK_OPTION);
 	}
 
+	
 	private void login(User u) {
 		if (u == null) {
 			displayMessage("Login failed!");
 		} else {
 			if (u instanceof Student) {
 				displayMessage("User is a student");
+				
 			} else if (u instanceof Professor) {
 
 				displayMessage("User is a professor");
+				ProfGUI window = new ProfGUI(client,(Professor)u);
+				window.frame.setVisible(true);
+				frame.setVisible(false);
 			}
 		}
 	}
 
-	public static void main(String[] args) {
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Login window = new Login(null);
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+//	public static void main(String[] args) {
+//		try {
+//			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+//		} catch (Throwable e) {
+//			e.printStackTrace();
+//		}
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					Login window = new Login(null);
+//					window.frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 
-	class Spinner extends JLabel {
-
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
-
-		public Spinner(String txt) {
-			super(txt);
-		}
-
-		@Override
-		protected void paintComponent(Graphics g) {
-			  super.paintComponent(g);
-		}
-	}
+	
 }

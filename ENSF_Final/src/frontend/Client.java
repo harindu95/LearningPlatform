@@ -55,41 +55,7 @@ public class Client
 		return user;
 		
 	}
-	/**
-	 * Communicate with the server using ClientConnection class
-	 */
-	public void communicate() 
-	{
-		try
-		{
-			ClientConnection clientConnection = new ClientConnection(this);
-			clientConnection.start();
-			Request res = clientConnection.checkValidUser(ID, password);
-			if(res.isValid)
-			{
-				if(res.dataType == DataType.Professor)
-				{
-					gui = new ProfGUI();
-				}
-				else if(res.dataType == DataType.Student)
-				{
-					gui = new StudentGUI();
-				}
-				clientConnection.listenForUserRequest(gui);
-				clientConnection.listenForServerResponse();
-			}
-			else
-			{
-				login.displayMessage("Invalid UserName or Password! Please try again.");
-			}
-		}
-		catch(Exception e)
-		{	
-			e.printStackTrace();
-			this.close();
-		}
-	}
-
+	
     /**
      * Close all streams when done
      */

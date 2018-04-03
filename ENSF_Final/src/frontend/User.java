@@ -8,7 +8,6 @@ public class User
 
 	public User()
 	{
-		client = new Client("localhost", 9018);
-		client.communicate();
+//		client = new Client("localhost", 9018);
 	}
 }
