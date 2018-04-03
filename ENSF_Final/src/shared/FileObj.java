@@ -7,18 +7,24 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class FileObj {
-	public File file  = null;
+	public File file = null;
 	public int[] data;
-	
-	FileObj(String filename) throws IOException{
+
+	FileObj(String filename) throws IOException {
 		file = new File(filename);
 		readFile();
 	}
-	public FileObj(String path,String filename) throws IOException{
-		file = new File(path,filename);
+
+	public FileObj(String path, String filename) throws IOException {
+		file = new File(path, filename);
 		readFile();
 	}
-	
+
+	public FileObj(File selectedFile) throws IOException {
+		this.file = selectedFile;
+		readFile();
+	}
+
 	void readFile() throws IOException {
 		BufferedReader br = null;
 		try {
@@ -37,7 +43,9 @@ public class FileObj {
 			}
 
 		} finally {
-			br.close();
+			if (br != null && file != null) {
+				br.close();
+			}
 		}
 	}
 }

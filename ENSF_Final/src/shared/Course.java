@@ -18,9 +18,14 @@ public class Course implements Serializable{
 		setStudents(new ArrayList<>());
 		assignments = new ArrayList<>();
 	}
-
+	public Course(String string) {
+		this(0);
+		name = string;
+		
+	}
+	
 	public Course(int i, String string) {
-		id =i;
+		this(0);
 		name = string;
 	}
 

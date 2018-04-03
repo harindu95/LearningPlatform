@@ -38,21 +38,22 @@ public class GUI {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-			try {
-				UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-			} catch (UnsupportedLookAndFeelException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InstantiationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		try {
+			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+			// UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
+		} catch (UnsupportedLookAndFeelException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -97,16 +98,6 @@ public class GUI {
 		panel.add(tabs);
 		cardsLayout = new CardLayout(0, 0);
 		tabs.setLayout(cardsLayout);
-		tabs.add(new WelcomePage(), "Dashboard");
-		CoursesPage courses = new CoursesPage();
-		List<Course> list = new ArrayList<>();
-		list.add(new Course(2, "MATH271"));
-		list.add(new Course(3, "ENCM369"));
-		list.add(new Course(5, "ENSF409"));
-		list.add(new Course(6, "MATH211"));
-		courses.setCourses(list);
-		tabs.add(courses, "Courses");
-
 		JLabel dashboardIcon = new JLabel();
 		dashboardIcon.setIcon(new ImageIcon(GUI.class.getResource("/images/dashboard.png")));
 		dashboardIcon.setBounds(10, 377, 50, 50);
@@ -297,9 +288,22 @@ public class GUI {
 		main.setBounds(0, 0, 1280, 728);
 		main.setIcon(new ImageIcon(GUI.class.getResource("/images/main.png")));
 		panel.add(main);
-
+		setupTabs();
 	}
 
+	public void setupTabs() {
+		
+		tabs.add(new WelcomePage(), "Dashboard");
+		CoursesPage courses = new CoursesPage(tabs,cardsLayout);
+		List<Course> list = new ArrayList<>();
+		list.add(new Course(2, "MATH271"));
+		list.add(new Course(3, "ENCM369"));
+		list.add(new Course(5, "ENSF409"));
+		list.add(new Course(6, "MATH211"));
+		courses.setCourses(list);
+		tabs.add(courses, "Courses");
+		
+	}
 	public Request choices() {
 		// TODO Auto-generated method stub
 		return null;

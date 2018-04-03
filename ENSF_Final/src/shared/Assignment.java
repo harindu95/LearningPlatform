@@ -12,6 +12,7 @@ public class Assignment implements Serializable{
 	private String title = "";
 	private String path = "";
 	private String due_date  = "";
+	private FileObj file = null;
 	
 	public Assignment(int id){
 		this.setId(id);
@@ -85,6 +86,20 @@ public class Assignment implements Serializable{
 	 */
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	/**
+	 * @return the file
+	 */
+	public FileObj getFile() {
+		return file;
+	}
+
+	/**
+	 * @param file the file to set
+	 */
+	public void setFile(FileObj file) {
+		this.file = file;
 	}
 }
 
