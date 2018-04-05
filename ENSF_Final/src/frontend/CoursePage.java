@@ -6,10 +6,14 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
@@ -23,6 +27,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
+import com.sun.media.sound.ModelSource;
+
 import shared.Assignment;
 import shared.Course;
 import shared.Student;
@@ -32,15 +38,15 @@ public class CoursePage extends JPanel {
 	private Course course = new Course("Test");
 	private JTextField topLabel;
 	private JPanel assignments = null;
-	private JDialog changeAssignment;
+	private AssignmentDialog changeAssignment;
 	private CardLayout cardLayout;
 	private JPanel tabs;
 	private StudentsPage students;
 
-	public CoursePage(JPanel tabs, CardLayout cards) {
+	public CoursePage(CoursesPage parent,Client c,JPanel tabs, CardLayout cards) {
 		this.tabs = tabs;
 		this.cardLayout = cards;
-		students = new StudentsPage(new ArrayList<Student>());
+		students = new StudentsPage(c);
 		tabs.add(students, "students");
 		BorderLayout borderLayout = new BorderLayout();
 		this.setLayout(borderLayout);
@@ -69,15 +75,19 @@ public class CoursePage extends JPanel {
 		container.add(btns);
 		btns.setBackground(Color.WHITE);
 		container.setBackground(Color.white);
-		JButton addStudent = new JButton("Enroll/Unroll");
+		JButton deleteCourse = new JButton("Delete Course");
+		JButton addStudent = new JButton("Enroll/Unenroll");
 		JButton addAssignmnet = new JButton("Add Assignment");
 		((FlowLayout) btns.getLayout()).setAlignment(FlowLayout.LEFT);
 		btns.add(addStudent);
 		btns.add(addAssignmnet);
-		assignments = new JPanel();
-		BoxLayout l = new BoxLayout(assignments, BoxLayout.Y_AXIS);
+		btns.add(deleteCourse);
 		
+		assignments = new JPanel();
+//		FlowLayout l = new FlowLayout(ignments, BoxLayout.Y_AXIS);
+		GridBagLayout l = new GridBagLayout();
 		assignments.setLayout(l);
+		assignments.setBackground(Color.white);
 		container.add(new JScrollPane(assignments));
 		add(container, BorderLayout.CENTER);
 
@@ -86,7 +96,7 @@ public class CoursePage extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				((AssignmentDialog) changeAssignment).showDialog("Add Assignment", null);
+				changeAssignment.showDialog("Add Assignment", null);
 				
 			}
 		});
@@ -95,19 +105,35 @@ public class CoursePage extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				students.setCourse(course);
 				cards.show(tabs, "students");
 			}
 		});
 		
+		deleteCourse.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				parent.removeCourse(course);
+			}
+		});
 	}
 
 	void update() {
 		assignments.removeAll();
-
+		GridBagConstraints c = new GridBagConstraints();
+		
 		for (int i = 0; i < course.assignments.size(); i++) {
+			c.gridy = i;
+			
 			Assignment a = course.assignments.get(i);
 			AssignmentItem assignment = new AssignmentItem(a);
+			assignment.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					changeAssignment.showDialog("Change Assignment", a);
+				}
+			});
 			assignment.AddClsBtnActionLiistener(new ActionListener() {
 				
 				@Override
@@ -126,7 +152,7 @@ public class CoursePage extends JPanel {
 			// cardsLayout.show(tabs, "course");
 			// }
 			// });
-			assignments.add(assignment);
+			assignments.add(assignment,c);
 
 		}
 

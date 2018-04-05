@@ -53,6 +53,10 @@ public class DatabaseManager {
 	}
 
 	public void readData() {
+		professors.getProfessors().clear();
+		students.students.clear();
+		courses.courses.clear();
+		assignments.assignments.clear();
 		readCourses();
 		readUsers();
 		readCourseRegistrations();
@@ -71,8 +75,10 @@ public class DatabaseManager {
 				Course c = courses.getCourse(course.getInt("id"));
 				c.setActive(course.getBoolean("active"));
 				c.setName(course.getString("name"));
-				c.setProfessor(professors.getProfessor(course.getInt("prof_id")));
-				c.getProfessor().getCourses().add(c);
+				Professor p = professors.getProfessor(course.getInt("prof_id"));
+				c.setProfessor(p);
+				
+				p.getCourses().add(c);
 			}
 
 		} catch (SQLException e) {
@@ -181,6 +187,7 @@ public class DatabaseManager {
 	void readGrades() {
 		String sql = "SELECT * FROM Grades";
 		ResultSet r;
+		
 		try {
 			statement = jdbc_connection.prepareStatement(sql);
 			r = statement.executeQuery();
@@ -324,39 +331,25 @@ public class DatabaseManager {
 
 		String sqlCourses = "CREATE TABLE `Courses` (\n" + " `id` int(8) NOT NULL AUTO_INCREMENT,\n"
 				+ " `prof_id` int(8) NOT NULL,\n" + " `name` varchar(50) NOT NULL,\n" + " `active` bit(1) NOT NULL,\n"
-				+ " PRIMARY KEY (`id`),\n" + " KEY `prof_id` (`prof_id`),\n"
-				+ " CONSTRAINT `Courses_ibfk_1` FOREIGN KEY (`prof_id`) REFERENCES `Users` (`id`)\n" + ")";
+				+ " PRIMARY KEY (`id`))";
 
 		String sqlStudentEnrollment = "CREATE TABLE `StudentEnrollment` (\n" + " `id` int(8) NOT NULL AUTO_INCREMENT,\n"
 				+ " `student_id` int(8) NOT NULL,\n" + " `course_id` int(8) NOT NULL,\n" + " PRIMARY KEY (`id`),\n"
-				+ " KEY `student_id` (`student_id`),\n" + " KEY `course_id` (`course_id`),\n"
-				+ " CONSTRAINT `StudentEnrollment_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `Users` (`id`),\n"
-				+ " CONSTRAINT `StudentEnrollment_ibfk_2` FOREIGN KEY (`course_id`) REFERENCES `Courses` (`id`)\n"
-				+ ") ";
+				+ " KEY `student_id` (`student_id`))";
 		String sqlAssignments = "CREATE TABLE `Assignments` (\n" + " `id` int(8) NOT NULL AUTO_INCREMENT,\n"
 				+ " `course_id` int(8) NOT NULL,\n" + " `title` varchar(50) NOT NULL,\n"
 				+ " `path` varchar(100) NOT NULL,\n" + " `active` bit(1) NOT NULL,\n"
-				+ " `due_date` char(16) NOT NULL,\n" + " PRIMARY KEY (`id`),\n" + " KEY `course_id` (`course_id`),\n"
-				+ " KEY `file_id` (`path`),\n"
-				+ " CONSTRAINT `Assignments_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `Courses` (`ID`)\n" + ")";
+				+ " `due_date` char(16) NOT NULL,\n" + " PRIMARY KEY (`id`))";
 
 		String sqlGrades = " 	CREATE TABLE `Grades` (\n" + " `id` int(8) NOT NULL AUTO_INCREMENT,\n"
 				+ " `assign_id` int(8) NOT NULL,\n" + " `student_id` int(8) NOT NULL,\n"
-				+ " `course_id` int(8) NOT NULL,\n" + " `assigment_grade` int(3) NOT NULL,\n" + " PRIMARY KEY (`id`),\n"
-				+ " KEY `assign_id` (`assign_id`),\n" + " KEY `student_id` (`student_id`),\n"
-				+ " KEY `course_id` (`course_id`),\n"
-				+ " CONSTRAINT `Grades_ibfk_1` FOREIGN KEY (`assign_id`) REFERENCES `Assignments` (`id`),\n"
-				+ " CONSTRAINT `Grades_ibfk_2` FOREIGN KEY (`student_id`) REFERENCES `Users` (`id`),\n"
-				+ " CONSTRAINT `Grades_ibfk_3` FOREIGN KEY (`course_id`) REFERENCES `Courses` (`id`)\n" + ")";
+				+ " `course_id` int(8) NOT NULL,\n" + " `assigment_grade` int(3) NOT NULL,\n" + " PRIMARY KEY (`id`))";
 
 		String sqlSubmissions = "CREATE TABLE `Submissions` (\n" + " `id` int(8) NOT NULL AUTO_INCREMENT,\n"
 				+ " `assign_id` int(8) NOT NULL,\n" + " `student_id` int(8) NOT NULL,\n"
 				+ " `title` varchar(50) NOT NULL,\n" + " `path` varchar(100) NOT NULL,\n"
 				+ " `submission_grade` int(3) NOT NULL,\n" + " `comments` varchar(140) NOT NULL,\n"
-				+ " `timestamp` char(16) NOT NULL,\n" + " PRIMARY KEY (`id`),\n" + " KEY `assign_id` (`assign_id`),\n"
-				+ " KEY `student_id` (`student_id`),\n" + " KEY `file_id` (`path`),\n"
-				+ " CONSTRAINT `Submissions_ibfk_1` FOREIGN KEY (`assign_id`) REFERENCES `Assignments` (`id`),\n"
-				+ " CONSTRAINT `Submissions_ibfk_2` FOREIGN KEY (`student_id`) REFERENCES `Users` (`id`)\n" + ") ";
+				+ " `timestamp` char(16) NOT NULL,\n" + " PRIMARY KEY (`id`))";
 
 		try {
 			Statement st = jdbc_connection.createStatement();
@@ -395,11 +388,21 @@ public class DatabaseManager {
 		queries.add(
 				"INSERT INTO `Users` (`id`, `password`, `email`, `firstname`, `lastname`, `type`) VALUES (NULL, 'admin', 'abc@university.com', 'F1', 'L1', 'P');");
 		queries.add(
-				"INSERT INTO `Users` (`id`, `password`, `email`, `firstname`, `lastname`, `type`) VALUES (NULL, 'admin', 'norm@ucalgray.ca', 'Norm', 'Bartley', 'P');");
+				"INSERT INTO `Users` (`id`, `password`, `email`, `firstname`, `lastname`, `type`) VALUES (NULL, 'admin', 'norm@ucalgary.ca', 'Norm', 'Bartley', 'P');");
 		queries.add(
 				"INSERT INTO `Users` (`id`, `password`, `email`, `firstname`, `lastname`, `type`) VALUES (NULL, 'admin', 'moushirpour@ucalgary.ca', 'M', 'Moushirpour', 'P');");
 		queries.add(
 				"INSERT INTO `Users` (`id`, `password`, `email`, `firstname`, `lastname`, `type`) VALUES (NULL, 'admin', 'harindudilshan95@gmail.com', 'Kavinda', 'Pitiduwa Gamage', 'S');");
+		queries.add(
+				"INSERT INTO `Users` (`id`, `password`, `email`, `firstname`, `lastname`, `type`) VALUES (NULL, 'admin', 'abc@gmail.com', 'Cong', 'Pham', 'S');");
+		queries.add(
+				"INSERT INTO `Users` (`id`, `password`, `email`, `firstname`, `lastname`, `type`) VALUES (NULL, 'admin', 'abc@gmail.com', 'Cong', 'Pham', 'S');");
+		queries.add(
+				"INSERT INTO `Users` (`id`, `password`, `email`, `firstname`, `lastname`, `type`) VALUES (NULL, 'admin', 'abc@gmail.com', 'Cong', 'Pham', 'S');");
+		queries.add(
+				"INSERT INTO `Users` (`id`, `password`, `email`, `firstname`, `lastname`, `type`) VALUES (NULL, 'admin', 'abc@gmail.com', 'Cong', 'Pham', 'S');");
+		queries.add(
+				"INSERT INTO `Users` (`id`, `password`, `email`, `firstname`, `lastname`, `type`) VALUES (NULL, 'admin', 'abc@gmail.com', 'Cong', 'Pham', 'S');");
 		queries.add(
 				"INSERT INTO `Users` (`id`, `password`, `email`, `firstname`, `lastname`, `type`) VALUES (NULL, 'admin', 'abc@gmail.com', 'Cong', 'Pham', 'S');");
 
@@ -422,6 +425,42 @@ public class DatabaseManager {
 			e.printStackTrace();
 		}
 
+	}
+
+	public int addCourse(Course data) {
+		// TODO Auto-generated method stub
+		String sql = "INSERT INTO `Courses` (`id`, `prof_id`, `name`, `active`) VALUES (NULL, ?, ?, ?);";
+		String sql2 = "SELECT LAST_INSERT_ID();";
+		try {
+			statement = jdbc_connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
+			statement.setInt(1, data.getProfessor().id);
+			statement.setString(2, data.getName());
+			statement.setBoolean(3, data.isActive());
+			statement.executeUpdate();
+			ResultSet keys = statement.getGeneratedKeys();
+			keys.next();  
+			return keys.getInt(1);
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 0;
+	
+	}
+
+	public void deleteCourse(Course data) {
+		// TODO Auto-generated method stub
+		String sql = "DELETE FROM `Courses` WHERE id=?;";
+		try {
+			statement = jdbc_connection.prepareStatement(sql);
+			statement.setInt(1, data.getId());
+			statement.executeUpdate();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
 	}
 
 }

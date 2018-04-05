@@ -8,13 +8,17 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.List;
 
 import javax.swing.UIManager;
 
+import shared.Course;
 import shared.LoginInfo;
+import shared.Professor;
 import shared.Request;
 import shared.Request.DataType;
 import shared.Request.Type;
+import shared.Student;
 import shared.User;
 
 public class Client
@@ -24,10 +28,10 @@ public class Client
 	String password;
 	Login login;
 	GUI gui;
+	User user;
 	private ObjectInputStream in;
 	private ObjectOutputStream out;
 	
-	@SuppressWarnings("deprecation")
 	public Client(String serverName, int portNumber) 
 	{
 		try 
@@ -45,15 +49,27 @@ public class Client
 	}
 
 	public User authenticate(String username, String password) throws IOException, ClassNotFoundException {
-		Request res = new Request();
-		res.dataType = DataType.Login;
-		res.type = Type.GET;
-		res.data = new LoginInfo(username,password);
-		out.writeObject(res);
+		Request req = new Request();
+		req.dataType = DataType.Login;
+		req.type = Type.GET;
+		req.data = new LoginInfo(username,password);
+		out.writeObject(req);
 		out.flush();
-		User user = (User)in.readObject();
+		user = (User)in.readObject();
 		return user;
 		
+	}
+	
+	public List<Student> getAllStudents() throws ClassNotFoundException, IOException{
+		Request req = new Request();
+		req.type = Type.GET;
+		req.dataType = DataType.StudentList;
+		out.writeObject(req);
+		System.out.println("Send request for all students");
+		out.flush();
+		List<Student> students = (List<Student>)in.readObject();
+		System.out.println("got all students");
+		return students;
 	}
 	
     /**
@@ -80,6 +96,7 @@ public class Client
     	this.password = Password;
     }
 
+    
     public static void main(String[] args) {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -97,6 +114,28 @@ public class Client
 				}
 			}
 		});
+	}
+
+	public Course addCourse(Course c) throws IOException, ClassNotFoundException {
+		// TODO Auto-generated method stub
+		Request req = new Request();
+		req.type = Type.UPDATE;
+		req.dataType = DataType.Course;
+		req.data = c;
+		out.writeObject(req);
+		out.flush();
+		Course k = (Course)in.readObject();
+		return k;
+	}
+
+	public void removeCourse(Course course) throws IOException {
+		// TODO Auto-generated method stub
+		Request req = new Request();
+		req.type = Type.DELETE;
+		req.dataType = DataType.Course;
+		req.data = course;
+		out.writeObject(req);
+		out.flush();
 	}
     	
 }

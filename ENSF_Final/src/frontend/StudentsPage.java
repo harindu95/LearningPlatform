@@ -5,10 +5,14 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.util.List;
 
 import javax.swing.BoxLayout;
@@ -31,12 +35,22 @@ public class StudentsPage extends JPanel {
 	private Course course = new Course("Test");
 	private JTextField topLabel;
 	private JPanel students = null;
-//	private JDialog changeAssignment;
+	// private JDialog changeAssignment;
 	private List<Student> studentList;
+	private Client client;
 
-	public StudentsPage(List<Student> list) {
-		
-		this.studentList = list;
+	public StudentsPage(Client c) {
+
+		this.client = c;
+		try {
+			this.studentList = c.getAllStudents();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		BorderLayout borderLayout = new BorderLayout();
 		this.setLayout(borderLayout);
 		this.setBackground(new Color(255, 255, 255));
@@ -58,8 +72,15 @@ public class StudentsPage extends JPanel {
 
 		JPanel container = new JPanel();
 		JPanel btns = new JPanel();
-		container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
-		container.add(btns);
+		GridBagLayout layout = new GridBagLayout();
+		GridBagConstraints constraints = new GridBagConstraints();
+		container.setLayout(layout);
+		constraints.anchor = GridBagConstraints.PAGE_START;
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		constraints.ipady = 20;
+		constraints.fill = GridBagConstraints.BOTH;
+		container.add(btns, constraints);
 		btns.setBackground(Color.WHITE);
 		container.setBackground(Color.white);
 		JTextField searchbox = new JTextField(20);
@@ -75,12 +96,13 @@ public class StudentsPage extends JPanel {
 		btns.add(email);
 		students = new JPanel();
 		BoxLayout l = new BoxLayout(students, BoxLayout.Y_AXIS);
-
 		students.setLayout(l);
-		container.add(new JScrollPane(students));
+		constraints.gridy = 1;
+	
+		container.add(new JScrollPane(students), constraints);
 		add(container, BorderLayout.CENTER);
-		
-		
+
+		update();
 
 	}
 
@@ -90,15 +112,15 @@ public class StudentsPage extends JPanel {
 		for (int i = 0; i < studentList.size(); i++) {
 			Student s = studentList.get(i);
 			boolean enrolled = false;
-			if(course.getStudents().contains(s)) {
+			if (course.getStudents().contains(s)) {
 				enrolled = true;
 			}
-			StudentItem student = new StudentItem(s,enrolled);
+			StudentItem student = new StudentItem(s, enrolled);
 			students.add(student);
 
 		}
 
-//		System.out.println(course.assignments.size());
+		// System.out.println(course.assignments.size());
 		this.repaint();
 		this.revalidate();
 	}
@@ -108,8 +130,5 @@ public class StudentsPage extends JPanel {
 		this.course = c;
 		update();
 	}
-
-
-
 
 }

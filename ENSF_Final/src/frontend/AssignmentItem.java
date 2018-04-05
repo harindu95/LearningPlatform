@@ -44,31 +44,37 @@ public class AssignmentItem extends JPanel {
 		l.setHgap(10);
 		panel.setLayout(l);
 		this.setBackground(Color.WHITE);
+		
 		Color active = new Color(237, 82, 98);
-
-		panel.setBorder(BorderFactory.createMatteBorder(1, 5, 1, 1, active));
+		Color deactive = Color.GRAY;
+		Color border = deactive;
+		
 		name.setFont(font);
 		panel.setBackground(Color.white);
 		panel.setPreferredSize(new Dimension(750, 100));
 		close = new JButton("X");
 		JToggleButton activated = new JToggleButton("Deactive");
+		activated.setFont(new Font(Font.MONOSPACED,Font.TRUETYPE_FONT,12));
 		if (a.isActive()) {
-			// active = new Color(0,200,0);
+			border = active;
 			activated.setSelected(true);
-			activated.setText("Active");
+			activated.setText("Active  ");
 		}
+		panel.setBorder(BorderFactory.createMatteBorder(1, 5, 1, 1, border));
+		
 		activated.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (activated.isSelected()) {
 					assign.setActive(true);
-					activated.setText("Active");
-					// panel.setBackground(Color.WHITE);
+					activated.setText("Active  ");
+					panel.setBorder(BorderFactory.createMatteBorder(1, 5, 1, 1, active));
 				} else {
+					
 					assign.setActive(false);
 					activated.setText("Deactive");
-					// panel.setBackground(Color.GRAY);
+					panel.setBorder(BorderFactory.createMatteBorder(1, 5, 1, 1, deactive));
 				}
 
 			}

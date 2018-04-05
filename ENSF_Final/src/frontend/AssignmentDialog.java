@@ -12,6 +12,7 @@ import shared.FileObj;
 
 import com.jgoodies.forms.layout.FormSpecs;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
@@ -29,6 +30,7 @@ public class AssignmentDialog extends JDialog {
 	private JTextField textField;
 	private JTextField textField_1;
 	private Assignment assign;
+	private JLabel label;
 
 	public AssignmentDialog(CoursePage parent) {
 
@@ -56,7 +58,7 @@ public class AssignmentDialog extends JDialog {
 		JLabel lblFile = new JLabel("File");
 		panel.add(lblFile, "6, 6");
 
-		JLabel label = new JLabel("");
+		label = new JLabel("");
 		panel.add(label, "10, 6");
 
 		JButton btnUpload = new JButton("Upload");
@@ -64,18 +66,20 @@ public class AssignmentDialog extends JDialog {
 		JFileChooser chooser = new JFileChooser();
 		JDialog dialog = this;
 		btnUpload.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int r = chooser.showOpenDialog(dialog);
-				if(r == JFileChooser.APPROVE_OPTION) {
+				if (r == JFileChooser.APPROVE_OPTION) {
 					try {
 						File file = chooser.getSelectedFile();
-						if(file != null) {
+						if (file != null) {
 							label.setText(file.getName());
 							assign.setFile(new FileObj(file));
+						} else {
+							JOptionPane.showConfirmDialog(dialog, "Invalid file!");
 						}
-						
+
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -102,7 +106,7 @@ public class AssignmentDialog extends JDialog {
 				// TODO Auto-generated method stub
 				if (toggleButton.isSelected()) {
 					toggleButton.setText("True");
-				}else {
+				} else {
 					toggleButton.setText("False");
 				}
 			}
@@ -147,14 +151,24 @@ public class AssignmentDialog extends JDialog {
 				dialog.dispose();
 			}
 		});
-		
+
 		this.setLocationRelativeTo(null);
-		this.setSize(500,250);
+		this.setSize(500, 250);
 	}
 
 	public void showDialog(String title, Assignment a) {
-		textField.setText("");
-		textField_1.setText("");
+		if (a != null) {
+			textField.setText(a.getTitle());
+			textField_1.setText(a.getDue_date());
+			if (a.getFile() != null) {
+				File file = a.getFile().file;
+				label.setText(file.getName());
+			}
+
+		} else {
+			textField.setText("");
+			textField_1.setText("");
+		}
 		this.assign = a;
 		this.setTitle(title);
 		this.setVisible(true);

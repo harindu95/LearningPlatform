@@ -14,6 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.util.List;
 
 import javax.swing.BoxLayout;
@@ -31,6 +32,7 @@ import javax.swing.border.Border;
 
 
 import shared.Course;
+import shared.Professor;
 
 public class CoursesPage extends Tab {
 
@@ -41,12 +43,14 @@ public class CoursesPage extends Tab {
 	private CardLayout cardsLayout;
 	private JPanel tabs;
 	private CoursePage coursePage;
+	private Client client;
 
 	CoursesPage(Client c,JPanel tabs, CardLayout cardsLayout) {
 		addClass = new AddClassDialog(this);
+		this.client = c;
 		this.tabs = tabs;
 		this.cardsLayout = cardsLayout;
-		this.coursePage = new CoursePage(tabs,cardsLayout);
+		this.coursePage = new CoursePage(this,c,tabs,cardsLayout);
 		tabs.add(coursePage, "course");
 		Color redColor = new Color(123, 58, 220);
 		BorderLayout borderLayout = new BorderLayout();
@@ -127,6 +131,14 @@ public class CoursesPage extends Tab {
 	}
 
 	public void addCourse(Course c) {
+		
+		c.setProfessor((Professor)client.user);
+		try {
+			c = client.addCourse(c);
+		} catch (IOException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		courseList.add(c);
 		SwingUtilities.invokeLater(new Runnable() {
 
@@ -137,6 +149,18 @@ public class CoursesPage extends Tab {
 				update();
 			}
 		});
+	}
+
+	public void removeCourse(Course course) {
+		// TODO Auto-generated method stub
+		try {
+			client.removeCourse(course);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		courseList.remove(course);
+		update();
 	}
 
 }

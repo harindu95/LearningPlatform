@@ -28,6 +28,7 @@ public class Server {
 			Assignments assignmnets = new Assignments();
 			Courses courses = new Courses();
 			DatabaseManager db = new DatabaseManager(courses, students, profs, assignmnets);
+			db.readData();
 			while (true) {
 				Socket s = sSocket.accept();
 				executor.execute(new Worker(s,students,profs,courses,assignmnets,fileMgr,emailMgr,db));

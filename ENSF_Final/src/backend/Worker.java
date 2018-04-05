@@ -4,12 +4,17 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
+import shared.Course;
 import shared.LoginInfo;
 import shared.MSG_TYPE;
+import shared.Professor;
 import shared.Request;
 import shared.Request.DataType;
 import shared.Request.Type;
+import shared.Student;
 import shared.User;
 
 public class Worker implements Runnable {
@@ -23,7 +28,8 @@ public class Worker implements Runnable {
 	private EmailManager emailMgr;
 	private DatabaseManager db;
 
-	Worker(Socket s, Students students, Professors profs, Courses courses, Assignments assignmnets, FileManager fileMgr, EmailManager emailMgr,DatabaseManager db) {
+	Worker(Socket s, Students students, Professors profs, Courses courses, Assignments assignmnets, FileManager fileMgr,
+			EmailManager emailMgr, DatabaseManager db) {
 		socket = s;
 		this.students = students;
 		this.profs = profs;
@@ -40,9 +46,9 @@ public class Worker implements Runnable {
 			ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
 			ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
 			while (true) {
-					Request req = (Request) in.readObject();
-					System.out.println("Handling request...");
-					handleRequest(req, out,in);
+				Request req = (Request) in.readObject();
+				System.out.println("Handling request...");
+				handleRequest(req, out, in);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -56,13 +62,25 @@ public class Worker implements Runnable {
 		}
 	}
 
-	private void handleRequest(Request req, ObjectOutputStream out, ObjectInputStream in) throws IOException, ClassNotFoundException {
-		if (req.type == Type.PUT) {
-			if (req.dataType == DataType.Student) {
-				// TODO: call db store
+	private void handleRequest(Request req, ObjectOutputStream out, ObjectInputStream in)
+			throws IOException, ClassNotFoundException {
+		if (req.type == Type.UPDATE) {
+			switch (req.dataType) {
+			case Course:
+				Course k = courses.addCourse((Course) req.data);
+				out.writeObject(k);
+				break;
+			default:
+				System.out.println("Default put");
+				break;
 			}
+			out.flush();
+		
 		} else if (req.type == Type.GET) {
 			switch (req.dataType) {
+			case StudentList:
+				out.writeObject(new ArrayList<Student>(students.students.values()));
+				break;
 			case Student:
 				out.writeObject(students.students.get(req.id));
 				break;
@@ -76,7 +94,7 @@ public class Worker implements Runnable {
 				out.writeObject(courses.courses.get(req.id));
 				break;
 			case Login:
-				LoginInfo info = (LoginInfo)req.data;
+				LoginInfo info = (LoginInfo) req.data;
 				System.out.println("Authentication...");
 				User u = db.authenticate(info.username, info.password);
 				out.writeObject(u);
@@ -86,6 +104,15 @@ public class Worker implements Runnable {
 				break;
 			}
 
+		}else if(req.type == Type.DELETE) {
+			switch(req.dataType) {
+			case Course:
+				courses.removeCourse((Course)req.data);
+				break;
+			default:
+				System.out.println("Default case::::");
+				break;
+			}
 		}
 		out.flush();
 	}

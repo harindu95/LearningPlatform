@@ -75,12 +75,7 @@ public class ProfGUI extends GUI {
 		cardsLayout = new CardLayout(0, 0);
 		tabs.setLayout(cardsLayout);
 		CoursesPage courses = new CoursesPage(client,tabs, cardsLayout);
-		List<Course> list = new ArrayList<>();
-		list.add(new Course(2, "MATH271"));
-		list.add(new Course(3, "ENCM369"));
-		list.add(new Course(5, "ENSF409"));
-		list.add(new Course(6, "MATH211"));
-		courses.setCourses(list);
+		courses.setCourses(user.getCourses());
 
 		JPanel welcomePage = new WelcomePage();
 		tabs.add(welcomePage, "welcomePage");
