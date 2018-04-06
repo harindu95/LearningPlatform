@@ -100,8 +100,8 @@ public class Login {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				try {
-//					User u = client.authenticate(username.getText(), new String(password.getPassword()));
-					User u = client.authenticate("norm@ucalgary.ca", "admin");
+					User u = client.authenticate(username.getText(), new String(password.getPassword()));
+//					User u = client.authenticate("norm@ucalgary.ca", "admin");
 					login(u);
 				} catch (ClassNotFoundException e1) {
 					// TODO Auto-generated catch block
@@ -156,7 +156,7 @@ public class Login {
 				
 			} else if (u instanceof Professor) {
 
-				displayMessage("User is a professor");
+//				displayMessage("User is a professor");
 				System.out.println("courses : ::" +((Professor) u).getCourses().size());
 				ProfGUI window = new ProfGUI(client,(Professor)u);
 				window.frame.setVisible(true);
