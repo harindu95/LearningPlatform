@@ -132,7 +132,7 @@ public class AssignmentDialog extends JDialog {
 					assign.setTitle(textField.getText());
 					assign.setDue_date(textField_1.getText());
 					assign.setActive(toggleButton.isSelected());
-					parent.update();
+					parent.addAssignment(assign);
 				}
 				dialog.setVisible(false);
 				dialog.dispose();
@@ -166,6 +166,7 @@ public class AssignmentDialog extends JDialog {
 			}
 
 		} else {
+			a = new Assignment(0);
 			textField.setText("");
 			textField_1.setText("");
 		}

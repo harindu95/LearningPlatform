@@ -5,12 +5,17 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 
-public class FileObj {
+public class FileObj implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4931993358502378768L;
 	public File file = null;
 	public int[] data;
 
-	FileObj(String filename) throws IOException {
+	public FileObj(String filename) throws IOException {
 		file = new File(filename);
 		readFile();
 	}

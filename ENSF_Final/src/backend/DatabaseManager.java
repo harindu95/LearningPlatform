@@ -1,5 +1,6 @@
 package backend;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import shared.Assignment;
 import shared.Course;
+import shared.FileObj;
 import shared.Grade;
 import shared.Professor;
 import shared.Student;
@@ -36,6 +38,7 @@ public class DatabaseManager {
 		courses.setDBManager(this);
 		professors.setDBManager(this);
 		students.setDBManager(this);
+		assignments.setDBManager(this);
 
 		try {
 			// If this throws an error, make sure you have added the mySQL connector JAR to
@@ -77,7 +80,7 @@ public class DatabaseManager {
 				c.setName(course.getString("name"));
 				Professor p = professors.getProfessor(course.getInt("prof_id"));
 				c.setProfessor(p);
-				
+
 				p.getCourses().add(c);
 			}
 
@@ -86,66 +89,71 @@ public class DatabaseManager {
 		}
 
 	}
-	void updateAssignment(Assignment a,Course c) {
-		String sql ="UPDATE Assignments SET active=?, title=?, path=?, due_date=?,course_id=?, WHERE id=?";
-		
+
+	void updateAssignment(Assignment a) {
+		String sql = "";
+		if (a.getId() == 0) {
+			sql = "INSERT  INTO `Assignments` (`active`, `title`, `path`, `due_date`, `course_id`,`id`) VALUES ( ? , ? , ? , ?, ?,NULL);";
+		} else {
+			sql = "UPDATE Assignments SET active=?, title=?, path=?, due_date=?,course_id=?, WHERE id=" + a.getId();
+		}
+
 		try {
 			statement = jdbc_connection.prepareStatement(sql);
-			statement.setBoolean(1,a.isActive());
-			statement.setString(2,a.getTitle());
-			statement.setString(3, a.getPath());
-			statement.setString(4,a.getDue_date());
-			statement.setInt(5, c.getId());
-			statement.setInt(6, a.getId());
+			statement.setBoolean(1, a.isActive());
+			statement.setString(2, a.getTitle());
+			statement.setString(3, a.getFile().file.getPath());
+			statement.setString(4, a.getDue_date());
+			statement.setInt(5, a.getCourse().getId());
+			statement.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	void updateUser(User u) {
+
+		String sql = "UPDATE Users SET password=?, email=?, firstname=?, lastname=?, type=? WHERE id=?";
+
+		try {
+			statement = jdbc_connection.prepareStatement(sql);
+			statement.setString(1, u.getPassword());
+			statement.setString(2, u.getEmail());
+			statement.setString(3, u.getFirstName());
+			statement.setString(4, u.getLastName());
+			char type = ' ';
+			if (u instanceof Student) {
+				type = 'S';
+			} else if (u instanceof Professor) {
+				type = 'P';
+			}
+			statement.setString(5, "" + type);
+			statement.setInt(6, u.id);
 			statement.executeQuery();
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
-	
-	void updateUser(User u) {
-				
-		 String sql = "UPDATE Users SET password=?, email=?, firstname=?, lastname=?, type=? WHERE id=?";
-			
-			try {
-				statement = jdbc_connection.prepareStatement(sql);
-				statement.setString(1, u.getPassword());
-				statement.setString(2,u.getEmail());
-				statement.setString(3, u.getFirstName());
-				statement.setString(4, u.getLastName());
-				char type = ' ';
-				if (u instanceof Student) {
-					type = 'S';
-				}else if(u instanceof Professor) {
-					type = 'P';
-				}
-				statement.setString(5, "" +type);
-				statement.setInt(6,u.id);
-				statement.executeQuery();
-				
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-	}
-	
-	
+
 	void updateCourse(Course c) {
-		String sql ="UPDATE Courses SET active=?, prof_id=?, name=?, WHERE id=?";
-		
+		String sql = "UPDATE Courses SET active=?, prof_id=?, name=?, WHERE id=?";
+
 		try {
 			statement = jdbc_connection.prepareStatement(sql);
-			statement.setBoolean(1,c.isActive());
-			statement.setInt(2,c.getProfessor().id);
+			statement.setBoolean(1, c.isActive());
+			statement.setInt(2, c.getProfessor().id);
 			statement.setString(3, c.getName());
 			statement.setInt(4, c.getId());
 			statement.executeQuery();
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	void readAssignments() {
 		String sql = "SELECT * FROM Assignments";
 		ResultSet r;
@@ -156,29 +164,30 @@ public class DatabaseManager {
 				Assignment a = assignments.getAssignment(r.getInt("id"));
 				a.setActive(r.getBoolean("active"));
 				a.setTitle(r.getString("title"));
-				a.setPath(r.getString("path"));
+				a.setFile(new FileObj(r.getString("path")));
 				a.setDue_date(r.getString("due_date"));
 				Course c = courses.getCourse(r.getInt("course_id"));
 				c.assignments.add(a);
+				a.setCourse(c);
 			}
 
-		} catch (SQLException e) {
+		} catch (SQLException | IOException e) {
 			e.printStackTrace();
 		}
 
 	}
-	
-	void updateGrades(Grade g,Student s) {
-		String sql ="UPDATE Grades SET assign_id=?, assignment_grade=?,student_id=? WHERE id=?";
-		
+
+	void updateGrades(Grade g, Student s) {
+		String sql = "UPDATE Grades SET assign_id=?, assignment_grade=?,student_id=? WHERE id=?";
+
 		try {
 			statement = jdbc_connection.prepareStatement(sql);
-			statement.setInt(1,g.getAssignment().getId());
-			statement.setInt(2,g.getGrade());
+			statement.setInt(1, g.getAssignment().getId());
+			statement.setInt(2, g.getGrade());
 			statement.setInt(3, s.id);
 			statement.setInt(3, g.getId());
 			statement.executeQuery();
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -187,7 +196,7 @@ public class DatabaseManager {
 	void readGrades() {
 		String sql = "SELECT * FROM Grades";
 		ResultSet r;
-		
+
 		try {
 			statement = jdbc_connection.prepareStatement(sql);
 			r = statement.executeQuery();
@@ -263,7 +272,7 @@ public class DatabaseManager {
 			while (regs.next()) {
 				Course c = courses.getCourse(regs.getInt("course_id"));
 				Student s = students.getStudent(regs.getInt("student_id"));
-				
+
 				c.getStudents().add(s);
 				s.getCourses().add(c);
 
@@ -298,19 +307,19 @@ public class DatabaseManager {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public User authenticate(String username, String password) {
 		String sql = "SELECT * FROM Users WHERE email=? AND password=?";
 		ResultSet users = null;
 		try {
 			statement = jdbc_connection.prepareStatement(sql);
 			statement.setString(1, username);
-			statement.setString(2,password);
+			statement.setString(2, password);
 			users = statement.executeQuery();
 			if (users.next()) {
-				if(users.getString("type").equals("P")) {
+				if (users.getString("type").equals("P")) {
 					return professors.getProfessor(users.getInt("id"));
-				}else if(users.getString("type").equals("S")) {
+				} else if (users.getString("type").equals("S")) {
 					return students.getStudent(users.getInt("id"));
 				}
 			}
@@ -320,6 +329,7 @@ public class DatabaseManager {
 		}
 		return null;
 	}
+
 	/**
 	 * Create a data table inside of the database to hold clients
 	 */
@@ -369,13 +379,13 @@ public class DatabaseManager {
 	public void removeTables() {
 		String removeForeignChecks = "SET foreign_key_checks = 0;";
 		String sql = "DROP TABLE %s";
-		String[] tableNames = {"Users","Courses","Assignments", "StudentEnrollment","Submissions","Grades"};
+		String[] tableNames = { "Users", "Courses", "Assignments", "StudentEnrollment", "Submissions", "Grades" };
 		try {
-			
+
 			Statement st = jdbc_connection.createStatement();
 			st.executeUpdate(removeForeignChecks);
-			for(String t: tableNames) {
-				st.executeUpdate(String.format(sql,t));
+			for (String t : tableNames) {
+				st.executeUpdate(String.format(sql, t));
 			}
 			System.out.println("Removed all tables.");
 		} catch (SQLException e) {
@@ -432,21 +442,21 @@ public class DatabaseManager {
 		String sql = "INSERT INTO `Courses` (`id`, `prof_id`, `name`, `active`) VALUES (NULL, ?, ?, ?);";
 		String sql2 = "SELECT LAST_INSERT_ID();";
 		try {
-			statement = jdbc_connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
+			statement = jdbc_connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			statement.setInt(1, data.getProfessor().id);
 			statement.setString(2, data.getName());
 			statement.setBoolean(3, data.isActive());
 			statement.executeUpdate();
 			ResultSet keys = statement.getGeneratedKeys();
-			keys.next();  
+			keys.next();
 			return keys.getInt(1);
-			
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return 0;
-	
+
 	}
 
 	public void deleteCourse(Course data) {
@@ -456,11 +466,11 @@ public class DatabaseManager {
 			statement = jdbc_connection.prepareStatement(sql);
 			statement.setInt(1, data.getId());
 			statement.executeUpdate();
-			
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}		
+		}
 	}
 
 }

@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
+import shared.Assignment;
 import shared.Course;
 import shared.LoginInfo;
 import shared.MSG_TYPE;
@@ -69,6 +70,10 @@ public class Worker implements Runnable {
 			case Course:
 				Course k = courses.addCourse((Course) req.data);
 				out.writeObject(k);
+				break;
+			case Assignment:
+				assignmnets.addAssignment((Assignment)req.data);
+				out.writeObject(new ArrayList<>(assignmnets.assignments.values()));
 				break;
 			default:
 				System.out.println("Default put");

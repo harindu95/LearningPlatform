@@ -8,10 +8,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.UIManager;
 
+import shared.Assignment;
 import shared.Course;
 import shared.LoginInfo;
 import shared.Professor;
@@ -136,6 +138,17 @@ public class Client
 		req.data = course;
 		out.writeObject(req);
 		out.flush();
+	}
+
+	public List<Assignment> updateAssignment(Assignment assign) throws ClassNotFoundException, IOException {
+		Request req = new Request();
+		req.type = Type.UPDATE;
+		req.dataType = DataType.Assignment;
+		req.data = assign;
+		out.writeObject(req);
+		out.flush();
+		List<Assignment> list =(List<Assignment>)in.readObject();
+		return list;
 	}
     	
 }

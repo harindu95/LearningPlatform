@@ -26,6 +26,11 @@ public class Assignments {
 	public void setDBManager(DatabaseManager mgr) {
 		this.db = mgr;
 	}
+
+	public void addAssignment(Assignment data) {
+		db.updateAssignment(data);
+		db.readData();
+	}
 	
 	
 

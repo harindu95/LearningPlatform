@@ -42,10 +42,12 @@ public class CoursePage extends JPanel {
 	private CardLayout cardLayout;
 	private JPanel tabs;
 	private StudentsPage students;
+	private Client client;
 
 	public CoursePage(CoursesPage parent,Client c,JPanel tabs, CardLayout cards) {
 		this.tabs = tabs;
 		this.cardLayout = cards;
+		this.client = c;
 		students = new StudentsPage(c);
 		tabs.add(students, "students");
 		BorderLayout borderLayout = new BorderLayout();
@@ -169,8 +171,17 @@ public class CoursePage extends JPanel {
 	}
 
 	public void addAssignment(Assignment assign) {
-		if(assign != null) {
-			course.assignments.add(assign);
+		if(assign != null) { 
+			assign.setCourse(course);
+			try {
+				course.assignments = client.updateAssignment(assign);
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			SwingUtilities.invokeLater(new Runnable() {
 				
 				@Override

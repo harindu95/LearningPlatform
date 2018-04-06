@@ -10,9 +10,10 @@ public class Assignment implements Serializable{
 	private int id = 0;
 	private boolean active = true;
 	private String title = "";
-	private String path = "";
+//	private String path = "";
 	private String due_date  = "";
 	private FileObj file = null;
+	private Course course = null;
 	
 	public Assignment(int id){
 		this.setId(id);
@@ -49,16 +50,6 @@ public class Assignment implements Serializable{
 	/**
 	 * @return the path
 	 */
-	public String getPath() {
-		return path;
-	}
-
-	/**
-	 * @param path the path to set
-	 */
-	public void setPath(String path) {
-		this.path = path;
-	}
 
 	/**
 	 * @return the due_date
@@ -100,6 +91,20 @@ public class Assignment implements Serializable{
 	 */
 	public void setFile(FileObj file) {
 		this.file = file;
+	}
+
+	/**
+	 * @return the course
+	 */
+	public Course getCourse() {
+		return course;
+	}
+
+	/**
+	 * @param course the course to set
+	 */
+	public void setCourse(Course course) {
+		this.course = course;
 	}
 }
 
