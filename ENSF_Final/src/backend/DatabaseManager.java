@@ -439,21 +439,37 @@ public class DatabaseManager {
 
 	public int addCourse(Course data) {
 		// TODO Auto-generated method stub
-		String sql = "INSERT INTO `Courses` (`id`, `prof_id`, `name`, `active`) VALUES (NULL, ?, ?, ?);";
-		String sql2 = "SELECT LAST_INSERT_ID();";
-		try {
-			statement = jdbc_connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-			statement.setInt(1, data.getProfessor().id);
-			statement.setString(2, data.getName());
-			statement.setBoolean(3, data.isActive());
-			statement.executeUpdate();
-			ResultSet keys = statement.getGeneratedKeys();
-			keys.next();
-			return keys.getInt(1);
+		if (data.getId() == 0) {
+			String sql = "INSERT INTO `Courses` (`id`, `prof_id`, `name`, `active`) VALUES (NULL, ?, ?, ?);";
+			String sql2 = "SELECT LAST_INSERT_ID();";
+			try {
+				statement = jdbc_connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+				statement.setInt(1, data.getProfessor().id);
+				statement.setString(2, data.getName());
+				statement.setBoolean(3, data.isActive());
+				statement.executeUpdate();
+				ResultSet keys = statement.getGeneratedKeys();
+				keys.next();
+				return keys.getInt(1);
 
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else {
+			String sql = "UPDATE Courses SET active=?, prof_id=?, name=? WHERE id=?";
+			try {
+				statement = jdbc_connection.prepareStatement(sql);
+				statement.setBoolean(1, data.isActive());
+				statement.setInt(2, data.getProfessor().id);
+				statement.setString(3, data.getName());
+				statement.setInt(4, data.getId());
+				statement.executeUpdate();
+
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return 0;
 
@@ -475,7 +491,8 @@ public class DatabaseManager {
 
 	public void updateEnrollment(int student_id, int course_id, boolean enroll) {
 		// TODO Auto-generated method stub
-		String sql1 = "DELETE FROM StudentEnrollment WHERE student_id="+student_id +" AND course_id="+course_id + ";"; 
+		String sql1 = "DELETE FROM StudentEnrollment WHERE student_id=" + student_id + " AND course_id=" + course_id
+				+ ";";
 		try {
 			statement = jdbc_connection.prepareStatement(sql1);
 			statement.executeUpdate();
@@ -484,7 +501,7 @@ public class DatabaseManager {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		if(enroll) {
+		if (enroll) {
 			String sql2 = "INSERT INTO `StudentEnrollment` (`id`, `student_id`, `course_id`) VALUES (NULL, ? , ?);";
 			try {
 				statement = jdbc_connection.prepareStatement(sql2);
@@ -511,7 +528,5 @@ public class DatabaseManager {
 			e.printStackTrace();
 		}
 	}
-
-
 
 }

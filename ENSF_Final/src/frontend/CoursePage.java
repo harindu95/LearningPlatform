@@ -24,6 +24,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.JToggleButton;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
@@ -43,8 +44,9 @@ public class CoursePage extends JPanel {
 	private JPanel tabs;
 	private StudentsPage students;
 	private Client client;
+	private JToggleButton toggle;
 
-	public CoursePage(CoursesPage parent,Client c,JPanel tabs, CardLayout cards) {
+	public CoursePage(CoursesPage parent, Client c, JPanel tabs, CardLayout cards) {
 		this.tabs = tabs;
 		this.cardLayout = cards;
 		this.client = c;
@@ -80,13 +82,33 @@ public class CoursePage extends JPanel {
 		JButton deleteCourse = new JButton("Delete Course");
 		JButton addStudent = new JButton("Enroll/Unenroll");
 		JButton addAssignmnet = new JButton("Add Assignment");
+		toggle = new JToggleButton("Disabled");
+		if (course.isActive()) {
+			toggle.setText("Enabled");
+			toggle.setSelected(true);
+		}
+		toggle.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				course.setActive(toggle.isSelected());
+				if(toggle.isSelected()) {
+					toggle.setText("Enabled");
+				}else {
+					toggle.setText("Disabled");
+				}
+				parent.addCourse(course);
+			}
+		});
+		
 		((FlowLayout) btns.getLayout()).setAlignment(FlowLayout.LEFT);
 		btns.add(addStudent);
 		btns.add(addAssignmnet);
 		btns.add(deleteCourse);
-		
+		btns.add(toggle);
+
 		assignments = new JPanel();
-//		FlowLayout l = new FlowLayout(ignments, BoxLayout.Y_AXIS);
+		// FlowLayout l = new FlowLayout(ignments, BoxLayout.Y_AXIS);
 		GridBagLayout l = new GridBagLayout();
 		assignments.setLayout(l);
 		assignments.setBackground(Color.white);
@@ -95,25 +117,25 @@ public class CoursePage extends JPanel {
 
 		changeAssignment = new AssignmentDialog(this);
 		addAssignmnet.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				changeAssignment.showDialog("Add Assignment", null);
-				
+
 			}
 		});
-		
+
 		addStudent.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				students.setCourse(course);
 				cards.show(tabs, "students");
 			}
 		});
-		
+
 		deleteCourse.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				parent.removeCourse(course);
@@ -124,10 +146,10 @@ public class CoursePage extends JPanel {
 	void update() {
 		assignments.removeAll();
 		GridBagConstraints c = new GridBagConstraints();
-		
+
 		for (int i = 0; i < course.assignments.size(); i++) {
 			c.gridy = i;
-			
+
 			Assignment a = course.assignments.get(i);
 			AssignmentItem assignment = new AssignmentItem(a);
 			assignment.addMouseListener(new MouseAdapter() {
@@ -137,7 +159,7 @@ public class CoursePage extends JPanel {
 				}
 			});
 			assignment.AddClsBtnActionLiistener(new ActionListener() {
-				
+
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					// TODO Auto-generated method stub
@@ -160,7 +182,7 @@ public class CoursePage extends JPanel {
 			// cardsLayout.show(tabs, "course");
 			// }
 			// });
-			assignments.add(assignment,c);
+			assignments.add(assignment, c);
 
 		}
 
@@ -172,12 +194,18 @@ public class CoursePage extends JPanel {
 	public void setCourse(Course c) {
 		// TODO Auto-generated method stub
 		topLabel.setText(c.getName());
+		toggle.setSelected(c.isActive());
+		if(toggle.isSelected()) {
+			toggle.setText("Enabled");
+		}else {
+			toggle.setText("Disabled");
+		}
 		this.course = c;
 		update();
 	}
 
 	public void addAssignment(Assignment assign) {
-		if(assign != null) { 
+		if (assign != null) {
 			assign.setCourse(course);
 			try {
 				course.assignments = client.updateAssignment(assign);
@@ -189,7 +217,7 @@ public class CoursePage extends JPanel {
 				e.printStackTrace();
 			}
 			SwingUtilities.invokeLater(new Runnable() {
-				
+
 				@Override
 				public void run() {
 					// TODO Auto-generated method stub

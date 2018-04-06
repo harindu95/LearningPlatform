@@ -78,37 +78,10 @@ public class ProfGUI extends GUI {
 
 		JPanel welcomePage = new WelcomePage();
 		tabs.add(welcomePage, "welcomePage");
-		welcomePage.setLayout(null);
-
-		JLabel purpleButton = new JLabel();
-		purpleButton.setBounds(0, 0, 0, 0);
-		welcomePage.add(purpleButton);
-		purpleButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent arg0) {
-				purpleButton.setIcon(new ImageIcon(getClass().getResource("/images/purple_hover.jpg")));
-			}
-
-			@Override
-			public void mouseExited(MouseEvent arg0) {
-				purpleButton.setIcon(new ImageIcon(getClass().getResource("")));
-			}
-		});
-
-		JLabel blueButton = new JLabel();
-		blueButton.setBounds(0, 100, 0, 528);
-		welcomePage.add(blueButton);
-		blueButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent arg0) {
-				blueButton.setIcon(new ImageIcon(getClass().getResource("/images/blue_hover.jpg")));
-			}
-
-			@Override
-			public void mouseExited(MouseEvent arg0) {
-				blueButton.setIcon(new ImageIcon(getClass().getResource("")));
-			}
-		});
+		welcomePage.setLayout(new BorderLayout());
+		JLabel background = new JLabel();
+		background.setIcon(new ImageIcon(ProfGUI.class.getResource("/banner.jpg")));
+		welcomePage.add(background,BorderLayout.CENTER);
 
 		tabs.add(courses, "courses");
 
@@ -190,17 +163,6 @@ public class ProfGUI extends GUI {
 		lblSettings.setBounds(72, 518, 128, 74);
 		panel.add(lblSettings);
 
-		purpleButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent arg0) {
-				purpleButton.setIcon(new ImageIcon(getClass().getResource("/images/purple_hover.jpg")));
-			}
-
-			@Override
-			public void mouseExited(MouseEvent arg0) {
-				purpleButton.setIcon(new ImageIcon(getClass().getResource("")));
-			}
-		});
 		lblSettings.setBounds(65, 510, 128, 38);
 		panel.add(lblSettings);
 
@@ -305,7 +267,7 @@ public class ProfGUI extends GUI {
 		main.setBounds(0, 0, 1280, 728);
 		main.setIcon(new ImageIcon(GUI.class.getResource("/images/main.png")));
 		panel.add(main);
-
+		cardsLayout.show(tabs, "welcomePage");
 	}
 
 	public Request choices() {
