@@ -75,7 +75,6 @@ public class ProfGUI extends GUI {
 		cardsLayout = new CardLayout(0, 0);
 		tabs.setLayout(cardsLayout);
 		CoursesPage courses = new CoursesPage(client,tabs, cardsLayout);
-		courses.setCourses(user.getCourses());
 
 		JPanel welcomePage = new WelcomePage();
 		tabs.add(welcomePage, "welcomePage");
@@ -287,6 +286,7 @@ public class ProfGUI extends GUI {
 		lblCourses.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				courses.readCourses();
 				cardsLayout.show(tabs, "courses");
 			}
 			

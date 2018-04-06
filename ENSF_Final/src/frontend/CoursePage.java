@@ -142,6 +142,12 @@ public class CoursePage extends JPanel {
 				public void actionPerformed(ActionEvent e) {
 					// TODO Auto-generated method stub
 					course.assignments.remove(a);
+					try {
+						client.removeAssignment(a);
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 					update();
 				}
 			});

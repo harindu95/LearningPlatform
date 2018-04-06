@@ -108,7 +108,6 @@ public class CoursesPage extends Tab {
 
 	void update() {
 		courses.removeAll();
-
 		for (int i = 0; i < courseList.size(); i++) {
 			Course c = courseList.get(i);
 			JPanel course = new CourseItem(c,coursePage);
@@ -160,6 +159,17 @@ public class CoursesPage extends Tab {
 			e.printStackTrace();
 		}
 		courseList.remove(course);
+		update();
+	}
+
+	public void readCourses() {
+		// TODO Auto-generated method stub
+		try {
+			courseList = client.getCourses();
+		} catch (ClassNotFoundException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		update();
 	}
 

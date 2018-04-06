@@ -25,7 +25,7 @@ public class StudentItem extends JPanel {
 	private JLabel lastName;
 	private Student student;
 
-	StudentItem(Student s, boolean enrolled) {
+	StudentItem(StudentsPage parent, Student s, boolean enrolled) {
 		JPanel panel = new JPanel();
 
 		this.student = s;
@@ -34,6 +34,13 @@ public class StudentItem extends JPanel {
 		this.lastName = new JLabel(s.getLastName());
 		Font font = new Font("Sans", Font.TRUETYPE_FONT, 18);
 		JCheckBox enrolledCheckBox = new JCheckBox("Enrolled");
+		enrolledCheckBox.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				parent.updateEnrollment(s,enrolledCheckBox.isSelected());
+			}
+		});
 		enrolledCheckBox.setSelected(enrolled);
 		
 		panel.add(enrolledCheckBox);

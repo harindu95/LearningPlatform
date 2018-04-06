@@ -122,18 +122,15 @@ public class AssignmentDialog extends JDialog {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (assign == null) {
-					assign = new Assignment(0);
-					assign.setTitle(textField.getText());
-					assign.setDue_date(textField_1.getText());
-					assign.setActive(toggleButton.isSelected());
-					parent.addAssignment(assign);
-				} else {
-					assign.setTitle(textField.getText());
-					assign.setDue_date(textField_1.getText());
-					assign.setActive(toggleButton.isSelected());
-					parent.addAssignment(assign);
+
+				if(assign.getFile() == null) {
+					JOptionPane.showMessageDialog(dialog, "Invalid file", "Error", JOptionPane.ERROR_MESSAGE);
+					return;
 				}
+				assign.setTitle(textField.getText());
+				assign.setDue_date(textField_1.getText());
+				assign.setActive(toggleButton.isSelected());
+				parent.addAssignment(assign);
 				dialog.setVisible(false);
 				dialog.dispose();
 			}

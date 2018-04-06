@@ -98,7 +98,7 @@ public class StudentsPage extends JPanel {
 		BoxLayout l = new BoxLayout(students, BoxLayout.Y_AXIS);
 		students.setLayout(l);
 		constraints.gridy = 1;
-	
+
 		container.add(new JScrollPane(students), constraints);
 		add(container, BorderLayout.CENTER);
 
@@ -108,14 +108,16 @@ public class StudentsPage extends JPanel {
 
 	void update() {
 		students.removeAll();
-
+		System.out.println("Updating... students page");
 		for (int i = 0; i < studentList.size(); i++) {
 			Student s = studentList.get(i);
 			boolean enrolled = false;
-			if (course.getStudents().contains(s)) {
+			if (s.getCourses().contains(course)) {
 				enrolled = true;
+			}else {
+				System.out.println();
 			}
-			StudentItem student = new StudentItem(s, enrolled);
+			StudentItem student = new StudentItem(this, s, enrolled);
 			students.add(student);
 
 		}
@@ -128,6 +130,19 @@ public class StudentsPage extends JPanel {
 	public void setCourse(Course c) {
 		// TODO Auto-generated method stub
 		this.course = c;
+		update();
+	}
+
+	public void updateEnrollment(Student s, boolean selected) {
+		// TODO Auto-generated method stub
+
+		try {
+			course = client.updateEnrollment(course, s,selected);
+			studentList = client.getAllStudents();
+		} catch (ClassNotFoundException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		update();
 	}
 

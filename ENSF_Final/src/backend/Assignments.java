@@ -31,6 +31,12 @@ public class Assignments {
 		db.updateAssignment(data);
 		db.readData();
 	}
+
+	public void removeAssignment(Assignment data) {
+		// TODO Auto-generated method stub
+		db.removeAssignment(data);
+		db.readData();
+	}
 	
 	
 

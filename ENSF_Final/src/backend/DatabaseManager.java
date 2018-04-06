@@ -473,4 +473,45 @@ public class DatabaseManager {
 		}
 	}
 
+	public void updateEnrollment(int student_id, int course_id, boolean enroll) {
+		// TODO Auto-generated method stub
+		String sql1 = "DELETE FROM StudentEnrollment WHERE student_id="+student_id +" AND course_id="+course_id + ";"; 
+		try {
+			statement = jdbc_connection.prepareStatement(sql1);
+			statement.executeUpdate();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if(enroll) {
+			String sql2 = "INSERT INTO `StudentEnrollment` (`id`, `student_id`, `course_id`) VALUES (NULL, ? , ?);";
+			try {
+				statement = jdbc_connection.prepareStatement(sql2);
+				statement.setInt(1, student_id);
+				statement.setInt(2, course_id);
+				statement.executeUpdate();
+
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void removeAssignment(Assignment data) {
+		// TODO Auto-generated method stub
+		String sql = "DELETE FROM Assignments WHERE id=" + data.getId();
+		try {
+			statement = jdbc_connection.prepareStatement(sql);
+			statement.executeUpdate();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+
+
 }
