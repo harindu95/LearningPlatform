@@ -136,8 +136,8 @@ public class Client {
 		req.data = assign;
 		out.writeObject(req);
 		out.flush();
-		List<Assignment> list = (List<Assignment>) in.readObject();
-		return list;
+		assign.getCourse().assignments.add(assign);
+		return assign.getCourse().assignments;
 	}
 
 	public Course updateEnrollment(Course course, Student s, boolean enroll)

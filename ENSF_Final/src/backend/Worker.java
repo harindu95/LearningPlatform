@@ -72,7 +72,6 @@ public class Worker implements Runnable {
 				break;
 			case Assignment:
 				assignmnets.addAssignment((Assignment)req.data);
-				out.writeObject(new ArrayList<>(assignmnets.assignments.values()));
 				break;
 			case ENROLL:
 				int[] data = (int[])req.data;

@@ -71,7 +71,7 @@ public class CoursesPage extends Tab {
 		scrollPane = new JScrollPane(courses);
 		courses.setBorder(new javax.swing.border.EmptyBorder(30, 30, 30, 30));
 		JPanel btns = new JPanel();
-		JButton newClass = new JButton("New Class");
+		JButton newClass = new JButton("New Course");
 		btns.add(newClass);
 		((FlowLayout) btns.getLayout()).setAlignment(FlowLayout.LEFT);
 		btns.setBackground(Color.WHITE);
