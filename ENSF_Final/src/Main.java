@@ -3,6 +3,7 @@ import backend.Courses;
 import backend.DatabaseManager;
 import backend.Professors;
 import backend.Students;
+import backend.Submissions;
 import shared.Student;
 
 public class Main {
@@ -11,7 +12,8 @@ public class Main {
 		Courses courses = new Courses();
 		Students students = new Students();
 		Assignments assignmemts = new Assignments();
-		DatabaseManager db = new DatabaseManager(courses, students, profs, assignmemts);
+		Submissions subs = new Submissions();
+		DatabaseManager db = new DatabaseManager(courses, students, profs, assignmemts,subs);
 //		db.createDB();
 		db.createTables();
 		db.fillTables();

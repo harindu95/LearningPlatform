@@ -45,13 +45,18 @@ public class CoursePage extends JPanel {
 	private StudentsPage students;
 	private Client client;
 	private JToggleButton toggle;
+	private State state;
+	private SubmissionPage submissionPage;
 
-	public CoursePage(CoursesPage parent, Client c, JPanel tabs, CardLayout cards) {
+	public CoursePage(CoursesPage parent, Client c, State s,JPanel tabs, CardLayout cards) {
 		this.tabs = tabs;
 		this.cardLayout = cards;
 		this.client = c;
-		students = new StudentsPage(c);
+		this.state = s;
+		this.submissionPage = new SubmissionPage();
+		students = new StudentsPage(c,s);
 		tabs.add(students, "students");
+		tabs.add(submissionPage, "dropbox");
 		BorderLayout borderLayout = new BorderLayout();
 		this.setLayout(borderLayout);
 		this.setBackground(new Color(255, 255, 255));
@@ -152,10 +157,17 @@ public class CoursePage extends JPanel {
 
 			Assignment a = course.assignments.get(i);
 			AssignmentItem assignment = new AssignmentItem(a);
+			assignment.AddEditBtnActionLiistener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					changeAssignment.showDialog("Change Assignment", a);
+				}
+			});
+			
 			assignment.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					changeAssignment.showDialog("Change Assignment", a);
+					cardLayout.show(tabs, "dropbox");
 				}
 			});
 			assignment.AddClsBtnActionLiistener(new ActionListener() {
@@ -173,15 +185,7 @@ public class CoursePage extends JPanel {
 					update();
 				}
 			});
-			// course.addMouseListener(new MouseAdapter() {
-
-			// @Override
-			// public void mouseClicked(MouseEvent e) {
-			// super.mouseClicked(e);
-			// coursePage.setCourse(c);
-			// cardsLayout.show(tabs, "course");
-			// }
-			// });
+		
 			assignments.add(assignment, c);
 
 		}

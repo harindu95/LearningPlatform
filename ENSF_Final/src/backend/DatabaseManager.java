@@ -23,6 +23,7 @@ public class DatabaseManager {
 	private Courses courses;
 	private Students students;
 	private Professors professors;
+	private Submissions submissions;
 
 	public Connection jdbc_connection;
 	public PreparedStatement statement;
@@ -30,11 +31,12 @@ public class DatabaseManager {
 	public String connectionInfo = "jdbc:mysql://localhost:3306/ENSF_Final", login = "ensf", password = null;
 	private Assignments assignments;
 
-	public DatabaseManager(Courses courses, Students students, Professors profs, Assignments a) {
+	public DatabaseManager(Courses courses, Students students, Professors profs, Assignments a,Submissions subs) {
 		this.courses = courses;
 		this.students = students;
 		this.professors = profs;
 		this.assignments = a;
+		this.submissions  = subs;
 		courses.setDBManager(this);
 		professors.setDBManager(this);
 		students.setDBManager(this);
@@ -60,6 +62,7 @@ public class DatabaseManager {
 		students.students.clear();
 		courses.courses.clear();
 		assignments.assignments.clear();
+		submissions.submissions.clear();
 		readCourses();
 		readUsers();
 		readCourseRegistrations();
@@ -229,6 +232,8 @@ public class DatabaseManager {
 				s.setSubmission_grade(r.getInt("submission_grade"));
 				Student student = students.getStudent(r.getInt("student_id"));
 				student.getSubmissions().add(s);
+				submissions.add(s);
+				s.setStudent(student);
 			}
 
 		} catch (SQLException e) {
@@ -514,6 +519,7 @@ public class DatabaseManager {
 				e.printStackTrace();
 			}
 		}
+		
 	}
 
 	public void removeAssignment(Assignment data) {

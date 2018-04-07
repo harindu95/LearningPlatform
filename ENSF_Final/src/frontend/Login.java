@@ -1,31 +1,21 @@
 package frontend;
 
-import java.awt.EventQueue;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Toolkit;
-
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.ImageIcon;
-import javax.swing.JTextField;
 import java.awt.Color;
-import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
-import javax.swing.UIManager;
+import javax.swing.JTextField;
 
 import shared.Professor;
 import shared.Student;
 import shared.User;
-
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
 public class Login {
 
@@ -36,15 +26,16 @@ public class Login {
 	private JLabel cancelBtn;
 	boolean loginPressed = false;
 	private Client client;
-	private JLabel spinner;
+	private State state;
 
 	/**
 	 * Create the application.
 	 * 
 	 * @param c
 	 */
-	public Login(Client c) {
+	public Login(Client c, State s) {
 		this.client = c;
+		this.state = s;
 		initialize();
 	}
 
@@ -100,9 +91,9 @@ public class Login {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				try {
-					User u = client.authenticate(username.getText(), new String(password.getPassword()));
-//					User u = client.authenticate("norm@ucalgary.ca", "admin");
-					login(u);
+//					client.authenticate(username.getText(), new String(password.getPassword()));
+					client.authenticate("norm@ucalgary.ca", "admin");
+					login();
 				} catch (ClassNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -130,6 +121,7 @@ public class Login {
 				cancelBtn.setIcon(new ImageIcon("resources/images/logincancel1.png"));
 				username.setText("");
 				password.setText("");
+				System.exit(0);
 			}
 		});
 		cancelBtn.setIcon(new ImageIcon(Login.class.getResource("/images/logincancel1.png")));
@@ -147,7 +139,8 @@ public class Login {
 	}
 
 	
-	private void login(User u) {
+	private void login() {
+		User u = state.user;
 		if (u == null) {
 			displayMessage("Login failed!");
 		} else {
@@ -156,9 +149,7 @@ public class Login {
 				
 			} else if (u instanceof Professor) {
 
-//				displayMessage("User is a professor");
-				System.out.println("courses : ::" +((Professor) u).getCourses().size());
-				ProfGUI window = new ProfGUI(client,(Professor)u);
+				ProfGUI window = new ProfGUI(client,state);
 				window.frame.setVisible(true);
 				frame.setVisible(false);
 			}

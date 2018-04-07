@@ -35,7 +35,7 @@ public class ProfGUI extends GUI {
 	private JPanel tabs;
 	private CardLayout cardsLayout;
 	private Client client;
-	private Professor user;
+	private State state;
 
 
 
@@ -43,9 +43,9 @@ public class ProfGUI extends GUI {
 	 * Create the application.
 	 * @param u 
 	 */
-	public ProfGUI(Client c, Professor u) {
+	public ProfGUI(Client c, State s) {
 		this.client = c;
-		this.user = u;
+		this.state  = s;
 		initialize();
 	}
 
@@ -74,7 +74,7 @@ public class ProfGUI extends GUI {
 		panel.add(tabs);
 		cardsLayout = new CardLayout(0, 0);
 		tabs.setLayout(cardsLayout);
-		CoursesPage courses = new CoursesPage(client,tabs, cardsLayout);
+		CoursesPage courses = new CoursesPage(client,state,tabs, cardsLayout);
 
 		JPanel welcomePage = new WelcomePage();
 		tabs.add(welcomePage, "welcomePage");

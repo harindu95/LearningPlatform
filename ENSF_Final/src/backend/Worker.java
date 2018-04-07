@@ -27,8 +27,9 @@ public class Worker implements Runnable {
 	private FileManager fileMgr;
 	private EmailManager emailMgr;
 	private DatabaseManager db;
+	private Submissions submissions;
 
-	Worker(Socket s, Students students, Professors profs, Courses courses, Assignments assignmnets, FileManager fileMgr,
+	Worker(Socket s, Students students, Professors profs, Courses courses, Assignments assignmnets,Submissions sub, FileManager fileMgr,
 			EmailManager emailMgr, DatabaseManager db) {
 		socket = s;
 		this.students = students;
@@ -38,6 +39,7 @@ public class Worker implements Runnable {
 		this.fileMgr = fileMgr;
 		this.emailMgr = emailMgr;
 		this.db = db;
+		this.submissions = sub;
 	}
 
 	@Override
@@ -68,7 +70,6 @@ public class Worker implements Runnable {
 			switch (req.dataType) {
 			case Course:
 				Course k = courses.addCourse((Course) req.data);
-				out.writeObject(k);
 				break;
 			case Assignment:
 				assignmnets.addAssignment((Assignment)req.data);
@@ -78,14 +79,12 @@ public class Worker implements Runnable {
 				System.out.println("Updating enrollment");
 				db.updateEnrollment(data[0],data[1],true);
 				db.readData();
-				out.writeObject(courses.courses.get(data[1]));
 				break;
 			case UNROLL:
 				int[] data1 = (int[])req.data;
 				System.out.println("Updating enrollment");
 				db.updateEnrollment(data1[0],data1[1],false);
 				db.readData();
-				out.writeObject(courses.courses.get(data1[1]));
 				break;
 			default:
 				System.out.println("Default put");
@@ -95,8 +94,16 @@ public class Worker implements Runnable {
 		
 		} else if (req.type == Type.GET) {
 			switch (req.dataType) {
+			case User:
+				User k = (User)req.data;
+				User u2 = db.authenticate(k.getEmail(), k.getPassword());
+				out.writeObject(u2);
+				break;
 			case StudentList:
 				out.writeObject(new ArrayList<Student>(students.students.values()));
+				break;
+			case SubmissionList:
+				out.writeObject(submissions.getSubmissions((Assignment) req.data));
 				break;
 			case Student:
 				out.writeObject(students.students.get(req.id));
