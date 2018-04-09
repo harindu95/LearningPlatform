@@ -20,6 +20,7 @@ import java.io.IOException;
 import javax.swing.JPasswordField;
 import javax.swing.UIManager;
 
+import frontend.student.StudentGUI;
 import shared.Professor;
 import shared.Student;
 import shared.User;
@@ -100,8 +101,8 @@ public class Login {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				try {
-					User u = client.authenticate(username.getText(), new String(password.getPassword()));
-//					User u = client.authenticate("norm@ucalgary.ca", "admin");
+//					User u = client.authenticate(username.getText(), new String(password.getPassword()));
+					User u = client.authenticate("abc@gmail.com", "admin");
 					login(u);
 				} catch (ClassNotFoundException e1) {
 					// TODO Auto-generated catch block
@@ -153,7 +154,9 @@ public class Login {
 		} else {
 			if (u instanceof Student) {
 				displayMessage("User is a student");
-				
+				StudentGUI window = new StudentGUI(client,(Student)u);
+				window.frame.setVisible(true);
+				frame.setVisible(false);	
 			} else if (u instanceof Professor) {
 
 //				displayMessage("User is a professor");
