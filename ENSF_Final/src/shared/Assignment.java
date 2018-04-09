@@ -1,6 +1,8 @@
 package shared;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Assignment implements Serializable{
 	/**
@@ -14,9 +16,11 @@ public class Assignment implements Serializable{
 	private String due_date  = "";
 	private FileObj file = null;
 	private Course course = null;
+	private List<Submission> submissions;
 	
 	public Assignment(int id){
 		this.setId(id);
+		setSubmissions(new ArrayList<Submission>());
 	}
 
 	/**
@@ -105,6 +109,25 @@ public class Assignment implements Serializable{
 	 */
 	public void setCourse(Course course) {
 		this.course = course;
+	}
+
+	/**
+	 * @return the submissions
+	 */
+	public List<Submission> getSubmissions() {
+		return submissions;
+	}
+
+	/**
+	 * @param submissions the submissions to set
+	 */
+	public void setSubmissions(List<Submission> submissions) {
+		this.submissions = submissions;
+	}
+
+	public void addSubmission(Submission s) {
+		// TODO Auto-generated method stub
+		submissions.add(s);
 	}
 }
 

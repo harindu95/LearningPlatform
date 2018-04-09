@@ -3,13 +3,9 @@ package frontend;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.GridLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -24,12 +20,7 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.Border;
-
-
 
 import shared.Course;
 import shared.Professor;
@@ -44,13 +35,14 @@ public class CoursesPage extends Tab {
 	private JPanel tabs;
 	private CoursePage coursePage;
 	private Client client;
+	private State state;
 
-	CoursesPage(Client c,JPanel tabs, CardLayout cardsLayout) {
+	CoursesPage(Client c, State s, JPanel tabs, CardLayout cardsLayout) {
 		addClass = new AddClassDialog(this);
 		this.client = c;
 		this.tabs = tabs;
 		this.cardsLayout = cardsLayout;
-		this.coursePage = new CoursePage(this,c,tabs,cardsLayout);
+		this.coursePage = new CoursePage(this, c, s, tabs, cardsLayout);
 		tabs.add(coursePage, "course");
 		Color redColor = new Color(123, 58, 220);
 		BorderLayout borderLayout = new BorderLayout();
@@ -90,29 +82,18 @@ public class CoursesPage extends Tab {
 			}
 
 		});
-	}
 
-	void setCourses(List<Course> list) {
-		this.courseList = list;
-
-		SwingUtilities.invokeLater(new Runnable() {
-
-			@Override
-			public void run() {
-
-				update();
-			}
-		});
-
+		courseList = s.user.getCourses();
+		this.state = s;
 	}
 
 	void update() {
 		courses.removeAll();
 		for (int i = 0; i < courseList.size(); i++) {
 			Course c = courseList.get(i);
-			JPanel course = new CourseItem(c,coursePage);
+			JPanel course = new CourseItem(c, coursePage);
 			course.addMouseListener(new MouseAdapter() {
-				
+
 				@Override
 				public void mouseClicked(MouseEvent e) {
 					super.mouseClicked(e);
@@ -130,15 +111,15 @@ public class CoursesPage extends Tab {
 	}
 
 	public void addCourse(Course c) {
-		
-		c.setProfessor((Professor)client.user);
+
+		c.setProfessor((Professor) state.user);
 		try {
-			c = client.addCourse(c);
+			client.addCourse(c);
 		} catch (IOException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		courseList.add(c);
+		courseList = state.user.getCourses();
 		SwingUtilities.invokeLater(new Runnable() {
 
 			@Override

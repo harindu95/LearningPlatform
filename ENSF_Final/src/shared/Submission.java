@@ -13,6 +13,7 @@ public class Submission implements Serializable {
 	private String timeStamp = "";
 	private int submission_grade;
 	private String path = "";
+	private Student student;
 	/**
 	 * @return the assignment
 	 */
@@ -72,5 +73,17 @@ public class Submission implements Serializable {
 	 */
 	public void setSubmission_grade(int submission_grade) {
 		this.submission_grade = submission_grade;
+	}
+	/**
+	 * @return the student
+	 */
+	public Student getStudent() {
+		return student;
+	}
+	/**
+	 * @param student the student to set
+	 */
+	public void setStudent(Student student) {
+		this.student = student;
 	}
 }

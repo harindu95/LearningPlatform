@@ -8,6 +8,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -27,6 +28,7 @@ public class AssignmentItem extends JPanel {
 	private Assignment assign = null;
 	private JLabel due_date;
 	private JButton close;
+	private JButton edit;
 
 	public AssignmentItem(Assignment a) {
 		JPanel panel = new JPanel();
@@ -53,6 +55,7 @@ public class AssignmentItem extends JPanel {
 		panel.setBackground(Color.white);
 		panel.setPreferredSize(new Dimension(750, 100));
 		close = new JButton("X");
+		edit = new JButton("edit");
 		JToggleButton activated = new JToggleButton("Deactive");
 		activated.setFont(new Font(Font.MONOSPACED,Font.TRUETYPE_FONT,12));
 		if (a.isActive()) {
@@ -84,9 +87,16 @@ public class AssignmentItem extends JPanel {
 
 		this.add(panel);
 		this.add(activated);
+		this.add(edit);
 		this.add(close);
+		
 	}
 
+
+	void AddEditBtnActionLiistener(ActionListener l){
+		edit.addActionListener(l);
+	}
+	
 	void AddClsBtnActionLiistener(ActionListener l){
 		close.addActionListener(l);
 	}
