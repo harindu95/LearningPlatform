@@ -7,31 +7,24 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
-import shared.Assignment;
 import shared.Course;
 import shared.Student;
 
@@ -46,10 +39,12 @@ public class StudentsPage extends JPanel {
 	private Client client;
 	private JRadioButton radio_lastName;
 	private JRadioButton radio_id;
+	private State state;
 
-	public StudentsPage(Client c) {
+	public StudentsPage(Client c, State s) {
 
 		this.client = c;
+		this.state = s;
 		try {
 			this.studentList = c.getAllStudents();
 			this.searchList = studentList;
@@ -161,8 +156,6 @@ public class StudentsPage extends JPanel {
 						for (int i = 0; i < studentList.size(); i++) {
 							if (studentList.get(i).getLastName().matches(regex)) {
 								searchList.add(studentList.get(i));
-							}else {
-								System.out.println(regex + " " +  studentList.get(i).getLastName());
 							}
 
 						}
@@ -182,12 +175,9 @@ public class StudentsPage extends JPanel {
 			boolean enrolled = false;
 			if (s.getCourses().contains(course)) {
 				enrolled = true;
-			} else {
-				System.out.println();
 			}
 			StudentItem student = new StudentItem(this, s, enrolled);
 			students.add(student);
-
 		}
 
 		// System.out.println(course.assignments.size());
@@ -206,13 +196,15 @@ public class StudentsPage extends JPanel {
 		// TODO Auto-generated method stub
 
 		try {
-			course = client.updateEnrollment(course, s, selected);
-			studentList = client.getAllStudents();
+			System.out.println("update enrollment");
+			client.updateEnrollment(course, s, selected);
+			studentList = state.students;
+			setCourse(state.getCourse(course.getId()));
+			
 		} catch (ClassNotFoundException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		update();
 	}
 
 }

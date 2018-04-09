@@ -23,18 +23,14 @@ public class Request implements Serializable{
 		CourseList,
 		Login,
 		ENROLL,
-		UNROLL,
+		UNROLL, 
+		User, SubmissionList,
 		
 	};
 	
 	public Type type = Type.GET;
 	public DataType dataType ;
 	public int id = 0;
-	
-	public String userID = "";
-	public String userPassword = "";
-	public String keyword = "";
-	public boolean isValid = false;
 	public Object data = null;
 	
 }

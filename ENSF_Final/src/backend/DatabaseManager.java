@@ -23,18 +23,20 @@ public class DatabaseManager {
 	private Courses courses;
 	private Students students;
 	private Professors professors;
+	private Submissions submissions;
 
 	public Connection jdbc_connection;
 	public PreparedStatement statement;
 	public String databaseName = "ESNF_Final";
-	public String connectionInfo = "jdbc:mysql://localhost:3306/ENSF_Final", login = "CongPham", password = "Xn140839";
+	public String connectionInfo = "jdbc:mysql://localhost:3306/ENSF_Final", login = "ensf", password = null;
 	private Assignments assignments;
 
-	public DatabaseManager(Courses courses, Students students, Professors profs, Assignments a) {
+	public DatabaseManager(Courses courses, Students students, Professors profs, Assignments a,Submissions subs) {
 		this.courses = courses;
 		this.students = students;
 		this.professors = profs;
 		this.assignments = a;
+		this.submissions  = subs;
 		courses.setDBManager(this);
 		professors.setDBManager(this);
 		students.setDBManager(this);
@@ -45,7 +47,6 @@ public class DatabaseManager {
 			// the project
 			Class.forName("com.mysql.jdbc.Driver");
 			// If this fails make sure your connectionInfo and login/password are correct
-			System.out.println(login);
 			jdbc_connection = DriverManager.getConnection(connectionInfo, login, password);
 			System.out.println("Connected to: " + connectionInfo + "\n");
 		} catch (SQLException e) {
@@ -61,6 +62,7 @@ public class DatabaseManager {
 		students.students.clear();
 		courses.courses.clear();
 		assignments.assignments.clear();
+		submissions.submissions.clear();
 		readCourses();
 		readUsers();
 		readCourseRegistrations();
@@ -223,13 +225,17 @@ public class DatabaseManager {
 			r = statement.executeQuery();
 			while (r.next()) {
 				Submission s = new Submission();
-				s.setAssignment(assignments.getAssignment(r.getInt("assign_id")));
+				Assignment a = assignments.getAssignment(r.getInt("assign_id"));
 				s.setTitle(r.getString("title"));
+				s.setAssignment(a);
 				s.setPath(r.getString("path"));
 				s.setTimeStamp(r.getString("timestamp"));
 				s.setSubmission_grade(r.getInt("submission_grade"));
 				Student student = students.getStudent(r.getInt("student_id"));
 				student.getSubmissions().add(s);
+				a.addSubmission(s);
+				submissions.add(s);
+				s.setStudent(student);
 			}
 
 		} catch (SQLException e) {
@@ -515,6 +521,7 @@ public class DatabaseManager {
 				e.printStackTrace();
 			}
 		}
+		
 	}
 
 	public void removeAssignment(Assignment data) {
