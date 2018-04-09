@@ -15,13 +15,18 @@ public class Course implements Serializable{
 	private List<Student> students;
 	
 	public Course(int id){
-		this.id = id;
+		this.setId(id);
 		setStudents(new ArrayList<>());
 		assignments = new ArrayList<>();
 	}
-
+	public Course(String string) {
+		this(0);
+		name = string;
+		
+	}
+	
 	public Course(int i, String string) {
-		id =i;
+		this(0);
 		name = string;
 	}
 
@@ -65,6 +70,20 @@ public class Course implements Serializable{
 	 */
 	public void setStudents(List<Student> students) {
 		this.students = students;
+	}
+
+	/**
+	 * @return the id
+	 */
+	public int getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	/**

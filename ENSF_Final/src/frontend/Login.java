@@ -1,29 +1,21 @@
 package frontend;
 
-import java.awt.EventQueue;
-import java.awt.Font;
-import java.awt.Toolkit;
-
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.ImageIcon;
-import javax.swing.JTextField;
 import java.awt.Color;
-import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
-import javax.swing.UIManager;
+import javax.swing.JTextField;
 
 import shared.Professor;
 import shared.Student;
 import shared.User;
-
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
 public class Login {
 
@@ -34,14 +26,16 @@ public class Login {
 	private JLabel cancelBtn;
 	boolean loginPressed = false;
 	private Client client;
-	
+	private State state;
 
 	/**
 	 * Create the application.
-	 * @param c 
+	 * 
+	 * @param c
 	 */
-	public Login(Client c) {
+	public Login(Client c, State s) {
 		this.client = c;
+		this.state = s;
 		initialize();
 	}
 
@@ -52,22 +46,23 @@ public class Login {
 		frame = new JFrame();
 		frame.setUndecorated(true);
 		frame.setResizable(false);
-		frame.setBounds(100, 100, 623, 404);
+		frame.setBounds(100, 100, 617, 374);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.setLocationRelativeTo(null);
 
-		Font font = new Font(Font.SANS_SERIF,Font.TRUETYPE_FONT,12);
+		Font font = new Font(Font.SANS_SERIF, Font.TRUETYPE_FONT, 12);
 		username = new JTextField();
 		username.setFont(font);
 		username.setSelectionColor(new Color(190, 168, 160));
-	
+
 		username.setText("username");
 		username.selectAll();
+
 		username.setBackground(new Color(190, 168, 170));
 		username.setBorder(null);
 
-		username.setBounds(236, 142, 153, 19);
+		username.setBounds(236, 141, 153, 19);
 		frame.getContentPane().add(username);
 		username.setColumns(20);
 
@@ -76,7 +71,7 @@ public class Login {
 		password.setFont(font);
 		password.setBorder(null);
 		password.setBackground(new Color(190, 168, 170));
-		password.setBounds(236, 189, 153, 19);
+		password.setBounds(236, 188, 153, 19);
 		frame.getContentPane().add(password);
 
 		loginBtn = new JLabel("");
@@ -92,21 +87,13 @@ public class Login {
 				loginPressed = true;
 			}
 
-			@Override
-			public void mouseExited(MouseEvent e) {
-				loginBtn.setIcon(new ImageIcon("resources/images/loginbtn3.png"));
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				loginBtn.setIcon(new ImageIcon("resources/images/loginbtn1.png"));
-			}
-
+		
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				try {
-					User u = client.authenticate(username.getText(), new String(password.getPassword()));
-					login(u);
+//					client.authenticate(username.getText(), new String(password.getPassword()));
+					client.authenticate("norm@ucalgary.ca", "admin");
+					login();
 				} catch (ClassNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -116,10 +103,9 @@ public class Login {
 				}
 			}
 
-			
 		});
-		loginBtn.setIcon(new ImageIcon("resources/images/loginbtn3.png"));
-		loginBtn.setBounds(236, 229, 147, 33);
+		loginBtn.setIcon(new ImageIcon(Login.class.getResource("/images/loginbtn1.png")));
+		loginBtn.setBounds(236, 228, 147, 33);
 		frame.getContentPane().add(loginBtn);
 
 		cancelBtn = new JLabel("");
@@ -135,33 +121,58 @@ public class Login {
 				cancelBtn.setIcon(new ImageIcon("resources/images/logincancel1.png"));
 				username.setText("");
 				password.setText("");
+				System.exit(0);
 			}
 		});
-		cancelBtn.setIcon(new ImageIcon("resources/images/logincancel1.png"));
-		cancelBtn.setBounds(236, 263, 147, 33);
+		cancelBtn.setIcon(new ImageIcon(Login.class.getResource("/images/logincancel1.png")));
+		cancelBtn.setBounds(236, 262, 147, 33);
 		frame.getContentPane().add(cancelBtn);
 
 		JLabel background = new JLabel();
-		background.setIcon(new ImageIcon("resources/images/login_page.png"));
-		background.setBounds(0, -12, 619, 386);
+		background.setIcon(new ImageIcon(Login.class.getResource("/images/login_page.png")));
+		background.setBounds(0, -13, 619, 386);
 		frame.getContentPane().add(background);
 	}
-	
-	public void displayMessage (String Message)
-	{
+
+	public void displayMessage(String Message) {
 		JOptionPane.showMessageDialog(null, Message, "Message", JOptionPane.OK_OPTION);
 	}
+
 	
-	private void login(User u) {
-		if(u == null) {
+	private void login() {
+		User u = state.user;
+		if (u == null) {
 			displayMessage("Login failed!");
-		}else {
-			if(u instanceof Student) {
+		} else {
+			if (u instanceof Student) {
 				displayMessage("User is a student");
-			}else if(u instanceof Professor){
 				
-				displayMessage("User is a professor");
+			} else if (u instanceof Professor) {
+
+				ProfGUI window = new ProfGUI(client,state);
+				window.frame.setVisible(true);
+				frame.setVisible(false);
 			}
 		}
 	}
+
+//	public static void main(String[] args) {
+//		try {
+//			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+//		} catch (Throwable e) {
+//			e.printStackTrace();
+//		}
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					Login window = new Login(null);
+//					window.frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
+
+	
 }

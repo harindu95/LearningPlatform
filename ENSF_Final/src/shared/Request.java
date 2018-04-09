@@ -9,8 +9,9 @@ public class Request implements Serializable{
 	 */
 	private static final long serialVersionUID = -5538508514328378144L;
 	public enum Type {
-		PUT,
-		GET
+		UPDATE,
+		GET,
+		DELETE
 	};
 	
 	public enum DataType {
@@ -20,17 +21,16 @@ public class Request implements Serializable{
 		Assignment,
 		Course,
 		CourseList,
-		Login
+		Login,
+		ENROLL,
+		UNROLL, 
+		User, SubmissionList,
+		
 	};
 	
 	public Type type = Type.GET;
 	public DataType dataType ;
 	public int id = 0;
-	
-	public String userID = "";
-	public String userPassword = "";
-	public String keyword = "";
-	public boolean isValid = false;
 	public Object data = null;
 	
 }

@@ -1,6 +1,7 @@
 package shared;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class User implements Serializable{
 	/**
@@ -13,6 +14,9 @@ public class User implements Serializable{
 	private String firstName = "";
 	private String lastName ="";
 	
+	public List<Course> getCourses(){
+		return null;
+	}
 	public User(int id){
 		this.id = id;
 	}

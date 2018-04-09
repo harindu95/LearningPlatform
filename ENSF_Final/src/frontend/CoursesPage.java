@@ -1,110 +1,157 @@
 package frontend;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.util.List;
 
 import javax.swing.BoxLayout;
-import javax.swing.JLabel;
-import javax.swing.JLayeredPane;
-import javax.swing.JPanel;
-import javax.swing.border.AbstractBorder;
-import javax.swing.border.EmptyBorder;
-
-import javafx.scene.layout.Border;
-import shared.Course;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import shared.Course;
+import shared.Professor;
 
-public class CoursesPage extends JPanel {
+public class CoursesPage extends Tab {
+
 	private JPanel courses;
-	private JDialog newCourse;
-	public List<Course> courseList;
+	private List<Course> courseList;
+	private JDialog addClass;
 	private JScrollPane scrollPane;
+	private CardLayout cardsLayout;
+	private JPanel tabs;
+	private CoursePage coursePage;
+	private Client client;
+	private State state;
 
-	CoursesPage() {
-		setLayout(null);
-		this.setSize(1020, 607);
-		// add(courses);
-		newCourse = new AddClass(this);
-		newCourse.setLocationRelativeTo(this);
-		JLayeredPane layeredPane_1 = new JLayeredPane();
-		layeredPane_1.setBounds(0, 67, 1020, 846);
-		add(layeredPane_1);
-
+	CoursesPage(Client c, State s, JPanel tabs, CardLayout cardsLayout) {
+		addClass = new AddClassDialog(this);
+		this.client = c;
+		this.tabs = tabs;
+		this.cardsLayout = cardsLayout;
+		this.coursePage = new CoursePage(this, c, s, tabs, cardsLayout);
+		tabs.add(coursePage, "course");
+		Color redColor = new Color(123, 58, 220);
+		BorderLayout borderLayout = new BorderLayout();
+		this.setLayout(borderLayout);
+		this.setBackground(new Color(255, 255, 255));
+		JLabel topLabel = new JLabel("Courses");
+		topLabel.setIcon(new ImageIcon(getClass().getResource("/images/course_banner.png")));
+		topLabel.setHorizontalAlignment(JLabel.CENTER);
+		topLabel.setPreferredSize(new Dimension(800, 100));
+		this.add(topLabel, BorderLayout.NORTH);
 		courses = new JPanel();
 		courses.setBackground(Color.WHITE);
-		courses.setBounds(0, 67, 1020, 846);
-		FlowLayout l = new WrapLayout(FlowLayout.CENTER, 40, 40);
-		
-//		l.setHgap(45);
-//		l.setVgap(40);
+		GridLayout l = new GridLayout(0, 3);
+		l.preferredLayoutSize(courses);
+		l.setVgap(20);
+		l.setHgap(30);
 		courses.setLayout(l);
-		courses.setBorder(new EmptyBorder(30, 30, 30, 30));
 		scrollPane = new JScrollPane(courses);
-		layeredPane_1.setLayer(scrollPane, -1);
-		scrollPane.setBounds(0, 0, 1020, 800);
-		
-		layeredPane_1.add(scrollPane);
+		courses.setBorder(new javax.swing.border.EmptyBorder(30, 30, 30, 30));
+		JPanel btns = new JPanel();
+		JButton newClass = new JButton("New Course");
+		btns.add(newClass);
+		((FlowLayout) btns.getLayout()).setAlignment(FlowLayout.LEFT);
+		btns.setBackground(Color.WHITE);
+		JPanel container = new JPanel();
+		container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
+		container.add(btns);
+		container.add(scrollPane);
+		this.add(container, BorderLayout.CENTER);
+		scrollPane.setBorder(null);
+		CoursesPage page = this;
+		newClass.addActionListener(new ActionListener() {
 
-		JLabel lblNewLabel = new JLabel("New label");
-		lblNewLabel.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mousePressed(MouseEvent e) {
-				lblNewLabel.setIcon(new ImageIcon(CoursesPage.class.getResource("/images/add_btn2.png")));
+			public void actionPerformed(ActionEvent e) {
+				((AddClassDialog) addClass).showDialog();
 			}
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				lblNewLabel.setIcon(new ImageIcon(CoursesPage.class.getResource("/images/add_btn.png")));
-			}
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				newCourse.setVisible(true);
-			}
+
 		});
-		lblNewLabel.setBounds(932, 396, 78, 107);
-		layeredPane_1.add(lblNewLabel);
-		lblNewLabel.setIcon(new ImageIcon(CoursesPage.class.getResource("/images/add_btn.png")));
 
-		JLabel label = new JLabel("");
-		label.setIcon(new ImageIcon(CoursesPage.class.getResource("/images/courses_page.png")));
-		label.setBounds(0, 0, 1020, 607);
-		add(label);
+		courseList = s.user.getCourses();
+		this.state = s;
 	}
 
-	void setCourses(List<Course> list) {
-		
-		this.courseList = list;
-		
+	void update() {
+		courses.removeAll();
+		for (int i = 0; i < courseList.size(); i++) {
+			Course c = courseList.get(i);
+			JPanel course = new CourseItem(c, coursePage);
+			course.addMouseListener(new MouseAdapter() {
+
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					super.mouseClicked(e);
+					coursePage.setCourse(c);
+					cardsLayout.show(tabs, "course");
+				}
+			});
+			courses.add(course);
+
+		}
+
+		this.repaint();
+		// scrollPane.revalidate();
+		this.revalidate();
+	}
+
+	public void addCourse(Course c) {
+
+		c.setProfessor((Professor) state.user);
+		try {
+			client.addCourse(c);
+		} catch (IOException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		courseList = state.user.getCourses();
 		SwingUtilities.invokeLater(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
-				courses.removeAll();
-				update();		
+
+				update();
 			}
 		});
-		
 	}
-	void update() {
-		for (int i = 0; i < courseList.size(); i++) {
-			Course c = courseList.get(i);
-			CourseItem course = new CourseItem(c);
-			courses.add(course);
+
+	public void removeCourse(Course course) {
+		// TODO Auto-generated method stub
+		try {
+			client.removeCourse(course);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		
-		this.repaint();
-		this.revalidate();
-//		
+		courseList.remove(course);
+		update();
 	}
+
+	public void readCourses() {
+		// TODO Auto-generated method stub
+		try {
+			courseList = client.getCourses();
+		} catch (ClassNotFoundException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		update();
+	}
+
 }

@@ -5,20 +5,31 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 
-public class FileObj {
-	public File file  = null;
+public class FileObj implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4931993358502378768L;
+	public File file = null;
 	public int[] data;
-	
-	FileObj(String filename) throws IOException{
+
+	public FileObj(String filename) throws IOException {
 		file = new File(filename);
 		readFile();
 	}
-	public FileObj(String path,String filename) throws IOException{
-		file = new File(path,filename);
+
+	public FileObj(String path, String filename) throws IOException {
+		file = new File(path, filename);
 		readFile();
 	}
-	
+
+	public FileObj(File selectedFile) throws IOException {
+		this.file = selectedFile;
+		readFile();
+	}
+
 	void readFile() throws IOException {
 		BufferedReader br = null;
 		try {
@@ -37,7 +48,9 @@ public class FileObj {
 			}
 
 		} finally {
-			br.close();
+			if (br != null && file != null) {
+				br.close();
+			}
 		}
 	}
 }

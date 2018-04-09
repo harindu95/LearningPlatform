@@ -7,6 +7,11 @@ public class Grade implements Serializable{
 	private static final long serialVersionUID = -1171934780244060694L;
 	private Assignment assignment;
 	private int grade;
+	private int id;
+	
+	public Grade(int id) {
+		this.setId(id);
+	}
 	/**
 	 * @return the assignment
 	 */
@@ -30,5 +35,15 @@ public class Grade implements Serializable{
 	 */
 	public void setGrade(int grade) {
 		this.grade = grade;
+	}
+	public int getId() {
+		// TODO Auto-generated method stub
+		return id;
+	}
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(int id) {
+		this.id = id;
 	}
 }

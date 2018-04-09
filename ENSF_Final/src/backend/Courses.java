@@ -23,5 +23,18 @@ public class Courses {
 	public void setDBManager(DatabaseManager mgr) {
 		this.db = mgr;
 	}
+
+	public Course addCourse(Course data) {
+		System.out.println("updating database: adding a course" + data.getName());
+		int id = db.addCourse(data);
+		db.readData();
+		return courses.get(id);
+	}
+
+	public void removeCourse(Course data) {
+		System.out.println("updating database: removing a course " + data.getName());
+		db.deleteCourse(data);
+		db.readData();
+	}
 	
 }
