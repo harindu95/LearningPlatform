@@ -15,10 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import frontend.Client;
-import frontend.CoursesPage;
 import frontend.GUI;
-import frontend.ProfGUI;
-import frontend.WelcomePage;
 import shared.Professor;
 import shared.Request;
 import shared.Student;
@@ -76,7 +73,7 @@ public class StudentGUI extends GUI
 		tabs.add(welcomePage, "welcomePage");
 		welcomePage.setLayout(new BorderLayout());
 		JLabel background = new JLabel();
-		background.setIcon(new ImageIcon(ProfGUI.class.getResource("/banner.jpg")));
+		background.setIcon(new ImageIcon(Student.class.getResource("/banner.jpg")));
 		welcomePage.add(background,BorderLayout.CENTER);
 
 		tabs.add(courses, "courses");
@@ -87,22 +84,22 @@ public class StudentGUI extends GUI
 		tabs.add(Settings, "settings");
 
 		JLabel lblSettingsbackground = new JLabel("");
-		lblSettingsbackground.setIcon(new ImageIcon(GUI.class.getResource("/images/settings.jpg")));
+		lblSettingsbackground.setIcon(new ImageIcon(getClass().getResource("/images/settings.jpg")));
 		lblSettingsbackground.setBounds(0, 0, 1019, 628);
 		Settings.add(lblSettingsbackground);
 
 		JLabel dashboardIcon = new JLabel();
-		dashboardIcon.setIcon(new ImageIcon(GUI.class.getResource("/images/dashboard_hover.png")));
+		dashboardIcon.setIcon(new ImageIcon(getClass().getResource("/images/dashboard_hover.png")));
 		dashboardIcon.setBounds(16, 380, 50, 50);
 		panel.add(dashboardIcon);
 
 		JLabel courseIcon = new JLabel();
-		courseIcon.setIcon(new ImageIcon(GUI.class.getResource("/images/courses.png")));
+		courseIcon.setIcon(new ImageIcon(getClass().getResource("/images/courses.png")));
 		courseIcon.setBounds(16, 440, 50, 50);
 		panel.add(courseIcon);
 
 		JLabel settingsIcon = new JLabel();
-		settingsIcon.setIcon(new ImageIcon(GUI.class.getResource("/images/settings.png")));
+		settingsIcon.setIcon(new ImageIcon(getClass().getResource("/images/settings.png")));
 		settingsIcon.setBounds(16, 502, 40, 50);
 		panel.add(settingsIcon);
 
@@ -166,54 +163,54 @@ public class StudentGUI extends GUI
 		closeBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				closeBtn.setIcon(new ImageIcon(GUI.class.getResource("/images/closebtn3.png")));
+				closeBtn.setIcon(new ImageIcon(getClass().getResource("/images/closebtn3.png")));
 			}
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				closeBtn.setIcon(new ImageIcon(GUI.class.getResource("/images/closebtn2.png")));
+				closeBtn.setIcon(new ImageIcon(getClass().getResource("/images/closebtn2.png")));
 				frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
 
 			}
 
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				closeBtn.setIcon(new ImageIcon(GUI.class.getResource("/images/closebtn2.png")));
+				closeBtn.setIcon(new ImageIcon(getClass().getResource("/images/closebtn2.png")));
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e) {
-				closeBtn.setIcon(new ImageIcon(GUI.class.getResource("/images/closebtn1.png")));
+				closeBtn.setIcon(new ImageIcon(getClass().getResource("/images/closebtn1.png")));
 			}
 		});
 
-		closeBtn.setIcon(new ImageIcon(GUI.class.getResource("/images/closebtn1.png")));
+		closeBtn.setIcon(new ImageIcon(getClass().getResource("/images/closebtn1.png")));
 		closeBtn.setBounds(1257, 0, 20, 20);
 		panel.add(closeBtn);
 
 		JLabel minBtn = new JLabel("New label");
-		minBtn.setIcon(new ImageIcon(GUI.class.getResource("/images/minbtn1.png")));
+		minBtn.setIcon(new ImageIcon(getClass().getResource("/images/minbtn1.png")));
 		minBtn.setBounds(1238, 0, 20, 20);
 		minBtn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				minBtn.setIcon(new ImageIcon(GUI.class.getResource("/images/minbtn3.png")));
+				minBtn.setIcon(new ImageIcon(getClass().getResource("/images/minbtn3.png")));
 			}
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				minBtn.setIcon(new ImageIcon(GUI.class.getResource("/images/minbtn2.png")));
+				minBtn.setIcon(new ImageIcon(getClass().getResource("/images/minbtn2.png")));
 				frame.setState(JFrame.ICONIFIED);
 			}
 
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				minBtn.setIcon(new ImageIcon(GUI.class.getResource("/images/minbtn2.png")));
+				minBtn.setIcon(new ImageIcon(getClass().getResource("/images/minbtn2.png")));
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e) {
-				minBtn.setIcon(new ImageIcon(GUI.class.getResource("/images/minbtn1.png")));
+				minBtn.setIcon(new ImageIcon(getClass().getResource("/images/minbtn1.png")));
 			}
 		});
 
@@ -223,17 +220,17 @@ public class StudentGUI extends GUI
 		lblLogOut.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				lblLogOut.setIcon(new ImageIcon(GUI.class.getResource("/images/logout_hover.png")));
+				lblLogOut.setIcon(new ImageIcon(getClass().getResource("/images/logout_hover.png")));
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e) {
-				lblLogOut.setIcon(new ImageIcon(GUI.class.getResource("/images/logout.png")));
+				lblLogOut.setIcon(new ImageIcon(getClass().getResource("/images/logout.png")));
 			}
 
 		});
 		lblLogOut.setBounds(27, 676, 152, 38);
-		lblLogOut.setIcon(new ImageIcon(GUI.class.getResource("/images/logout.png")));
+		lblLogOut.setIcon(new ImageIcon(getClass().getResource("/images/logout.png")));
 		panel.add(lblLogOut);
 		
 		JLabel lblCourses = new JLabel("Courses");
@@ -261,7 +258,7 @@ public class StudentGUI extends GUI
 
 		JLabel main = new JLabel("");
 		main.setBounds(0, 0, 1280, 728);
-		main.setIcon(new ImageIcon(GUI.class.getResource("/images/main.png")));
+		main.setIcon(new ImageIcon(getClass().getResource("/images/main.png")));
 		panel.add(main);
 		cardsLayout.show(tabs, "welcomePage");
 	}
