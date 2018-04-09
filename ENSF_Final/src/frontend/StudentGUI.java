@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import shared.Student;
 import shared.Professor;
 import shared.Request;
 
@@ -26,8 +27,6 @@ public class StudentGUI extends GUI
 	private CardLayout cardsLayout;
 	private Client client;
 	private Student user;
-
-
 
 	/**
 	 * Create the application.
@@ -42,7 +41,8 @@ public class StudentGUI extends GUI
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	private void initialize() 
+	{
 		Color redColor = new Color(237, 82, 98);
 		frame = new JFrame();
 		frame.setUndecorated(true);

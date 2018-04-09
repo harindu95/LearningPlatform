@@ -128,7 +128,18 @@ public class Client {
 		out.writeObject(req);
 		out.flush();
 	}
-
+	
+//	public List<Assignment> studentUpdateAssignment(Assignment assign) throws ClassNotFoundException, IOException {
+//		Request req = new Request();
+//		req.type = Type.GET;
+//		req.dataType = DataType.Assignment;
+//		req.data = assign;
+//		out.writeObject(req);
+//		out.flush();
+//		assign.getCourse().assignments.add(assign);
+//		return assign.getCourse().assignments;
+//	}
+	
 	public List<Assignment> updateAssignment(Assignment assign) throws ClassNotFoundException, IOException {
 		Request req = new Request();
 		req.type = Type.UPDATE;
@@ -140,6 +151,14 @@ public class Client {
 		return assign.getCourse().assignments;
 	}
 
+	public Grade getStudentGrade(Assignment assign) throws ClassNotFoundException, IOException
+	{
+		Request req = new Request();
+		req.type = Type.GET;
+		req.dataType = DataType.Assignment;
+		req.data = assign;
+	}
+	
 	public Course updateEnrollment(Course course, Student s, boolean enroll)
 			throws IOException, ClassNotFoundException {
 		Request req = new Request();
