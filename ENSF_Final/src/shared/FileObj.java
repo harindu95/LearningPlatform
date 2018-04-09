@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Serializable;
+import java.nio.file.Files;
 
 public class FileObj implements Serializable {
 	/**
@@ -13,10 +14,10 @@ public class FileObj implements Serializable {
 	 */
 	private static final long serialVersionUID = -4931993358502378768L;
 	public File file = null;
-	public int[] data;
+	public byte[] data;
 
 	public FileObj(String filename) throws IOException {
-		file = new File(filename);
+		file = new File("files",filename);
 		readFile();
 	}
 
@@ -31,26 +32,8 @@ public class FileObj implements Serializable {
 	}
 
 	void readFile() throws IOException {
-		BufferedReader br = null;
-		try {
-			br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
-			int c = br.read();
-			int length = 0;
-			while (c != -1) {
-				length++;
-				c = br.read();
-			}
-			data = new int[length];
-			br.close();
-			br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
-			for (int i = 0; i < data.length; i++) {
-				data[i] = br.read();
-			}
 
-		} finally {
-			if (br != null && file != null) {
-				br.close();
-			}
-		}
+		data = Files.readAllBytes(file.toPath());
+
 	}
 }

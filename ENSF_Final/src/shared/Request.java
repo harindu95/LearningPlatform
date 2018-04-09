@@ -24,7 +24,9 @@ public class Request implements Serializable{
 		Login,
 		ENROLL,
 		UNROLL, 
-		User, SubmissionList,
+		User,
+		SubmissionList,
+		Submission,
 		
 	};
 	

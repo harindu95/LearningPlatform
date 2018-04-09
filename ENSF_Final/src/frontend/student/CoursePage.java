@@ -13,13 +13,23 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -31,7 +41,9 @@ import javax.swing.border.EmptyBorder;
 import frontend.Client;
 import shared.Assignment;
 import shared.Course;
+import shared.FileObj;
 import shared.Student;
+import shared.Submission;
 
 public class CoursePage extends JPanel {
 
@@ -93,8 +105,30 @@ public class CoursePage extends JPanel {
 			c.gridy = i;
 
 			Assignment a = course.assignments.get(i);
-			AssignmentItem assignment = new AssignmentItem(a);
-
+			
+			if(a.isActive())
+			{
+				AssignmentItem assignment = new AssignmentItem(a);
+				assignment.addSubmitActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						// TODO Auto-generated method stub
+						submitAction(a);
+					}
+				});
+				
+				assignment.addDownloadActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						// TODO Auto-generated method stub
+						downloadAction(a);
+					}
+				});
+				
+				assignments.add(assignment, c);
+			}
 			// course.addMouseListener(new MouseAdapter() {
 
 			// @Override
@@ -104,7 +138,7 @@ public class CoursePage extends JPanel {
 			// cardsLayout.show(tabs, "course");
 			// }
 			// });
-			assignments.add(assignment, c);
+			//assignments.add(assignment, c);
 
 		}
 
@@ -113,6 +147,55 @@ public class CoursePage extends JPanel {
 		this.revalidate();
 	}
 
+	public void downloadAction(Assignment a)
+	{
+		JFileChooser fileDownload = new JFileChooser();
+		
+		FileObj file = a.getFile();
+		fileDownload.setSelectedFile(new File(file.file.getName()));
+		int r = fileDownload.showSaveDialog(this);
+		
+		if(r == JFileChooser.APPROVE_OPTION)
+		{
+			try {
+				storeFile(fileDownload.getSelectedFile().getAbsolutePath(),file.data);
+			
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	void storeFile(String filename, byte[] data) throws IOException {
+		Files.write(Paths.get(filename), data);
+	}
+
+
+	public void submitAction(Assignment a)  
+	{
+		JFileChooser chooser = new JFileChooser();
+		int r = chooser.showOpenDialog(this);
+		if(r == JFileChooser.APPROVE_OPTION) {
+			File file = chooser.getSelectedFile();
+			Submission s = new Submission();
+			DateFormat fmt = new SimpleDateFormat("y-M-d h:m:s");
+			s.setTimeStamp(fmt.format(Calendar.getInstance().getTime()).substring(0, 16));
+			s.setStudent((Student)client.state.user);
+			s.setAssignment(a);
+			
+			try {
+				s.setFile(new FileObj(file));
+				client.uploadSubmission(s);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+//			s.setPath();
+		}
+	}
+	
 	public void setCourse(Course c) {
 		// TODO Auto-generated method stub
 		topLabel.setText(c.getName());

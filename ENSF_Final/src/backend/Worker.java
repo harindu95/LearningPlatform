@@ -15,6 +15,7 @@ import shared.Request;
 import shared.Request.DataType;
 import shared.Request.Type;
 import shared.Student;
+import shared.Submission;
 import shared.User;
 
 public class Worker implements Runnable {
@@ -72,7 +73,8 @@ public class Worker implements Runnable {
 				Course k = courses.addCourse((Course) req.data);
 				break;
 			case Assignment:
-				assignmnets.addAssignment((Assignment)req.data);
+				String path1 =fileMgr.storeAssignment((Assignment) req.data);
+				assignmnets.addAssignment(path1,(Assignment)req.data);
 				break;
 			case ENROLL:
 				int[] data = (int[])req.data;
@@ -85,6 +87,10 @@ public class Worker implements Runnable {
 				System.out.println("Updating enrollment");
 				db.updateEnrollment(data1[0],data1[1],false);
 				db.readData();
+				break;
+			case Submission:
+				String path = fileMgr.storeSubmission((Submission)req.data);
+				db.addSubmission((Submission) req.data, path);
 				break;
 			default:
 				System.out.println("Default put");
@@ -105,6 +111,7 @@ public class Worker implements Runnable {
 			case SubmissionList:
 				out.writeObject(submissions.getSubmissions((Assignment) req.data));
 				break;
+			
 			case Student:
 				out.writeObject(students.students.get(req.id));
 				break;

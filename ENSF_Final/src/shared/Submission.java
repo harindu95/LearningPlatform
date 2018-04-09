@@ -9,11 +9,12 @@ public class Submission implements Serializable {
 	private static final long serialVersionUID = 7157070406274164174L;
 	private Assignment assignment;
 	private String title ="";
-	String comments = "";
+	private String comments = "";
 	private String timeStamp = "";
 	private int submission_grade;
 	private String path = "";
 	private Student student;
+	private FileObj file;
 	/**
 	 * @return the assignment
 	 */
@@ -85,5 +86,17 @@ public class Submission implements Serializable {
 	 */
 	public void setStudent(Student student) {
 		this.student = student;
+	}
+	public FileObj getFile() {
+		return file;
+	}
+	public void setFile(FileObj file) {
+		this.file = file;
+	}
+	public String getComments() {
+		return comments;
+	}
+	public void setComments(String comments) {
+		this.comments = comments;
 	}
 }

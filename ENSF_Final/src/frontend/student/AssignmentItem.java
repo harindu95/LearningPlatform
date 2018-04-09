@@ -26,7 +26,9 @@ public class AssignmentItem extends JPanel {
 	private JLabel name;
 	private Assignment assign = null;
 	private JLabel due_date;
-	private JButton close;
+	private JButton submit;
+	private JButton download;
+	
 
 	public AssignmentItem(Assignment a) {
 		JPanel panel = new JPanel();
@@ -47,47 +49,27 @@ public class AssignmentItem extends JPanel {
 		
 		Color active = new Color(237, 82, 98);
 		Color deactive = Color.GRAY;
-		Color border = deactive;
+		Color border = active;
 		
+		this.download = new JButton("Download");
+		this.submit = new JButton("Submit");
 		name.setFont(font);
 		panel.setBackground(Color.white);
 		panel.setPreferredSize(new Dimension(750, 100));
-		close = new JButton("X");
-		JToggleButton activated = new JToggleButton("Deactive");
-		activated.setFont(new Font(Font.MONOSPACED,Font.TRUETYPE_FONT,12));
-		if (a.isActive()) {
-			border = active;
-			activated.setSelected(true);
-			activated.setText("Active  ");
-		}
-		panel.setBorder(BorderFactory.createMatteBorder(1, 5, 1, 1, border));
 		
-		activated.addActionListener(new ActionListener() {
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (activated.isSelected()) {
-					assign.setActive(true);
-					activated.setText("Active  ");
-					panel.setBorder(BorderFactory.createMatteBorder(1, 5, 1, 1, active));
-				} else {
-					
-					assign.setActive(false);
-					activated.setText("Deactive");
-					panel.setBorder(BorderFactory.createMatteBorder(1, 5, 1, 1, deactive));
-				}
-
-			}
-		});
-
-	
+		panel.setBorder(BorderFactory.createMatteBorder(1, 5, 1, 1, border));
 
 		this.add(panel);
-		this.add(activated);
-		this.add(close);
+		this.add(download);
+		this.add(submit);
 	}
-
-	void AddClsBtnActionLiistener(ActionListener l){
-		close.addActionListener(l);
+	
+	void addSubmitActionListener(ActionListener l) {
+		submit.addActionListener(l);
+	}
+	
+	void addDownloadActionListener(ActionListener l) {
+		download.addActionListener(l);
 	}
 }

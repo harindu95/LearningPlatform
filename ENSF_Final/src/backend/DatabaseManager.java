@@ -28,7 +28,7 @@ public class DatabaseManager {
 	public Connection jdbc_connection;
 	public PreparedStatement statement;
 	public String databaseName = "ESNF_Final";
-	public String connectionInfo = "jdbc:mysql://localhost:3306/ENSF_Final", login = "ensf", password = null;
+	public String connectionInfo = "jdbc:mysql://localhost:3306/ENSF_Final", login = "CongPham", password = "Xn140839";
 	private Assignments assignments;
 
 	public DatabaseManager(Courses courses, Students students, Professors profs, Assignments a,Submissions subs) {
@@ -93,7 +93,7 @@ public class DatabaseManager {
 
 	}
 
-	void updateAssignment(Assignment a) {
+	void updateAssignment(String path, Assignment a) {
 		String sql = "";
 		if (a.getId() == 0) {
 			sql = "INSERT  INTO `Assignments` (`active`, `title`, `path`, `due_date`, `course_id`,`id`) VALUES ( ? , ? , ? , ?, ?,NULL);";
@@ -105,7 +105,7 @@ public class DatabaseManager {
 			statement = jdbc_connection.prepareStatement(sql);
 			statement.setBoolean(1, a.isActive());
 			statement.setString(2, a.getTitle());
-			statement.setString(3, a.getFile().file.getPath());
+			statement.setString(3, path);
 			statement.setString(4, a.getDue_date());
 			statement.setInt(5, a.getCourse().getId());
 			statement.executeUpdate();
@@ -535,6 +535,29 @@ public class DatabaseManager {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public void addSubmission(Submission data,String path) {
+		// TODO Auto-generated method stub
+		String sql = "INSERT INTO `submissions` (`id`, `assign_id`, `student_id`, `title`, `path`,"
+				+ " `submission_grade`, `comments`, `timestamp`) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?);";
+		try {
+			statement = jdbc_connection.prepareStatement(sql);
+			statement.setInt(1, data.getAssignment().getId());
+			statement.setInt(2, data.getStudent().id);
+			statement.setString(3, data.getTitle());
+			
+			statement.setString(4, path);
+			statement.setInt(5, data.getSubmission_grade());
+			statement.setString(6, data.getComments());
+			statement.setString(7, data.getTimeStamp());
+			statement.executeUpdate();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 }

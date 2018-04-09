@@ -27,8 +27,9 @@ public class Assignments {
 		this.db = mgr;
 	}
 
-	public void addAssignment(Assignment data) {
-		db.updateAssignment(data);
+	public void addAssignment(String path, Assignment data) {
+		
+		db.updateAssignment(path,data);
 		db.readData();
 	}
 

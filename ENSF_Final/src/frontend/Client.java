@@ -26,7 +26,7 @@ public class Client {
 	GUI gui;
 	private ObjectInputStream in;
 	private ObjectOutputStream out;
-	private State state;
+	public State state;
 
 	public Client(State s, String serverName, int portNumber) {
 		this.state = s;
@@ -177,5 +177,14 @@ public class Client {
 			}
 		});
 	}
+
+	public void uploadSubmission(Submission s) throws IOException {
+		Request req = new Request();
+		req.type = Type.UPDATE;
+		req.dataType = DataType.Submission;
+		req.data = s;
+		out.writeObject(req);
+		out.flush();
+	}
 }
->>>>>>> 5f9906ff072bafb24ed948fc18a07bc25344bc26
+

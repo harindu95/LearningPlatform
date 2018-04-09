@@ -98,18 +98,20 @@ public class CoursesPage extends JPanel{
 		courses.removeAll();
 		for (int i = 0; i < courseList.size(); i++) {
 			Course c = courseList.get(i);
-			JPanel course = new CourseItem(c,coursePage);
-			course.addMouseListener(new MouseAdapter() {
-				
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					super.mouseClicked(e);
-					coursePage.setCourse(c);
-					cardsLayout.show(tabs, "course");
-				}
-			});
-			courses.add(course);
-
+			if(c.isActive())
+			{
+				JPanel course = new CourseItem(c,coursePage);
+				course.addMouseListener(new MouseAdapter() {
+					
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						super.mouseClicked(e);
+						coursePage.setCourse(c);
+						cardsLayout.show(tabs, "course");
+					}
+				});
+				courses.add(course);
+			}
 		}
 
 		this.repaint();
