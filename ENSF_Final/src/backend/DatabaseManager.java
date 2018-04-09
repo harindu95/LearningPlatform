@@ -27,7 +27,7 @@ public class DatabaseManager {
 	public Connection jdbc_connection;
 	public PreparedStatement statement;
 	public String databaseName = "ESNF_Final";
-	public String connectionInfo = "jdbc:mysql://localhost:3306/ENSF_Final", login = "ensf", password = null;
+	public String connectionInfo = "jdbc:mysql://localhost:3306/ENSF_Final", login = "CongPham", password = "Xn140839";
 	private Assignments assignments;
 
 	public DatabaseManager(Courses courses, Students students, Professors profs, Assignments a) {
@@ -45,6 +45,7 @@ public class DatabaseManager {
 			// the project
 			Class.forName("com.mysql.jdbc.Driver");
 			// If this fails make sure your connectionInfo and login/password are correct
+			System.out.println(login);
 			jdbc_connection = DriverManager.getConnection(connectionInfo, login, password);
 			System.out.println("Connected to: " + connectionInfo + "\n");
 		} catch (SQLException e) {
