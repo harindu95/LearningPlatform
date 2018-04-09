@@ -15,6 +15,7 @@ import javax.swing.UIManager;
 
 import shared.Assignment;
 import shared.Course;
+import shared.Grade;
 import shared.LoginInfo;
 import shared.Professor;
 import shared.Request;
@@ -151,13 +152,13 @@ public class Client {
 		return assign.getCourse().assignments;
 	}
 
-	public Grade getStudentGrade(Assignment assign) throws ClassNotFoundException, IOException
-	{
-		Request req = new Request();
-		req.type = Type.GET;
-		req.dataType = DataType.Assignment;
-		req.data = assign;
-	}
+//	public Grade getStudentGrade(Grade grade) throws ClassNotFoundException, IOException
+//	{
+//		Request req = new Request();
+//		req.type = Type.GET;
+//		req.dataType = DataType.Assignment;
+//		req.data = grade.;
+//	}
 	
 	public Course updateEnrollment(Course course, Student s, boolean enroll)
 			throws IOException, ClassNotFoundException {
