@@ -12,9 +12,11 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.TableModelListener;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
+import shared.Assignment;
 import shared.Submission;
 
 public class SubmissionPage extends JPanel {
@@ -22,12 +24,13 @@ public class SubmissionPage extends JPanel {
 	private JTextField topLabel;
 	private JTable submissionTable;
 	private SubmissionTableModel model;
+	private Assignment assign;
 
 	public SubmissionPage(){
 		BorderLayout borderLayout = new BorderLayout();
 		this.setLayout(borderLayout);
 		this.setBackground(new Color(255, 255, 255));
-		topLabel = new JTextField("Assignment: ");
+		topLabel = new JTextField("Assignment:");
 		JPanel topPanel = new JPanel();
 		topPanel.setLayout(new BorderLayout());
 		topPanel.add(topLabel, BorderLayout.CENTER);
@@ -44,18 +47,32 @@ public class SubmissionPage extends JPanel {
 		topLabel.setHorizontalAlignment(JLabel.LEFT);
 		topLabel.setPreferredSize(new Dimension(800, 70));
 		this.add(topPanel, BorderLayout.NORTH);
-		
 		this.submissionTable = new JTable();
 		this.model = new SubmissionTableModel();
 		submissionTable.setModel(model);
 	}
 
+	public void setAssignment(Assignment a) {
+		// TODO Auto-generated method stub
+		this.assign = a;
+		topLabel.setText("Assignment:" + a.getTitle());
+		model.setData(a.getSubmissions());
+	}
+
 }
 
-class SubmissionTableModel implements TableModel{
+class SubmissionTableModel extends AbstractTableModel{
 
 	private List<Submission> data;
 	String[] names = new String[] {"ID","First name", "Last name", "File" , "marks"};
+
+	
+	
+	public void setData(List<Submission> s) {
+		data = s;
+		fireTableDataChanged();
+	}
+	
 	@Override
 	public int getRowCount() {
 		// TODO Auto-generated method stub
@@ -111,19 +128,12 @@ class SubmissionTableModel implements TableModel{
 	@Override
 	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
 		// TODO Auto-generated method stub
+		if(columnIndex == 4 && rowIndex >0) {
+			data.get(rowIndex).setSubmission_grade((Integer) aValue);
+			 fireTableCellUpdated(rowIndex, columnIndex);
+		}
 		
 	}
 
-	@Override
-	public void addTableModelListener(TableModelListener l) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void removeTableModelListener(TableModelListener l) {
-		// TODO Auto-generated method stub
-		
-	}
 	
 }

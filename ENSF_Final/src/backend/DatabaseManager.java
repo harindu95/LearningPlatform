@@ -225,13 +225,15 @@ public class DatabaseManager {
 			r = statement.executeQuery();
 			while (r.next()) {
 				Submission s = new Submission();
-				s.setAssignment(assignments.getAssignment(r.getInt("assign_id")));
+				Assignment a = assignments.getAssignment(r.getInt("assign_id"));
 				s.setTitle(r.getString("title"));
+				s.setAssignment(a);
 				s.setPath(r.getString("path"));
 				s.setTimeStamp(r.getString("timestamp"));
 				s.setSubmission_grade(r.getInt("submission_grade"));
 				Student student = students.getStudent(r.getInt("student_id"));
 				student.getSubmissions().add(s);
+				a.addSubmission(s);
 				submissions.add(s);
 				s.setStudent(student);
 			}

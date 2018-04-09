@@ -167,7 +167,9 @@ public class CoursePage extends JPanel {
 			assignment.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
+					submissionPage.setAssignment(a);
 					cardLayout.show(tabs, "dropbox");
+					
 				}
 			});
 			assignment.AddClsBtnActionLiistener(new ActionListener() {
