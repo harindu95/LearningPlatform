@@ -1,4 +1,4 @@
-package frontend;
+package frontend.student;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
@@ -14,8 +14,14 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import frontend.Client;
+import frontend.CoursesPage;
+import frontend.GUI;
+import frontend.ProfGUI;
+import frontend.WelcomePage;
 import shared.Professor;
 import shared.Request;
+import shared.Student;
 
 public class StudentGUI extends GUI
 {
