@@ -2,6 +2,7 @@ package frontend;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -40,9 +41,11 @@ public class StudentsPage extends JPanel {
 	private JRadioButton radio_lastName;
 	private JRadioButton radio_id;
 	private State state;
+	private EmailSender emailSender;
 
 	public StudentsPage(Client c, State s) {
 
+		this.emailSender = new EmailSender(c);
 		this.client = c;
 		this.state = s;
 		try {
@@ -128,6 +131,16 @@ public class StudentsPage extends JPanel {
 		add(container, BorderLayout.CENTER);
 
 		update();
+		email.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				for(Student s: course.getStudents()) {
+					emailSender.addReciever(s.getEmail());
+				}
+				emailSender.showWindow(client.state.user.getEmail(), course.getName());
+			}
+		});
 		StudentsPage page = this;
 		search.addActionListener(new ActionListener() {
 
@@ -189,6 +202,7 @@ public class StudentsPage extends JPanel {
 		// TODO Auto-generated method stub
 		this.course = c;
 		this.searchList = studentList;
+		this.emailSender.to.clear();
 		update();
 	}
 

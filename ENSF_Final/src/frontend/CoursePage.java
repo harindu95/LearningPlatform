@@ -47,13 +47,15 @@ public class CoursePage extends JPanel {
 	private JToggleButton toggle;
 	private State state;
 	private SubmissionPage submissionPage;
+	
 
 	public CoursePage(CoursesPage parent, Client c, State s,JPanel tabs, CardLayout cards) {
 		this.tabs = tabs;
 		this.cardLayout = cards;
 		this.client = c;
 		this.state = s;
-		this.submissionPage = new SubmissionPage();
+		
+		this.submissionPage = new SubmissionPage(c);
 		students = new StudentsPage(c,s);
 		tabs.add(students, "students");
 		tabs.add(submissionPage, "dropbox");

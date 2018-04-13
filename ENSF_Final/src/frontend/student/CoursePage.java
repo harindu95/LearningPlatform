@@ -39,6 +39,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 import frontend.Client;
+import frontend.EmailSender;
 import shared.Assignment;
 import shared.Course;
 import shared.FileObj;
@@ -53,7 +54,8 @@ public class CoursePage extends JPanel {
 	private CardLayout cardLayout;
 	private JPanel tabs;
 	private Client client;
-
+	private JButton email;
+	private EmailSender emailSenderFrame;
 	public CoursePage(CoursesPage parent, Client c, JPanel tabs, CardLayout cards) {
 		this.tabs = tabs;
 		this.cardLayout = cards;
@@ -83,7 +85,22 @@ public class CoursePage extends JPanel {
 		JPanel btns = new JPanel();
 		container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
 		container.add(btns);
+		
+		email = new JButton("Email");
+		emailSenderFrame = new EmailSender(c);
+		
+		btns.add(email);
 		btns.setBackground(Color.WHITE);
+		
+		email.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				emailSenderFrame.addReciever(course.getProfessor().getEmail());
+				emailSenderFrame.showWindow(client.state.user.getEmail(), course.getProfessor().getEmail());
+			}
+		});
 		container.setBackground(Color.white);
 		((FlowLayout) btns.getLayout()).setAlignment(FlowLayout.LEFT);
 
@@ -108,7 +125,7 @@ public class CoursePage extends JPanel {
 			
 			if(a.isActive())
 			{
-				AssignmentItem assignment = new AssignmentItem(a);
+				AssignmentItem assignment = new AssignmentItem(a, (Student)client.state.user);
 				assignment.addSubmitActionListener(new ActionListener() {
 					
 					@Override
@@ -180,7 +197,11 @@ public class CoursePage extends JPanel {
 			File file = chooser.getSelectedFile();
 			Submission s = new Submission();
 			DateFormat fmt = new SimpleDateFormat("y-M-d h:m:s");
-			s.setTimeStamp(fmt.format(Calendar.getInstance().getTime()).substring(0, 16));
+			String time = fmt.format(Calendar.getInstance().getTime());
+			if(time.length() > 16) {
+				time = time.substring(0,16);
+			}
+			s.setTimeStamp(time);
 			s.setStudent((Student)client.state.user);
 			s.setAssignment(a);
 			
@@ -200,6 +221,7 @@ public class CoursePage extends JPanel {
 		// TODO Auto-generated method stub
 		topLabel.setText(c.getName());
 		this.course = c;
+		this.emailSenderFrame.to.clear();
 		update();
 	}
 

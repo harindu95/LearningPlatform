@@ -15,6 +15,7 @@ public class Submission implements Serializable {
 	private String path = "";
 	private Student student;
 	private FileObj file;
+	private int id = 0;
 	/**
 	 * @return the assignment
 	 */
@@ -98,5 +99,11 @@ public class Submission implements Serializable {
 	}
 	public void setComments(String comments) {
 		this.comments = comments;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
 	}
 }

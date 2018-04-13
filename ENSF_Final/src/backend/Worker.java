@@ -1,5 +1,6 @@
 package backend;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -9,6 +10,8 @@ import java.util.List;
 
 import shared.Assignment;
 import shared.Course;
+import shared.Email;
+import shared.FileObj;
 import shared.LoginInfo;
 import shared.Professor;
 import shared.Request;
@@ -92,6 +95,14 @@ public class Worker implements Runnable {
 				String path = fileMgr.storeSubmission((Submission)req.data);
 				db.addSubmission((Submission) req.data, path);
 				break;
+			case SubmissionGrade:
+				System.out.println("worker submissiongrade");
+				db.updateSubmission((Submission) req.data);
+				db.readData();
+				break;
+			case Email:
+				emailMgr.sendEmail((Email)req.data );
+				break;
 			default:
 				System.out.println("Default put");
 				break;
@@ -100,6 +111,9 @@ public class Worker implements Runnable {
 		
 		} else if (req.type == Type.GET) {
 			switch (req.dataType) {
+			case File:
+				out.writeObject(new FileObj((String)req.data));
+				break;
 			case User:
 				User k = (User)req.data;
 				User u2 = db.authenticate(k.getEmail(), k.getPassword());

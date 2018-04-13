@@ -92,8 +92,9 @@ public class Login {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				try {
-					client.authenticate(username.getText(), new String(password.getPassword()));
-//					client.authenticate("abc@gmail.com", "admin");
+//					client.authenticate(username.getText(), new String(password.getPassword()));
+					client.authenticate("abc@gmail.com", "admin");
+//					client.authenticate("norm@ucalgary.ca", "admin");
 					login();
 				} catch (ClassNotFoundException e1) {
 					// TODO Auto-generated catch block

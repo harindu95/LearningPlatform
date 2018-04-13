@@ -27,6 +27,16 @@ public class Student extends User implements Serializable{
 	public List<Grade> getGrades() {
 		return grades;
 	}
+	
+	
+	public int getGrade(int assign_id) {
+		for(Grade g: grades) {
+			if(g.getAssignment().getId() == assign_id) {
+				return g.getGrade();
+			}
+		}
+		return 0;
+	}
 
 	/**
 	 * @param grades the grades to set

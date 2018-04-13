@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
 import shared.Assignment;
 import shared.Course;
 import shared.FileObj;
@@ -228,12 +229,14 @@ public class DatabaseManager {
 				Assignment a = assignments.getAssignment(r.getInt("assign_id"));
 				s.setTitle(r.getString("title"));
 				s.setAssignment(a);
+				s.setId(r.getInt("id"));
 				s.setPath(r.getString("path"));
 				s.setTimeStamp(r.getString("timestamp"));
 				s.setSubmission_grade(r.getInt("submission_grade"));
 				Student student = students.getStudent(r.getInt("student_id"));
 				student.getSubmissions().add(s);
 				a.addSubmission(s);
+				System.out.println(s.getTimeStamp());
 				submissions.add(s);
 				s.setStudent(student);
 			}
@@ -539,6 +542,7 @@ public class DatabaseManager {
 
 	public void addSubmission(Submission data,String path) {
 		// TODO Auto-generated method stub
+		
 		String sql = "INSERT INTO `submissions` (`id`, `assign_id`, `student_id`, `title`, `path`,"
 				+ " `submission_grade`, `comments`, `timestamp`) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?);";
 		try {
@@ -552,6 +556,41 @@ public class DatabaseManager {
 			statement.setString(6, data.getComments());
 			statement.setString(7, data.getTimeStamp());
 			statement.executeUpdate();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+	
+	public void updateSubmission(Submission data) {
+		// TODO Auto-generated method stub
+		System.out.println("Updating submissions");
+		String sql = "UPDATE `submissions` SET submission_grade=? where id=? ";
+		String sql2 = "INSERT INTO `grades` (`id`, `assign_id`, `student_id`, `course_id`, `assigment_grade`) VALUES (?, ?, ?, ?, ?)"
+				+ " ON DUPLICATE KEY UPDATE "
+				+ "assigment_grade = VALUES(assigment_grade);";
+		try {
+			int id = data.getId();
+			statement = jdbc_connection.prepareStatement(sql);
+			statement.setInt(2, id);
+			statement.setInt(1, data.getSubmission_grade());
+			
+			statement.executeUpdate();
+			
+			PreparedStatement st = jdbc_connection.prepareStatement(sql2);
+			if(data.getId() == 0) {
+				st.setNull(1, java.sql.Types.INTEGER);
+				
+			}else {
+				st.setInt(1,data.getId());
+			}
+			st.setInt(2, data.getAssignment().getId());
+			st.setInt(3, data.getStudent().id);
+			st.setInt(4, data.getAssignment().getCourse().getId());
+			st.setInt(5, data.getSubmission_grade());
+			st.executeUpdate();
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

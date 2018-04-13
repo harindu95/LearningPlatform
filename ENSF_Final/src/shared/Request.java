@@ -27,7 +27,8 @@ public class Request implements Serializable{
 		User,
 		SubmissionList,
 		Submission,
-		
+		SubmissionGrade, File,
+		Email
 	};
 	
 	public Type type = Type.GET;

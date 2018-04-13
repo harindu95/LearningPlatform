@@ -17,7 +17,7 @@ public class EmailManager {
 	private Session session;
 	private final String address = "ensf409@gmail.com";
 	private final String password = "ensf409winter";
-	
+
 	public EmailManager() {
 		Properties properties = new Properties();
 		properties.put("mail.smtp.starttls.enable", "true"); // Using TLS
@@ -32,22 +32,20 @@ public class EmailManager {
 	}
 
 	void sendEmail(Email mail) {
-		
-		try
-		{
-		Message message	=new MimeMessage(session);
-		message.setFrom(new	InternetAddress(address));
-		message.addRecipient(Message.RecipientType.TO,new InternetAddress(mail.to));
-		message.setSubject(mail.subject);
-		String msg = String.format("FROM: %s\n"
-								 + "TO: %s\n"
-								 + "SUBJECT: %s\n\n"
-								 + "%s", mail.from, mail.to, mail.subject
-								 ,mail.content);
-		message.setText(msg);
-		Transport.send(	message	);	//Send the	EmailMessage
-		} 
-		catch(MessagingException	e	) {
+
+		try {
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress(address));
+//			for (String s : mail.to) {
+//				message.addRecipient(Message.RecipientType.TO, new InternetAddress(s));
+//			}
+			message.addRecipient(Message.RecipientType.TO, new InternetAddress("harindudilshan95@gmail.com"));
+			message.setSubject(mail.subject);
+			String msg = String.format("FROM: %s\n" + "TO: %s\n" + "SUBJECT: %s\n\n" + "%s", mail.from, mail.reciever,
+					mail.subject, mail.content);
+			message.setText(msg);
+			Transport.send(message); // Send the EmailMessage
+		} catch (MessagingException e) {
 			e.printStackTrace();
 		}
 	}

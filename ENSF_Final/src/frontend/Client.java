@@ -12,6 +12,8 @@ import javax.swing.UIManager;
 
 import shared.Assignment;
 import shared.Course;
+import shared.Email;
+import shared.FileObj;
 import shared.LoginInfo;
 import shared.Request;
 import shared.Request.DataType;
@@ -161,6 +163,7 @@ public class Client {
 	public static void main(String[] args) {
 		try {
 			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+//			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
@@ -186,5 +189,40 @@ public class Client {
 		out.writeObject(req);
 		out.flush();
 	}
+
+	public void updateSubmission(Submission s) throws IOException, ClassNotFoundException
+	{
+		Request req = new Request();
+		req.type = Type.UPDATE;
+		req.dataType = DataType.SubmissionGrade;
+		req.data = s;
+		out.writeObject(req);
+		out.flush();
+		update();
+	}
+	public FileObj getFile(Submission s) throws IOException, ClassNotFoundException
+	{
+		Request req = new Request();
+		req.type = Type.GET;
+		req.dataType = DataType.File;
+		req.data = s.getPath();
+		out.writeObject(req);
+		out.flush();
+		
+		return (FileObj)in.readObject();
+	}
+	
+	public void sendEmail(Email e) throws IOException
+	{
+		Request req = new Request();
+		req.type = Type.UPDATE;
+		req.dataType = DataType.Email;
+		req.data = e;
+		out.writeObject(req);
+		out.flush();
+	}
+	
+	
+	
 }
 

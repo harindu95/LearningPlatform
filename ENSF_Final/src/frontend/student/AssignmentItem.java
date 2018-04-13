@@ -20,6 +20,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import shared.Assignment;
+import shared.Student;
 
 public class AssignmentItem extends JPanel {
 
@@ -30,7 +31,7 @@ public class AssignmentItem extends JPanel {
 	private JButton download;
 	
 
-	public AssignmentItem(Assignment a) {
+	public AssignmentItem(Assignment a,Student s) {
 		JPanel panel = new JPanel();
 
 		this.assign = a;
@@ -59,8 +60,10 @@ public class AssignmentItem extends JPanel {
 		
 
 		panel.setBorder(BorderFactory.createMatteBorder(1, 5, 1, 1, border));
-
+		JLabel temp = new JLabel("Grade: " + s.getGrade(a.getId()));
+		System.out.println(s.id + " ::::::::: "  + a.getId());
 		this.add(panel);
+		this.add(temp);
 		this.add(download);
 		this.add(submit);
 	}
